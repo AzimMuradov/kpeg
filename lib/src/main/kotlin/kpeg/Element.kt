@@ -17,18 +17,8 @@
 package kpeg
 
 
-public class PegParser(private val root: Symbol, vararg grammar: Symbol) {
-
-    private val grammar: List<Symbol>
-
-    init {
-        val grammarSet = grammar.toSet()
-        require(root in grammarSet) { "Root element must be in grammar!" }
-        this.grammar = grammarSet.toList()
-    }
-
-
-    public fun parseOrNull(s: String): List<Element>? {
-        TODO("Not yet implemented")
-    }
-}
+public data class Element internal constructor(
+    public val begin: UInt,
+    public val end: UInt,
+    public val symbol: Symbol,
+)
