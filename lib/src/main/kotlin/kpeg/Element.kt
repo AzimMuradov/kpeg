@@ -17,8 +17,8 @@
 package kpeg
 
 
-public data class Element internal constructor(
+public data class Element<S : Symbol> internal constructor(
     public val begin: UInt,
     public val end: UInt,
-    public val symbol: Symbol,
+    public val symbol: S,
 )

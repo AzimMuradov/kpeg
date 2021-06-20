@@ -1,19 +1,35 @@
 package kpeg.examples
 
 import kpeg.PegParser
+import kpeg.RuleBuilderBlock
 import kpeg.Symbol
 
+import kpeg.examples.Expr.*
 
-object Sum : Symbol({ any })
 
-object Num : Symbol({ char('0') / (chars('1'..'9') + chars('0'..'9').zeroOrMore()) })
+sealed class Expr(block: RuleBuilderBlock) : Symbol(block) {
 
-object Plus : Symbol({ Num + char('+') + Num })
+    object E : Expr({ Sum / Num })
+
+    object Sum : Expr({ E + char('+') + E })
+
+    object Num : Expr({
+        char('0') / (chars('1'..'9') + chars('0'..'9').zeroOrMore())
+    })
+}
 
 
 fun main() {
-    val parser = PegParser(root = Sum, grammar = arrayOf(Sum, Num, Plus))
+    val parser = PegParser(setOf(Sum, Num))
 
-    val elements = parser.parseOrNull("")
+    val elements = parser.parseOrNull(root = E, "4 + 5 + 6 + 1 + 2")
     checkNotNull(elements) { "Wrong Template" }
+
+    for (e in elements) {
+        when (e.symbol) {
+            E -> TODO()
+            Sum -> TODO()
+            Num -> TODO()
+        }
+    }
 }
