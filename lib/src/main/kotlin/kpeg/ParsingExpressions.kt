@@ -21,27 +21,25 @@ public sealed class ParsingExpression {
 
     internal object Empty : ParsingExpression()
 
-    internal class Character(c: Char) : ParsingExpression()
+    internal class Character(val c: Char) : ParsingExpression()
 
-    internal class Literal(s: String) : ParsingExpression()
+    internal class Literal(val s: String) : ParsingExpression()
 
-    internal class CharacterClass(r: CharRange) : ParsingExpression()
+    internal class CharacterClass(val r: CharRange) : ParsingExpression()
 
     internal object AnyCharacter : ParsingExpression()
 
-    // internal class Grouping(e: ParsingExpression) : ParsingExpression()
+    internal class Optional(val e: ParsingExpression) : ParsingExpression()
 
-    internal class Optional(e: ParsingExpression) : ParsingExpression()
+    internal class ZeroOrMore(val e: ParsingExpression) : ParsingExpression()
 
-    internal class ZeroOrMore(e: ParsingExpression) : ParsingExpression()
+    internal class OneOrMore(val e: ParsingExpression) : ParsingExpression()
 
-    internal class OneOrMore(e: ParsingExpression) : ParsingExpression()
+    internal class AndPredicate(val e: ParsingExpression) : ParsingExpression()
 
-    internal class AndPredicate(e: ParsingExpression) : ParsingExpression()
+    internal class NotPredicate(val e: ParsingExpression) : ParsingExpression()
 
-    internal class NotPredicate(e: ParsingExpression) : ParsingExpression()
+    internal class Sequence(val lhs: ParsingExpression, val rhs: ParsingExpression) : ParsingExpression()
 
-    internal class Sequence(lhs: ParsingExpression, rhs: ParsingExpression) : ParsingExpression()
-
-    internal class PrioritizedChoice(lhs: ParsingExpression, rhs: ParsingExpression) : ParsingExpression()
+    internal class PrioritizedChoice(val lhs: ParsingExpression, val rhs: ParsingExpression) : ParsingExpression()
 }
