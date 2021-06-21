@@ -25,7 +25,9 @@ public class RuleBuilder internal constructor() {
     internal fun build(e: PE): Rule = Rule(e)
 
 
-    // Operators
+    // Standard operators
+
+    public val empty: PE = Empty
 
     public fun char(c: Char): PE = Character(c)
 

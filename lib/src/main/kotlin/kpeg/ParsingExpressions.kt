@@ -19,6 +19,8 @@ package kpeg
 
 public sealed class ParsingExpression {
 
+    internal object Empty : ParsingExpression()
+
     internal class Character(c: Char) : ParsingExpression()
 
     internal class Literal(s: String) : ParsingExpression()
