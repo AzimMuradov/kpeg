@@ -22,7 +22,7 @@ import kpeg.ParsingExpression as PE
 
 public class RuleBuilder internal constructor() {
 
-    internal fun build(e: PE): Rule = Rule(e)
+    internal fun build(block: RuleBuilderBlock): Rule = Rule(block())
 
 
     // Standard operators

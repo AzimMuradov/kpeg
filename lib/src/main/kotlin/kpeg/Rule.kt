@@ -18,5 +18,5 @@ package kpeg
 
 
 public class Rule internal constructor(
-    private val parsingExpression: ParsingExpression,
+    internal val parsingExpression: ParsingExpression,
 )

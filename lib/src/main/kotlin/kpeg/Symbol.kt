@@ -19,7 +19,7 @@ package kpeg
 
 public abstract class Symbol(block: RuleBuilderBlock) : ParsingExpression() {
 
-    internal val rule: Rule = Rule(RuleBuilder().block())
+    internal val rule: Rule by lazy { RuleBuilder().build(block) }
 }
 
 public typealias RuleBuilderBlock = RuleBuilder.() -> ParsingExpression
