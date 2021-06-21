@@ -21,4 +21,13 @@ public data class Element<S : Symbol> internal constructor(
     public val begin: UInt,
     public val end: UInt,
     public val symbol: S,
-)
+) {
+
+    public companion object {
+        public fun <S : Symbol> cmp(): Comparator<Element<S>> = Comparator<Element<S>> { lhs, rhs ->
+            lhs.begin.compareTo(rhs.begin)
+        }.then { lhs, rhs ->
+            lhs.end.compareTo(rhs.end)
+        }
+    }
+}
