@@ -14,12 +14,17 @@
  * limitations under the License.
  */
 
-package kpeg
+package kpeg.pe
+
+import kpeg.Option
+import kpeg.PegParser.ParserState
 
 
-public abstract class Symbol(block: RuleBuilderBlock) : ParsingExpression() {
+public object SymbolBuilder : Operators()
 
-    internal val rule: Rule by lazy { RuleBuilder().build(block) }
+public abstract class Symbol<T>(private val pe: ParsingExpression<T>) : NonTerminal<T>() {
+
+    override fun peek(ps: ParserState): Option<T> = pe.peek(ps)
+
+    override fun parse(ps: ParserState): Option<T> = pe.parse(ps)
 }
-
-public typealias RuleBuilderBlock = RuleBuilder.() -> ParsingExpression

@@ -16,7 +16,16 @@
 
 package kpeg
 
+import kpeg.pe.ParsingExpression
 
-public class Rule internal constructor(
-    internal val parsingExpression: ParsingExpression,
-)
+
+public class StoredPE<T>(
+    private val parser: PegParser = TODO(),
+    private val pe: ParsingExpression<T>,
+) {
+
+    public var option: Option<T> = Option.None
+        private set
+
+    public val value: T get() = option.unwrap()
+}

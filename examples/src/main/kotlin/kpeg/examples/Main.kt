@@ -1,33 +1,33 @@
 package kpeg.examples
 
-import kpeg.Element
 import kpeg.PegParser
-import kpeg.RuleBuilderBlock
-import kpeg.Symbol
 import kpeg.examples.ExprS.*
+import kpeg.pe.ParsingExpression
+import kpeg.pe.Symbol
+import kpeg.pe.SymbolBuilder.char
+import kpeg.pe.SymbolBuilder.seq
 
 
-sealed class ExprS(block: RuleBuilderBlock) : Symbol(block) {
+sealed class ExprS<T>(pe: ParsingExpression<T>) : Symbol<T>(pe) {
 
-    object Expr : ExprS({ Sum / Num })
+    object A : ExprS<Char>(char { it == 'a' })
 
-    object Sum : ExprS({ Expr + char('+') + Expr })
+    object B : ExprS<Char>(char { it == 'b' })
 
-    object Num : ExprS({ char('0') / (chars('1'..'9') + chars('0'..'9').zeroOrMore()) })
+    object AB : ExprS<String>(seq {
+        val a = +A
+        val b = +B
+
+        value { "${a.value}${b.value}" }
+    })
 }
 
 
 fun main() {
-    val parser = PegParser(grammar = setOf(Expr, Sum, Num))
+    val parser = PegParser(grammar = setOf(A, B, AB))
 
-    val elements = parser.parseOrNull(root = Expr, "4 + 5 + 6 + 1 + 2")?.sortedWith(Element.cmp())
-    checkNotNull(elements) { "Wrong Template" }
-
-    for (e in elements) {
-        when (e.symbol) {
-            Expr -> TODO()
-            Sum -> TODO()
-            Num -> TODO()
-        }
-    }
+    println(parser.parse(start = A, "a"))
+    println(parser.parse(start = A, "ab"))
+    println(parser.parse(start = B, "ab"))
+    println(parser.parse(start = B, "b"))
 }

@@ -14,20 +14,15 @@
  * limitations under the License.
  */
 
-package kpeg
+package kpeg.pe
+
+import kpeg.Option
+import kpeg.PegParser.ParserState
 
 
-public data class Element<S : Symbol> internal constructor(
-    public val begin: UInt,
-    public val end: UInt,
-    public val symbol: S,
-) {
+public sealed class ParsingExpression<T> {
 
-    public companion object {
-        public fun <S : Symbol> cmp(): Comparator<Element<S>> = Comparator<Element<S>> { lhs, rhs ->
-            lhs.begin.compareTo(rhs.begin)
-        }.then { lhs, rhs ->
-            lhs.end.compareTo(rhs.end)
-        }
-    }
+    internal abstract fun peek(ps: ParserState): Option<T>
+
+    internal abstract fun parse(ps: ParserState): Option<T>
 }

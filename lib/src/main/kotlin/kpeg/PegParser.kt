@@ -16,12 +16,33 @@
 
 package kpeg
 
+import kpeg.pe.Symbol
 
-public class PegParser<S : Symbol>(private val grammar: Set<S>) {
 
-    public fun parseOrNull(root: S, s: String): List<Element<S>>? {
-        check(root in grammar) { "Root element must be in grammar!" }
+public class PegParser(private val grammar: Set<Symbol<*>>) {
 
-        TODO("Not yet implemented")
+    public fun <T> parse(start: Symbol<T>, s: String): Option<T> {
+        check(start in grammar, ErrorMessages::WRONG_START)
+
+        // TODO(memoization)
+
+        val newPs = ParserState(s, i = 0).also { ps = it }
+
+        val result = start.parse(newPs)
+
+        return if (newPs.i == s.length) result else Option.None
+    }
+
+
+    private var ps: ParserState? = null
+
+    internal data class ParserState(internal val s: String, internal var i: Int)
+
+
+    internal companion object {
+
+        private object ErrorMessages {
+            const val WRONG_START: String = "start element must be in grammar"
+        }
     }
 }
