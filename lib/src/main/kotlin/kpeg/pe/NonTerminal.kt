@@ -23,6 +23,8 @@ import kpeg.Option.Some
 import kpeg.PegParser.ParserState
 import kpeg.StoredPE
 import kpeg.pe.GroupBuilder.ValueBuilder
+import kpeg.pe.NonTerminal.Predicate.PredicateType.And
+import kpeg.pe.NonTerminal.Predicate.PredicateType.Not
 import kpeg.pe.ParsingExpression as PE
 
 
@@ -70,9 +72,12 @@ public sealed class NonTerminal<T> : PE<T>() {
 
     internal class Predicate(private val type: PredicateType, private val pe: PE<*>) : NonTerminal<Unit>() {
 
-        override fun peek(ps: ParserState): Option<Unit> = TODO()
+        override fun peek(ps: ParserState): Option<Unit> = when (type) {
+            And -> if (pe.peek(ps) != None) Some(Unit) else None
+            Not -> if (pe.peek(ps) != None) None else Some(Unit)
+        }
 
-        override fun parse(ps: ParserState): Option<Unit> = TODO()
+        override fun parse(ps: ParserState): Option<Unit> = parse(ps)
 
 
         enum class PredicateType {
