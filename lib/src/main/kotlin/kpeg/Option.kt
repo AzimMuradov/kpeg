@@ -27,5 +27,5 @@ public inline fun <T> Option<T>.alsoIfSome(block: (T) -> Unit): Option<T> = when
 
 public fun <T> Option<T>.unwrap(): T = when (this) {
     is Some -> value
-    None -> throw IllegalStateException("option is None")
+    None -> throw IllegalStateException("Option is None")
 }

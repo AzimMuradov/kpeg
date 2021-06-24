@@ -16,6 +16,7 @@
 
 package kpeg
 
+import kpeg.Option.None
 import kpeg.pe.Symbol
 
 
@@ -30,19 +31,19 @@ public class PegParser(private val grammar: Set<Symbol<*>>) {
 
         val result = start.parse(newPs)
 
-        return if (newPs.i == s.length) result else Option.None
+        return if (newPs.i == s.length) result else None
     }
 
 
     private var ps: ParserState? = null
 
-    internal data class ParserState(internal val s: String, internal var i: Int)
+    internal data class ParserState(val s: String, var i: Int)
 
 
     internal companion object {
 
         private object ErrorMessages {
-            const val WRONG_START: String = "start element must be in grammar"
+            const val WRONG_START: String = "Start element must be in grammar"
         }
     }
 }
