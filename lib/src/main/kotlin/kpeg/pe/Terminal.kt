@@ -18,6 +18,7 @@ package kpeg.pe
 
 import kpeg.KPegDsl
 import kpeg.Option
+import kpeg.Option.None
 import kpeg.PegParser.ParserState
 import kpeg.alsoIfSome
 import kpeg.takeAsOptionIf
@@ -33,24 +34,30 @@ public typealias CharacterBuilderBlock = CharacterBuilder.(Char) -> Boolean
 public typealias LiteralBuilderBlock = LiteralBuilder.(String) -> Boolean
 
 
-internal sealed class Terminal<T>(private val moveBy: Int) : ParsingExpression<T>() {
+internal sealed class Terminal<T>(protected val moveBy: Int) : ParsingExpression<T>() {
 
-    final override fun parse(ps: ParserState): Option<T> = peek(ps).alsoIfSome {
-        ps.i += moveBy
-    }
+    final override fun parse(ps: ParserState): Option<T> = peek(ps).alsoIfSome { ps.i += moveBy }
 
 
     internal class Character(val b: CharacterBuilderBlock) : Terminal<Char>(moveBy = 1) {
 
         override fun peek(ps: ParserState): Option<Char> = with(ps) {
-            s[i].takeAsOptionIf { CharacterBuilder.b(it) }
+            if (ps.i + moveBy <= ps.s.length) {
+                s[i].takeAsOptionIf { CharacterBuilder.b(it) }
+            } else {
+                None
+            }
         }
     }
 
     internal class Literal(private val len: Int, val b: LiteralBuilderBlock) : Terminal<String>(moveBy = len) {
 
         override fun peek(ps: ParserState): Option<String> = with(ps) {
-            s.substring(i until i + len).takeAsOptionIf { LiteralBuilder.b(it) }
+            if (ps.i + moveBy <= ps.s.length) {
+                s.substring(i until i + len).takeAsOptionIf { LiteralBuilder.b(it) }
+            } else {
+                None
+            }
         }
     }
 }
