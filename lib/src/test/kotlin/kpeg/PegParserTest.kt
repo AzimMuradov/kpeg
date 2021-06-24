@@ -52,7 +52,7 @@ class PegParserTest {
                 for (peBlock in peBlocks) {
                     sym = object : Symbol<Char>(peBlock()) {}
                     p = PegParser(grammar = setOf(sym))
-                    assertEquals(expected = p.parse(start = sym, "$a"), actual = Some(a))
+                    assertEquals(expected = Some(a), actual = p.parse(start = sym, "$a"))
                 }
             }
 
@@ -67,7 +67,7 @@ class PegParserTest {
                 for (peBlock in peBlocksWithMultiChars) {
                     sym = object : Symbol<Char>(peBlock()) {}
                     p = PegParser(grammar = setOf(sym))
-                    assertEquals(expected = p.parse(start = sym, "$o"), actual = Some(o))
+                    assertEquals(expected = Some(o), actual = p.parse(start = sym, "$o"))
                 }
             }
 
@@ -76,7 +76,7 @@ class PegParserTest {
                 for (peBlock in peBlocks) {
                     sym = object : Symbol<Char>(peBlock()) {}
                     p = PegParser(grammar = setOf(sym))
-                    assertEquals(expected = p.parse(start = sym, ""), actual = None)
+                    assertEquals(expected = None, actual = p.parse(start = sym, ""))
                 }
             }
 
@@ -85,7 +85,7 @@ class PegParserTest {
                 for (peBlock in peBlocks) {
                     sym = object : Symbol<Char>(peBlock()) {}
                     p = PegParser(grammar = setOf(sym))
-                    assertEquals(expected = p.parse(start = sym, "$o"), actual = None)
+                    assertEquals(expected = None, actual = p.parse(start = sym, "$o"))
                 }
             }
 
@@ -94,7 +94,7 @@ class PegParserTest {
                 for (peBlock in peBlocks) {
                     sym = object : Symbol<Char>(peBlock()) {}
                     p = PegParser(grammar = setOf(sym))
-                    assertEquals(expected = p.parse(start = sym, "$a" + "$a"), actual = None)
+                    assertEquals(expected = None, actual = p.parse(start = sym, "$a" + "$a"))
                 }
             }
         }
@@ -116,7 +116,7 @@ class PegParserTest {
                 for (peBlock in peBlocks) {
                     sym = object : Symbol<String>(peBlock()) {}
                     p = PegParser(grammar = setOf(sym))
-                    assertEquals(expected = p.parse(start = sym, alpha), actual = Some(alpha))
+                    assertEquals(expected = Some(alpha), actual = p.parse(start = sym, alpha))
                 }
             }
 
@@ -125,7 +125,7 @@ class PegParserTest {
                 for (peBlock in peBlocks) {
                     sym = object : Symbol<String>(peBlock()) {}
                     p = PegParser(grammar = setOf(sym))
-                    assertEquals(expected = p.parse(start = sym, ""), actual = None)
+                    assertEquals(expected = None, actual = p.parse(start = sym, ""))
                 }
             }
 
@@ -134,7 +134,7 @@ class PegParserTest {
                 for (peBlock in peBlocks) {
                     sym = object : Symbol<String>(peBlock()) {}
                     p = PegParser(grammar = setOf(sym))
-                    assertEquals(expected = p.parse(start = sym, omega), actual = None)
+                    assertEquals(expected = None, actual = p.parse(start = sym, omega))
                 }
             }
 
@@ -143,7 +143,7 @@ class PegParserTest {
                 for (peBlock in peBlocks) {
                     sym = object : Symbol<String>(peBlock()) {}
                     p = PegParser(grammar = setOf(sym))
-                    assertEquals(expected = p.parse(start = sym, alpha + "$a"), actual = None)
+                    assertEquals(expected = None, actual = p.parse(start = sym, alpha + "$a"))
                 }
             }
         }
@@ -172,22 +172,22 @@ class PegParserTest {
 
                 @Test
                 fun `Some('DataCC('a', 'b')')`() {
-                    assertEquals(expected = p.parse(start = sym, "$a$o"), actual = Some(DataCC(a, o)))
+                    assertEquals(expected = Some(DataCC(a, o)), actual = p.parse(start = sym, "$a$o"))
                 }
 
                 @Test
                 fun `None - empty string`() {
-                    assertEquals(expected = p.parse(start = sym, ""), actual = None)
+                    assertEquals(expected = None, actual = p.parse(start = sym, ""))
                 }
 
                 @Test
                 fun `None - wrong DataCC`() {
-                    assertEquals(expected = p.parse(start = sym, "$o$a"), actual = None)
+                    assertEquals(expected = None, actual = p.parse(start = sym, "$o$a"))
                 }
 
                 @Test
                 fun `None - too long string`() {
-                    assertEquals(expected = p.parse(start = sym, "$a$o" + "$a"), actual = None)
+                    assertEquals(expected = None, actual = p.parse(start = sym, "$a$o" + "$a"))
                 }
             }
 
@@ -213,22 +213,22 @@ class PegParserTest {
 
                     @Test
                     fun `Some('DataCL('a', 'omega')')`() {
-                        assertEquals(expected = p.parse(start = sym, "$a$omega"), actual = Some(DataCL(a, omega)))
+                        assertEquals(expected = Some(DataCL(a, omega)), actual = p.parse(start = sym, "$a$omega"))
                     }
 
                     @Test
                     fun `None - empty string`() {
-                        assertEquals(expected = p.parse(start = sym, ""), actual = None)
+                        assertEquals(expected = None, actual = p.parse(start = sym, ""))
                     }
 
                     @Test
                     fun `None - wrong DataCL`() {
-                        assertEquals(expected = p.parse(start = sym, "$omega$a"), actual = None)
+                        assertEquals(expected = None, actual = p.parse(start = sym, "$omega$a"))
                     }
 
                     @Test
                     fun `None - too long string`() {
-                        assertEquals(expected = p.parse(start = sym, "$a$omega" + "$a"), actual = None)
+                        assertEquals(expected = None, actual = p.parse(start = sym, "$a$omega" + "$a"))
                     }
                 }
             }
@@ -262,12 +262,12 @@ class PegParserTest {
 
                     @Test
                     fun `Some('DataCL('a', 'omega')')`() {
-                        assertEquals(expected = p.parse(start = sym, "$a$omega"), actual = Some(DataCL(a, omega)))
+                        assertEquals(expected = Some(DataCL(a, omega)), actual = p.parse(start = sym, "$a$omega"))
                     }
 
                     @Test
                     fun `None - wrong DataCL`() {
-                        assertEquals(expected = p.parse(start = sym, "$a$alpha"), actual = None)
+                        assertEquals(expected = None, actual = p.parse(start = sym, "$a$alpha"))
                     }
                 }
 
@@ -290,17 +290,17 @@ class PegParserTest {
 
                     @Test
                     fun `None - wrong DataCL - 1`() {
-                        assertEquals(expected = p.parse(start = sym, "$a$alpha"), actual = None)
+                        assertEquals(expected = None, actual = p.parse(start = sym, "$a$alpha"))
                     }
 
                     @Test
                     fun `None - wrong DataCL - 2`() {
-                        assertEquals(expected = p.parse(start = sym, "$a$delta"), actual = None)
+                        assertEquals(expected = None, actual = p.parse(start = sym, "$a$delta"))
                     }
 
                     @Test
                     fun `None - wrong DataCL - 3`() {
-                        assertEquals(expected = p.parse(start = sym, "$a$omega"), actual = None)
+                        assertEquals(expected = None, actual = p.parse(start = sym, "$a$omega"))
                     }
                 }
             }
@@ -329,12 +329,12 @@ class PegParserTest {
 
                     @Test
                     fun `Some('DataCL('a', 'alpha')')`() {
-                        assertEquals(expected = p.parse(start = sym, "$a$alpha"), actual = Some(DataCL(a, alpha)))
+                        assertEquals(expected = Some(DataCL(a, alpha)), actual = p.parse(start = sym, "$a$alpha"))
                     }
 
                     @Test
                     fun `None - wrong DataCL`() {
-                        assertEquals(expected = p.parse(start = sym, "$a$omega"), actual = None)
+                        assertEquals(expected = None, actual = p.parse(start = sym, "$a$omega"))
                     }
                 }
 
@@ -357,17 +357,17 @@ class PegParserTest {
 
                     @Test
                     fun `Some('DataCL('a', 'alpha')')`() {
-                        assertEquals(expected = p.parse(start = sym, "$a$alpha"), actual = Some(DataCL(a, alpha)))
+                        assertEquals(expected = Some(DataCL(a, alpha)), actual = p.parse(start = sym, "$a$alpha"))
                     }
 
                     @Test
                     fun `None - wrong DataCL - 1`() {
-                        assertEquals(expected = p.parse(start = sym, "$a$delta"), actual = None)
+                        assertEquals(expected = None, actual = p.parse(start = sym, "$a$delta"))
                     }
 
                     @Test
                     fun `None - wrong DataCL - 2`() {
-                        assertEquals(expected = p.parse(start = sym, "$a$omega"), actual = None)
+                        assertEquals(expected = None, actual = p.parse(start = sym, "$a$omega"))
                     }
                 }
             }
