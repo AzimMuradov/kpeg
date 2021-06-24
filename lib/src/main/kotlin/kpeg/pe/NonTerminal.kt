@@ -110,7 +110,7 @@ public sealed class NonTerminal<T> : PE<T>() {
             Not -> if (pe.peek(ps) != None) None else Some(Unit)
         }
 
-        override fun parse(ps: ParserState): Option<Unit> = parse(ps)
+        override fun parse(ps: ParserState): Option<Unit> = peek(ps)
 
 
         enum class PredicateType {
