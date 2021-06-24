@@ -183,6 +183,48 @@ class PegParserTest {
         }
 
         @Nested
+        @DisplayName(value = "parse 1 option")
+        inner class Option {
+
+            private lateinit var sym: Symbol<String>
+
+            @BeforeEach
+            internal fun setUp() {
+                sym = object : Symbol<String>(SymbolBuilder.seq {
+                    val opt = +char(a).optional()
+                    value {
+                        when (val res = opt.value) {
+                            is Some -> res.value.toString()
+                            None -> "null"
+                        }
+                    }
+                }) {}
+                p = PegParser(grammar = setOf(sym))
+            }
+
+
+            @Test
+            fun `Some('a')`() {
+                assertEquals(expected = Some("$a"), actual = p.parse(start = sym, "$a"))
+            }
+
+            @Test
+            fun `Some('null')`() {
+                assertEquals(expected = Some("null"), actual = p.parse(start = sym, ""))
+            }
+
+            @Test
+            fun `None - too long string - 1`() {
+                assertEquals(expected = None, actual = p.parse(start = sym, "-"))
+            }
+
+            @Test
+            fun `None - too long string - 2`() {
+                assertEquals(expected = None, actual = p.parse(start = sym, "$a" + "$a"))
+            }
+        }
+
+        @Nested
         @DisplayName(value = "parse sequence")
         inner class Sequence {
 

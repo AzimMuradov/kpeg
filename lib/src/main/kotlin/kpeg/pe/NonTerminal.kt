@@ -56,14 +56,14 @@ public typealias GroupBuilderBlock<T> = GroupBuilder<T>.() -> Unit
 
 public sealed class NonTerminal<T> : PE<T>() {
 
-    internal class Optional<T>(pe: PE<T>) : NonTerminal<T>() {
+    internal class Optional<T>(pe: PE<T>) : NonTerminal<Option<T>>() {
 
         private val repeated = Repeated(1u..1u, pe)
 
 
-        override fun peek(ps: ParserState): Option<T> = repeated.peek(ps).first()
+        override fun peek(ps: ParserState): Option<Option<T>> = Some(repeated.peek(ps).first())
 
-        override fun parse(ps: ParserState): Option<T> = repeated.parse(ps).first()
+        override fun parse(ps: ParserState): Option<Option<T>> = Some(repeated.parse(ps).first())
 
 
         private fun Option<List<T>>.first(): Option<T> = when (val res = this) {

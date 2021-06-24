@@ -17,6 +17,7 @@
 package kpeg.pe
 
 import kpeg.KPegDsl
+import kpeg.Option
 import kpeg.pe.NonTerminal.*
 import kpeg.pe.NonTerminal.Predicate.PredicateType.And
 import kpeg.pe.NonTerminal.Predicate.PredicateType.Not
@@ -50,7 +51,7 @@ public sealed class Operators {
 
     // Optional
 
-    public fun <T> PE<T>.optional(): PE<T> = Optional(pe = this)
+    public fun <T> PE<T>.optional(): PE<Option<T>> = Optional(pe = this)
 
 
     // Repeated
