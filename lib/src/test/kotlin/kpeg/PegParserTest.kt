@@ -149,6 +149,40 @@ class PegParserTest {
         }
 
         @Nested
+        @DisplayName(value = "parse 1 any")
+        inner class Any {
+
+            private lateinit var sym: Symbol<Char>
+
+            @BeforeEach
+            internal fun setUp() {
+                sym = object : Symbol<Char>(SymbolBuilder.any) {}
+                p = PegParser(grammar = setOf(sym))
+            }
+
+
+            @Test
+            fun `Some('a')`() {
+                assertEquals(expected = Some(a), actual = p.parse(start = sym, "$a"))
+            }
+
+            @Test
+            fun `Some('-')`() {
+                assertEquals(expected = Some('-'), actual = p.parse(start = sym, "-"))
+            }
+
+            @Test
+            fun `None - empty string`() {
+                assertEquals(expected = None, actual = p.parse(start = sym, ""))
+            }
+
+            @Test
+            fun `None - too long string`() {
+                assertEquals(expected = None, actual = p.parse(start = sym, "$a" + "$a"))
+            }
+        }
+
+        @Nested
         @DisplayName(value = "parse sequence")
         inner class Sequence {
 
