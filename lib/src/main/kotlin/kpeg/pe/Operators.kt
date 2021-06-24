@@ -30,6 +30,8 @@ public sealed class Operators {
 
     // Character
 
+    public val any: PE<Char> = Character { true }
+
     public fun char(b: CharacterBuilderBlock): PE<Char> = Character(b)
 
     public fun char(c: Char): PE<Char> = Character { it == c }
@@ -48,21 +50,21 @@ public sealed class Operators {
 
     // Optional
 
-    public fun <T> opt(pe: PE<T>): PE<T> = Optional(pe)
+    public fun <T> PE<T>.optional(): PE<T> = Optional(pe = this)
 
 
     // Repeated
 
-    public fun <T> repeated(range: UIntRange, pe: PE<T>): PE<List<T>> = Repeated(range, pe)
+    public fun <T> PE<T>.repeated(range: UIntRange): PE<List<T>> = Repeated(range, pe = this)
 
-    public fun <T> repeated(min: UInt = 0u, max: UInt = UInt.MAX_VALUE, pe: PE<T>): PE<List<T>> =
-        Repeated(min..max, pe)
+    public fun <T> PE<T>.repeated(min: UInt = 0u, max: UInt = UInt.MAX_VALUE): PE<List<T>> =
+        Repeated(range = min..max, pe = this)
 
-    public fun <T> repeatedExactly(times: UInt, pe: PE<T>): PE<List<T>> = Repeated(times..times, pe)
+    public fun <T> PE<T>.repeatedExactly(times: UInt): PE<List<T>> = Repeated(range = times..times, pe = this)
 
-    public fun <T> zeroOrMore(pe: PE<T>): PE<List<T>> = Repeated(0u..UInt.MAX_VALUE, pe)
+    public fun <T> PE<T>.zeroOrMore(): PE<List<T>> = Repeated(range = 0u..UInt.MAX_VALUE, pe = this)
 
-    public fun <T> oneOrMore(pe: PE<T>): PE<List<T>> = Repeated(1u..UInt.MAX_VALUE, pe)
+    public fun <T> PE<T>.oneOrMore(): PE<List<T>> = Repeated(range = 1u..UInt.MAX_VALUE, pe = this)
 
 
     // Predicate

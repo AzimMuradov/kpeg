@@ -15,6 +15,17 @@ public sealed class Option<out T> {
 }
 
 
+public fun <T> Option<T>.unwrapOrNull(): T? = when (this) {
+    is Some -> value
+    None -> null
+}
+
+public fun <T> Option<T>.unwrap(): T = when (this) {
+    is Some -> value
+    None -> throw IllegalStateException("Option is None")
+}
+
+
 internal fun <T> T.takeAsOptionIf(condition: (T) -> Boolean): Option<T> = when (condition(this)) {
     true -> Some(this)
     false -> None
@@ -23,9 +34,4 @@ internal fun <T> T.takeAsOptionIf(condition: (T) -> Boolean): Option<T> = when (
 public inline fun <T> Option<T>.alsoIfSome(block: (T) -> Unit): Option<T> = when (this) {
     is Some -> Some(value.also(block))
     None -> this
-}
-
-public fun <T> Option<T>.unwrap(): T = when (this) {
-    is Some -> value
-    None -> throw IllegalStateException("Option is None")
 }

@@ -27,6 +27,8 @@ public class StoredPE<T> internal constructor(private val pe: ParsingExpression<
     public var option: Option<T> = None
         private set
 
+    public val nullable: T? get() = option.unwrapOrNull()
+
     public val value: T get() = option.unwrap()
 
 
