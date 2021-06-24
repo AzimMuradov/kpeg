@@ -30,4 +30,12 @@ fun main() {
     println(parser.parse(start = A, "ab"))
     println(parser.parse(start = B, "ab"))
     println(parser.parse(start = B, "b"))
+
+    println(parser.parse(start = AB, "a"))
+    println(parser.parse(start = AB, "b"))
+    println(parser.parse(start = AB, "ab"))
+    println(parser.parse(start = AB, "ab"))
+    println(parser.parse(start = AB, "ababab"))
+    println(parser.parse(start = AB, ""))
+    println(parser.parse(start = AB, "ab"))
 }

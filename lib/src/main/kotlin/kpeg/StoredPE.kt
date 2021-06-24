@@ -16,16 +16,21 @@
 
 package kpeg
 
+import kpeg.Option.None
+import kpeg.Option.Some
+import kpeg.PegParser.ParserState
 import kpeg.pe.ParsingExpression
 
 
-public class StoredPE<T>(
-    private val parser: PegParser = TODO(),
-    private val pe: ParsingExpression<T>,
-) {
+public class StoredPE<T> internal constructor(private val pe: ParsingExpression<T>) {
 
-    public var option: Option<T> = Option.None
+    public var option: Option<T> = None
         private set
 
     public val value: T get() = option.unwrap()
+
+
+    internal fun peek(ps: ParserState): Option<T> = pe.peek(ps).alsoIfSome { option = Some(it) }
+
+    internal fun parse(ps: ParserState): Option<T> = pe.parse(ps).alsoIfSome { option = Some(it) }
 }

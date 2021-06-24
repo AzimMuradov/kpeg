@@ -18,6 +18,8 @@ package kpeg.pe
 
 import kpeg.KPegDsl
 import kpeg.Option
+import kpeg.Option.None
+import kpeg.Option.Some
 import kpeg.PegParser.ParserState
 import kpeg.StoredPE
 import kpeg.pe.GroupBuilder.ValueBuilder
@@ -25,13 +27,13 @@ import kpeg.pe.ParsingExpression as PE
 
 
 @KPegDsl
-public class GroupBuilder<T> : Operators() {
+public class GroupBuilder<T> internal constructor(private val ps: ParserState) : Operators() {
 
     // Subexpressions
 
-    public operator fun <T> PE<T>.unaryPlus(): StoredPE<T> = StoredPE(pe = also { subexpressions += it })
+    public operator fun <T> PE<T>.unaryPlus(): StoredPE<T> = StoredPE(pe = this).also { subexpressions += it }
 
-    internal val subexpressions = mutableListOf<PE<*>>()
+    internal val subexpressions = mutableListOf<StoredPE<*>>()
 
 
     // Value
@@ -81,9 +83,23 @@ public sealed class NonTerminal<T> : PE<T>() {
 
     internal class Sequence<T>(private val b: GroupBuilderBlock<T>) : NonTerminal<T>() {
 
-        override fun peek(ps: ParserState): Option<T> = TODO()
+        override fun peek(ps: ParserState): Option<T> = with(GroupBuilder<T>(ps).also(b)) {
+            if (subexpressions.all { it.peek(ps) != None }) {
+                Some(ValueBuilder.valueBlock())
+            } else {
+                None
+            }
+        }
 
-        override fun parse(ps: ParserState): Option<T> = TODO()
+        override fun parse(ps: ParserState): Option<T> = with(GroupBuilder<T>(ps).also(b)) {
+            val initI = ps.i
+            if (subexpressions.all { it.parse(ps) != None }) {
+                Some(ValueBuilder.valueBlock())
+            } else {
+                ps.i = initI
+                None
+            }
+        }
     }
 
     internal class PrioritizedChoice<T>(private val b: GroupBuilderBlock<T>) : NonTerminal<T>() {
