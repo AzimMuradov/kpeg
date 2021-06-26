@@ -122,11 +122,12 @@ public sealed class NonTerminal<T> : PE<T>() {
     internal class Sequence<T>(private val b: GroupBuilderBlock<T>) : NonTerminal<T>() {
 
         override fun peek(ps: ParserState): Option<T> = with(GroupBuilder<T>(ps).also(b)) {
-            if (subexpressions.all { it.peek(ps) != None }) {
+            val initI = ps.i
+            if (subexpressions.all { it.parse(ps) != None }) {
                 Some(ValueBuilder.valueBlock())
             } else {
                 None
-            }
+            }.also { ps.i = initI }
         }
 
         override fun parse(ps: ParserState): Option<T> = with(GroupBuilder<T>(ps).also(b)) {
