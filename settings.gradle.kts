@@ -1,4 +1,5 @@
 rootProject.name = "kpeg"
 
 include("lib")
-include("examples")
+
+include("examples:simple-calc")
