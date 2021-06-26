@@ -5,7 +5,9 @@ import kpeg.Option.None
 import kpeg.Option.Some
 import kpeg.PegParser.ParserState
 import kpeg.TestUtils.a
+import kpeg.TestUtils.alpha
 import kpeg.TestUtils.d
+import kpeg.TestUtils.delta
 import kpeg.TestUtils.get
 import kpeg.TestUtils.ptDataRepCorrectProvider
 import kpeg.TestUtils.ptDataRepEmptyProvider
@@ -13,6 +15,8 @@ import kpeg.TestUtils.ptDataRepIncorrectProvider
 import kpeg.TestUtils.ptDataSeqCorrectProvider
 import kpeg.TestUtils.ptDataSeqEmptyProvider
 import kpeg.TestUtils.ptDataSeqIncorrectProvider
+import kpeg.pe.NonTerminal.Predicate.PredicateType.And
+import kpeg.pe.NonTerminal.Predicate.PredicateType.Not
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -104,6 +108,95 @@ class NonTerminalTest {
             val actualRepeated = data.sym.parse(ps)
             assertEquals(expected = data.expected, actual = actualRepeated)
             assertEquals(expected = 0, actual = ps.i)
+        }
+    }
+
+    @Nested
+    @TestInstance(PER_CLASS)
+    inner class Predicate {
+
+        @Nested
+        @TestInstance(PER_CLASS)
+        inner class And {
+
+            private val symAndP = object : Symbol<Unit>(
+                Predicate(type = And, pe = Terminal.Literal(len = alpha.length) { it == alpha })
+            ) {}
+
+
+            @Test
+            fun `parse 'and' predicate in correct string`() {
+                ps = ParserState(alpha, 0)
+                val actualAndPredicate = symAndP.parse(ps)
+                assertEquals(expected = Some(Unit), actual = actualAndPredicate)
+                assertEquals(expected = 0, actual = ps.i)
+            }
+
+            @Test
+            fun `parse 'and' predicate in incorrect string`() {
+                ps = ParserState(delta, 0)
+                val actualAndPredicate = symAndP.parse(ps)
+                assertEquals(expected = None, actual = actualAndPredicate)
+                assertEquals(expected = 0, actual = ps.i)
+            }
+
+            @Test
+            fun `parse 'and' predicate in empty string`() {
+                ps = ParserState("", 0)
+                val actualAndPredicate = symAndP.parse(ps)
+                assertEquals(expected = None, actual = actualAndPredicate)
+                assertEquals(expected = 0, actual = ps.i)
+            }
+
+            @Test
+            fun `parse 'and' predicate that could not fit`() {
+                ps = ParserState(alpha, alpha.length)
+                val actualAndPredicate = symAndP.parse(ps)
+                assertEquals(expected = None, actual = actualAndPredicate)
+                assertEquals(expected = alpha.length, actual = ps.i)
+            }
+        }
+
+        @Nested
+        @TestInstance(PER_CLASS)
+        inner class Not {
+
+            private val symNotP = object : Symbol<Unit>(
+                Predicate(type = Not, pe = Terminal.Literal(len = alpha.length) { it == alpha })
+            ) {}
+
+
+            @Test
+            fun `parse 'not' predicate in correct string`() {
+                ps = ParserState(delta, 0)
+                val actualNotPredicate = symNotP.parse(ps)
+                assertEquals(expected = Some(Unit), actual = actualNotPredicate)
+                assertEquals(expected = 0, actual = ps.i)
+            }
+
+            @Test
+            fun `parse 'not' predicate in incorrect string`() {
+                ps = ParserState(alpha, 0)
+                val actualNotPredicate = symNotP.parse(ps)
+                assertEquals(expected = None, actual = actualNotPredicate)
+                assertEquals(expected = 0, actual = ps.i)
+            }
+
+            @Test
+            fun `parse 'not' predicate in empty string`() {
+                ps = ParserState("", 0)
+                val actualNotPredicate = symNotP.parse(ps)
+                assertEquals(expected = Some(Unit), actual = actualNotPredicate)
+                assertEquals(expected = 0, actual = ps.i)
+            }
+
+            @Test
+            fun `parse 'not' predicate that could not fit`() {
+                ps = ParserState(delta, delta.length)
+                val actualNotPredicate = symNotP.parse(ps)
+                assertEquals(expected = Some(Unit), actual = actualNotPredicate)
+                assertEquals(expected = delta.length, actual = ps.i)
+            }
         }
     }
 
