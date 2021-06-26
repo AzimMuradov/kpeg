@@ -16,8 +16,11 @@ object TestUtils {
     const val delta = "delta"
     const val omega = "omega"
 
-    data class DataCC(val c1: Char, val c2: Char)
-    data class DataCL(val c1: Char, val l2: String)
+
+    fun <T> Option<T>.get(): T = when (this) {
+        is Some -> value
+        None -> error("")
+    }
 
 
     // PT = Parametrized Test
@@ -63,6 +66,66 @@ object TestUtils {
 
     fun repeatedSym(range: UIntRange) =
         object : Symbol<List<Char>>(NonTerminal.Repeated(range, Terminal.Character { it == a || it == d })) {
-            override fun toString(): String = "Repeated(range = $range, pe = Character('a', 'd'))"
+            override fun toString(): String = "Repeated(Character('a' or 'd') in range = $range)"
+        }
+
+
+    // Sequence
+
+    data class PTDataForSequence(
+        val s: String,
+        val sym: Symbol<String>,
+        val expected: Option<String>,
+    )
+
+    fun ptDataSeqCorrectProvider() = Stream.of(
+        PTDataForSequence("$o", sequenceSym(), Some("")),
+        PTDataForSequence("$a", sequenceSym(addChar = true), Some("$a")),
+        PTDataForSequence(alpha, sequenceSym(addChar = true), Some("$a")),
+        PTDataForSequence("$d", sequenceSym(addChar = true), Some("$d")),
+        PTDataForSequence("$d$o$o", sequenceSym(addChar = true), Some("$d")),
+        PTDataForSequence(alpha, sequenceSym(addLiteral = true), Some(alpha)),
+        PTDataForSequence("$alpha$omega", sequenceSym(addLiteral = true), Some(alpha)),
+        PTDataForSequence(delta, sequenceSym(addLiteral = true), Some(delta)),
+        PTDataForSequence("$a$alpha", sequenceSym(addChar = true, addLiteral = true), Some("$a$alpha")),
+        PTDataForSequence("$a$alpha$delta$alpha$omega",
+            sequenceSym(addChar = true, addLiteral = true),
+            Some("$a$alpha")),
+        PTDataForSequence("$d$alpha", sequenceSym(addChar = true, addLiteral = true), Some("$d$alpha")),
+        PTDataForSequence("$d$delta", sequenceSym(addChar = true, addLiteral = true), Some("$d$delta")),
+    )
+
+    fun ptDataSeqIncorrectProvider() = Stream.of(
+        PTDataForSequence(omega, sequenceSym(addChar = true), None),
+        PTDataForSequence("$o", sequenceSym(addChar = true), None),
+        PTDataForSequence("$a$alpha", sequenceSym(addLiteral = true), None),
+        PTDataForSequence("${alpha.dropLast(1)}$o", sequenceSym(addLiteral = true), None),
+        PTDataForSequence(omega, sequenceSym(addLiteral = true), None),
+        PTDataForSequence("$alpha$a", sequenceSym(addChar = true, addLiteral = true), None),
+        PTDataForSequence("$a$omega", sequenceSym(addChar = true, addLiteral = true), None),
+    )
+
+    fun ptDataSeqEmptyProvider() = Stream.of(
+        PTDataForSequence("", sequenceSym(), Some("")),
+        PTDataForSequence("", sequenceSym(addChar = true), None),
+        PTDataForSequence("", sequenceSym(addLiteral = true), None),
+        PTDataForSequence("", sequenceSym(addChar = true, addLiteral = true), None),
+    )
+
+    fun sequenceSym(addChar: Boolean = false, addLiteral: Boolean = false) =
+        object : Symbol<String>(NonTerminal.Sequence {
+            val symChar =
+                if (addChar) +Terminal.Character { it == a || it == d } else null
+            val symLiteral =
+                if (addLiteral) +Terminal.Literal(len = alpha.length) { it == alpha || it == delta } else null
+
+            value { (if (addChar) "${symChar?.value}" else "") + (if (addLiteral) symLiteral?.value else "") }
+        }) {
+            override fun toString(): String {
+                val list = mutableListOf<String>()
+                if (addChar) list += "char"
+                if (addLiteral) list += "literal"
+                return "Sequence($list)"
+            }
         }
 }
