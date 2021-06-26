@@ -18,6 +18,8 @@ package kpeg.pe
 
 import kpeg.KPegDsl
 import kpeg.Option
+import kpeg.Option.None
+import kpeg.StoredPE
 import kpeg.pe.NonTerminal.*
 import kpeg.pe.NonTerminal.Predicate.PredicateType.And
 import kpeg.pe.NonTerminal.Predicate.PredicateType.Not
@@ -83,4 +85,14 @@ public sealed class Operators {
     // Prioritized Choice
 
     public fun <T> choice(b: GroupBuilderBlock<T>): PE<T> = PrioritizedChoice(b)
+
+    public fun <T> choice(vararg pes: PE<T>): PE<T> = PrioritizedChoice {
+        val list = mutableListOf<StoredPE<T>>()
+
+        for (pe in pes) {
+            list += +pe
+        }
+
+        value { list.first { it.option != None }.value }
+    }
 }
