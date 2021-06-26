@@ -121,6 +121,20 @@ public sealed class NonTerminal<T> : PE<T>() {
 
     internal class PrioritizedChoice<T>(private val b: GroupBuilderBlock<T>) : NonTerminal<T>() {
 
-        override fun parse(ps: ParserState): Option<T> = TODO()
+        override fun parse(ps: ParserState): Option<T> {
+            val initI = ps.i
+
+            return with(GroupBuilder<T>(ps).also(b)) {
+                if (
+                    subexpressions.isEmpty() ||
+                    subexpressions.indexOfFirst { ps.i = initI; it.parse(ps) != None } != -1
+                ) {
+                    Some(ValueBuilder.valueBlock())
+                } else {
+                    ps.i = initI
+                    None
+                }
+            }
+        }
     }
 }

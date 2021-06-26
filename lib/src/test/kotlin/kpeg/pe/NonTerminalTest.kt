@@ -9,6 +9,9 @@ import kpeg.TestUtils.alpha
 import kpeg.TestUtils.d
 import kpeg.TestUtils.delta
 import kpeg.TestUtils.get
+import kpeg.TestUtils.ptDataPrChoiceCorrectProvider
+import kpeg.TestUtils.ptDataPrChoiceEmptyProvider
+import kpeg.TestUtils.ptDataPrChoiceIncorrectProvider
 import kpeg.TestUtils.ptDataRepCorrectProvider
 import kpeg.TestUtils.ptDataRepEmptyProvider
 import kpeg.TestUtils.ptDataRepIncorrectProvider
@@ -24,6 +27,7 @@ import org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 import kotlin.test.assertEquals
+import kpeg.TestUtils.PTDataForPrioritizedChoice as PTDataPrChoice
 import kpeg.TestUtils.PTDataForRepeated as PTDataRep
 import kpeg.TestUtils.PTDataForSequence as PTDataSeq
 
@@ -233,6 +237,43 @@ class NonTerminalTest {
             ps = ParserState(data.s, 0)
             val actualSequence = data.sym.parse(ps)
             assertEquals(expected = data.expected, actual = actualSequence)
+            assertEquals(expected = 0, actual = ps.i)
+        }
+    }
+
+    @Nested
+    @TestInstance(PER_CLASS)
+    inner class PrioritizedChoice {
+
+        private fun correctProvider() = ptDataPrChoiceCorrectProvider()
+        private fun incorrectProvider() = ptDataPrChoiceIncorrectProvider()
+        private fun emptyProvider() = ptDataPrChoiceEmptyProvider()
+
+
+        @ParameterizedTest
+        @MethodSource("correctProvider")
+        fun `parse prioritized choice in correct string`(data: PTDataPrChoice) {
+            ps = ParserState(data.s, 0)
+            val actualPrChoice = data.sym.parse(ps)
+            assertEquals(expected = data.expected, actual = actualPrChoice)
+            assertEquals(expected = data.expected.get().length, actual = ps.i)
+        }
+
+        @ParameterizedTest
+        @MethodSource("incorrectProvider")
+        fun `parse prioritized choice in incorrect string`(data: PTDataPrChoice) {
+            ps = ParserState(data.s, 0)
+            val actualPrChoice = data.sym.parse(ps)
+            assertEquals(expected = data.expected, actual = actualPrChoice)
+            assertEquals(expected = 0, actual = ps.i)
+        }
+
+        @ParameterizedTest
+        @MethodSource("emptyProvider")
+        fun `parse prioritized choice in empty string`(data: PTDataPrChoice) {
+            ps = ParserState(data.s, 0)
+            val actualPrChoice = data.sym.parse(ps)
+            assertEquals(expected = data.expected, actual = actualPrChoice)
             assertEquals(expected = 0, actual = ps.i)
         }
     }
