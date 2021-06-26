@@ -42,7 +42,7 @@ internal sealed class Terminal<T>(protected val moveBy: Int) : ParsingExpression
     internal class Character(val b: CharacterBuilderBlock) : Terminal<Char>(moveBy = 1) {
 
         override fun peek(ps: ParserState): Option<Char> = with(ps) {
-            if (ps.i + moveBy <= ps.s.length) {
+            if (i + moveBy <= s.length) {
                 s[i].takeAsOptionIf { CharacterBuilder.b(it) }
             } else {
                 None
@@ -53,7 +53,7 @@ internal sealed class Terminal<T>(protected val moveBy: Int) : ParsingExpression
     internal class Literal(private val len: Int, val b: LiteralBuilderBlock) : Terminal<String>(moveBy = len) {
 
         override fun peek(ps: ParserState): Option<String> = with(ps) {
-            if (ps.i + moveBy <= ps.s.length) {
+            if (i + moveBy <= s.length) {
                 s.substring(i until i + len).takeAsOptionIf { LiteralBuilder.b(it) }
             } else {
                 None
