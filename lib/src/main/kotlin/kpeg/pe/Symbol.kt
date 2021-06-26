@@ -24,7 +24,5 @@ public object SymbolBuilder : Operators()
 
 public abstract class Symbol<T>(private val pe: ParsingExpression<T>) : NonTerminal<T>() {
 
-    override fun peek(ps: ParserState): Option<T> = pe.peek(ps)
-
     override fun parse(ps: ParserState): Option<T> = pe.parse(ps)
 }

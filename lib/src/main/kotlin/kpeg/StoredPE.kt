@@ -32,7 +32,5 @@ public class StoredPE<T> internal constructor(private val pe: ParsingExpression<
     public val value: T get() = option.unwrap()
 
 
-    internal fun peek(ps: ParserState): Option<T> = pe.peek(ps).alsoIfSome { option = Some(it) }
-
     internal fun parse(ps: ParserState): Option<T> = pe.parse(ps).alsoIfSome { option = Some(it) }
 }

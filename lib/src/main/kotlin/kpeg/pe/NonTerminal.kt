@@ -60,13 +60,9 @@ public sealed class NonTerminal<T> : PE<T>() {
 
         private val repeated = Repeated(1u..1u, pe)
 
+        override fun parse(ps: ParserState): Option<Option<T>> = Some(repeated.parse(ps).firstOrNone())
 
-        override fun peek(ps: ParserState): Option<Option<T>> = Some(repeated.peek(ps).first())
-
-        override fun parse(ps: ParserState): Option<Option<T>> = Some(repeated.parse(ps).first())
-
-
-        private fun Option<List<T>>.first(): Option<T> = when (val res = this) {
+        private fun Option<List<T>>.firstOrNone(): Option<T> = when (val res = this) {
             is Some -> Some(res.value.first())
             None -> None
         }
@@ -74,80 +70,56 @@ public sealed class NonTerminal<T> : PE<T>() {
 
     internal class Repeated<T>(private val range: UIntRange, private val pe: PE<T>) : NonTerminal<List<T>>() {
 
-        override fun peek(ps: ParserState): Option<List<T>> {
-            val initI = ps.i
-            val res = body(ps)
-            ps.i = initI
-            return res
-        }
-
         override fun parse(ps: ParserState): Option<List<T>> {
             val initI = ps.i
-            val res = body(ps)
-            if (res == None) ps.i = initI
-            return res
-        }
 
-
-        private fun body(ps: ParserState): Option<List<T>> {
             val list = mutableListOf<T>()
-
             while (list.size.toUInt() < range.last) {
                 when (val res = pe.parse(ps)) {
                     is Some -> list += res.value
                     None -> break
                 }
             }
-
-            return if (list.size.toUInt() in range) Some(list) else None
-        }
-    }
-
-    internal class Predicate(private val type: PredicateType, private val pe: PE<*>) : NonTerminal<Unit>() {
-
-        override fun peek(ps: ParserState): Option<Unit> = when (type) {
-            And -> if (pe.peek(ps) != None) Some(Unit) else None
-            Not -> if (pe.peek(ps) != None) None else Some(Unit)
-        }
-
-        override fun parse(ps: ParserState): Option<Unit> = peek(ps)
-
-
-        enum class PredicateType {
-            And,
-            Not,
-        }
-    }
-
-    internal class Sequence<T>(private val b: GroupBuilderBlock<T>) : NonTerminal<T>() {
-
-        override fun peek(ps: ParserState): Option<T> {
-            val initI = ps.i
-            val res = body(ps)
-            ps.i = initI
-            return res
-        }
-
-        override fun parse(ps: ParserState): Option<T> {
-            val initI = ps.i
-            val res = body(ps)
-            if (res == None) ps.i = initI
-            return res
-        }
-
-
-        private fun body(ps: ParserState): Option<T> = with(GroupBuilder<T>(ps).also(b)) {
-            if (subexpressions.all { it.parse(ps) != None }) {
-                Some(ValueBuilder.valueBlock())
+            return if (list.size.toUInt() in range) {
+                Some(list)
             } else {
+                ps.i = initI
                 None
             }
         }
     }
 
-    internal class PrioritizedChoice<T>(private val b: GroupBuilderBlock<T>) : NonTerminal<T>() {
+    internal class Predicate(private val type: PredicateType, private val pe: PE<*>) : NonTerminal<Unit>() {
 
-        override fun peek(ps: ParserState): Option<T> = TODO()
+        override fun parse(ps: ParserState): Option<Unit> {
+            val initI = ps.i
+
+            return when (type) {
+                And -> if (pe.parse(ps) != None) Some(Unit) else None
+                Not -> if (pe.parse(ps) != None) None else Some(Unit)
+            }.also { ps.i = initI }
+        }
+
+        enum class PredicateType { And, Not }
+    }
+
+    internal class Sequence<T>(private val b: GroupBuilderBlock<T>) : NonTerminal<T>() {
+
+        override fun parse(ps: ParserState): Option<T> {
+            val initI = ps.i
+
+            return with(GroupBuilder<T>(ps).also(b)) {
+                if (subexpressions.all { it.parse(ps) != None }) {
+                    Some(ValueBuilder.valueBlock())
+                } else {
+                    ps.i = initI
+                    None
+                }
+            }
+        }
+    }
+
+    internal class PrioritizedChoice<T>(private val b: GroupBuilderBlock<T>) : NonTerminal<T>() {
 
         override fun parse(ps: ParserState): Option<T> = TODO()
     }

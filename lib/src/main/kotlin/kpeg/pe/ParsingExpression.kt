@@ -22,7 +22,5 @@ import kpeg.PegParser.ParserState
 
 public sealed class ParsingExpression<T> {
 
-    internal abstract fun peek(ps: ParserState): Option<T>
-
     internal abstract fun parse(ps: ParserState): Option<T>
 }
