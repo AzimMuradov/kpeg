@@ -95,4 +95,12 @@ public sealed class Operators {
 
         value { list.first { it.option != None }.value }
     }
+
+
+    // Map
+
+    public inline fun <T, R> PE<T>.map(crossinline transform: (T) -> R): PE<R> = seq {
+        val storedPE = +this@map
+        value { transform(storedPE.value) }
+    }
 }
