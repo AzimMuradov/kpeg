@@ -3,7 +3,7 @@ package kpeg
 import kpeg.Option.None
 import kpeg.Option.Some
 import kpeg.pe.NonTerminal
-import kpeg.pe.Symbol
+import kpeg.pe.ParsingExpression
 import kpeg.pe.Terminal
 import java.util.stream.Stream
 
@@ -30,16 +30,21 @@ object TestUtils {
 
     // PT = Parametrized Test
 
+    data class NamedPE<T>(val pe: ParsingExpression<T>, private val name: String) {
+
+        override fun toString(): String = name
+    }
+
 
     // Repeated
 
-    data class PTDataForRepeated(
+    internal data class PTDataForRepeated(
         val s: String,
-        val sym: Symbol<List<Char>>,
+        val namedPE: NamedPE<List<Char>>,
         val expected: Option<List<Char>>,
     )
 
-    fun ptDataRepCorrectProvider() = Stream.of(
+    internal fun ptDataRepCorrectProvider() = Stream.of(
         PTDataForRepeated(s = "$a$d$a", repeatedSym(range = 0u..UInt.MAX_VALUE), expected = Some(listOf(a, d, a))),
         PTDataForRepeated(s = "$a$d$a", repeatedSym(range = 0u..0u), expected = Some(listOf())),
         PTDataForRepeated(s = "$a$d$a", repeatedSym(range = 0u..1u), expected = Some(listOf(a))),
@@ -53,12 +58,12 @@ object TestUtils {
         PTDataForRepeated(s = "$a$d$a", repeatedSym(range = 3u..3u), expected = Some(listOf(a, d, a))),
     )
 
-    fun ptDataRepIncorrectProvider() = Stream.of(
+    internal fun ptDataRepIncorrectProvider() = Stream.of(
         PTDataForRepeated(s = "$a", repeatedSym(range = 2u..3u), expected = None),
         PTDataForRepeated(s = "$a$d", repeatedSym(range = 3u..3u), expected = None),
     )
 
-    fun ptDataRepEmptyProvider() = Stream.of(
+    internal fun ptDataRepEmptyProvider() = Stream.of(
         PTDataForRepeated(s = "", repeatedSym(range = 0u..UInt.MAX_VALUE), expected = Some(listOf())),
         PTDataForRepeated(s = "", repeatedSym(range = 0u..0u), expected = Some(listOf())),
         PTDataForRepeated(s = "", repeatedSym(range = 0u..1u), expected = Some(listOf())),
@@ -69,21 +74,21 @@ object TestUtils {
         PTDataForRepeated(s = "", repeatedSym(range = 3u..3u), expected = None),
     )
 
-    fun repeatedSym(range: UIntRange) =
-        object : Symbol<List<Char>>(NonTerminal.Repeated(range, Terminal.Character { it == a || it == d })) {
-            override fun toString(): String = "Repeated(Character('a' or 'd') in range = $range)"
-        }
+    private fun repeatedSym(range: UIntRange) = NamedPE(
+        pe = NonTerminal.Repeated(range, Terminal.Character { it == a || it == d }),
+        name = "Repeated(Character('a' or 'd') in range = $range)",
+    )
 
 
     // Sequence
 
-    data class PTDataForSequence(
+    internal data class PTDataForSequence(
         val s: String,
-        val sym: Symbol<String>,
+        val namedPE: NamedPE<String>,
         val expected: Option<String>,
     )
 
-    fun ptDataSeqCorrectProvider() = Stream.of(
+    internal fun ptDataSeqCorrectProvider() = Stream.of(
         PTDataForSequence("$o", sequenceSym(), Some("")),
         PTDataForSequence("$a", sequenceSym(addChar = true), Some("$a")),
         PTDataForSequence(alpha, sequenceSym(addChar = true), Some("$a")),
@@ -102,7 +107,7 @@ object TestUtils {
         PTDataForSequence("$d$delta", sequenceSym(addChar = true, addLiteral = true), Some("$d$delta")),
     )
 
-    fun ptDataSeqIncorrectProvider() = Stream.of(
+    internal fun ptDataSeqIncorrectProvider() = Stream.of(
         PTDataForSequence(omega, sequenceSym(addChar = true), None),
         PTDataForSequence("$o", sequenceSym(addChar = true), None),
         PTDataForSequence("$a$alpha", sequenceSym(addLiteral = true), None),
@@ -112,39 +117,39 @@ object TestUtils {
         PTDataForSequence("$a$omega", sequenceSym(addChar = true, addLiteral = true), None),
     )
 
-    fun ptDataSeqEmptyProvider() = Stream.of(
+    internal fun ptDataSeqEmptyProvider() = Stream.of(
         PTDataForSequence("", sequenceSym(), Some("")),
         PTDataForSequence("", sequenceSym(addChar = true), None),
         PTDataForSequence("", sequenceSym(addLiteral = true), None),
         PTDataForSequence("", sequenceSym(addChar = true, addLiteral = true), None),
     )
 
-    fun sequenceSym(addChar: Boolean = false, addLiteral: Boolean = false) =
-        object : Symbol<String>(NonTerminal.Sequence {
+    private fun sequenceSym(addChar: Boolean = false, addLiteral: Boolean = false) = NamedPE(
+        pe = NonTerminal.Group.Sequence<String> {
             val symChar = if (addChar) +Terminal.Character { it == a || it == d } else null
             val symLiteral =
                 if (addLiteral) +Terminal.Literal(len = alpha.length) { it == alpha || it == delta } else null
 
             value { (if (addChar) "${symChar?.value}" else "") + (if (addLiteral) symLiteral?.value else "") }
-        }) {
-            override fun toString(): String {
-                val list = mutableListOf<String>()
-                if (addChar) list += "char"
-                if (addLiteral) list += "literal"
-                return "Sequence($list)"
-            }
-        }
+        },
+        name = run {
+            val list = mutableListOf<String>()
+            if (addChar) list += "char"
+            if (addLiteral) list += "literal"
+            "Sequence($list)"
+        },
+    )
 
 
     // Prioritized Choice
 
-    data class PTDataForPrioritizedChoice(
+    internal data class PTDataForPrioritizedChoice(
         val s: String,
-        val sym: Symbol<String>,
+        val sym: NamedPE<String>,
         val expected: Option<String>,
     )
 
-    fun ptDataPrChoiceCorrectProvider() = Stream.of(
+    internal fun ptDataPrChoiceCorrectProvider() = Stream.of(
         PTDataForPrioritizedChoice("$a", prChoiceSym(), Some("")),
         PTDataForPrioritizedChoice(alpha, prChoiceSym(), Some("")),
         PTDataForPrioritizedChoice(alpha, prChoiceSym(addLiteral1 = true), Some(alpha)),
@@ -181,7 +186,7 @@ object TestUtils {
         ),
     )
 
-    fun ptDataPrChoiceIncorrectProvider() = Stream.of(
+    internal fun ptDataPrChoiceIncorrectProvider() = Stream.of(
         PTDataForPrioritizedChoice("$a", prChoiceSym(addLiteral1 = true), None),
         PTDataForPrioritizedChoice("$a$alpha", prChoiceSym(addLiteral1 = true), None),
         PTDataForPrioritizedChoice(omega, prChoiceSym(addLiteral1 = true), None),
@@ -193,7 +198,7 @@ object TestUtils {
         PTDataForPrioritizedChoice("$o", prChoiceSym(addLiteral1 = true, addChar = true, addLiteral2 = true), None),
     )
 
-    fun ptDataPrChoiceEmptyProvider() = Stream.of(
+    internal fun ptDataPrChoiceEmptyProvider() = Stream.of(
         PTDataForPrioritizedChoice("", prChoiceSym(), Some("")),
         PTDataForPrioritizedChoice("", prChoiceSym(addLiteral1 = true), None),
         PTDataForPrioritizedChoice("", prChoiceSym(addLiteral1 = true, addChar = true), None),
@@ -202,22 +207,23 @@ object TestUtils {
         PTDataForPrioritizedChoice("", prChoiceSym(addLiteral1 = true, addChar = true, addLiteral2 = true), None),
     )
 
-    fun prChoiceSym(addLiteral1: Boolean = false, addChar: Boolean = false, addLiteral2: Boolean = false) =
-        object : Symbol<String>(NonTerminal.PrioritizedChoice {
-            val symLiteral1 = if (addLiteral1) +Terminal.Literal(len = alpha.length) { it == alpha } else null
-            val symChar = if (addChar) +Terminal.Character { it == a } else null
-            val symLiteral2 = if (addLiteral2) +Terminal.Literal(len = omega.length) { it == omega } else null
+    private fun prChoiceSym(addLiteral1: Boolean = false, addChar: Boolean = false, addLiteral2: Boolean = false) =
+        NamedPE(
+            pe = NonTerminal.Group.PrioritizedChoice<String> {
+                val symLiteral1 = if (addLiteral1) +Terminal.Literal(len = alpha.length) { it == alpha } else null
+                val symChar = if (addChar) +Terminal.Character { it == a } else null
+                val symLiteral2 = if (addLiteral2) +Terminal.Literal(len = omega.length) { it == omega } else null
 
-            value {
-                (symLiteral1?.nullable ?: "") + ("${symChar?.nullable ?: ""}") + (symLiteral2?.nullable ?: "")
-            }
-        }) {
-            override fun toString(): String {
+                value {
+                    (symLiteral1?.nullable ?: "") + ("${symChar?.nullable ?: ""}") + (symLiteral2?.nullable ?: "")
+                }
+            },
+            name = run {
                 val list = mutableListOf<String>()
                 if (addLiteral1) list += "literal"
                 if (addChar) list += "char"
                 if (addLiteral2) list += "literal"
-                return "PrioritizedChoice($list)"
-            }
-        }
+                "PrioritizedChoice($list)"
+            },
+        )
 }

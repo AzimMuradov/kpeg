@@ -19,12 +19,13 @@ package kpeg.pe
 import kpeg.KPegDsl
 import kpeg.Option
 import kpeg.Option.None
-import kpeg.StoredPE
 import kpeg.pe.NonTerminal.*
+import kpeg.pe.NonTerminal.Map
 import kpeg.pe.NonTerminal.Predicate.PredicateType.And
 import kpeg.pe.NonTerminal.Predicate.PredicateType.Not
 import kpeg.pe.Terminal.Character
 import kpeg.pe.Terminal.Literal
+import kpeg.unwrapOrNull
 import kpeg.pe.ParsingExpression as PE
 
 
@@ -55,6 +56,8 @@ public sealed class Operators {
 
     public fun <T> PE<T>.optional(): PE<Option<T>> = Optional(pe = this)
 
+    public fun <T> PE<T>.orDefault(value: T): PE<T> = Map({ it.unwrapOrNull() ?: value }, pe = Optional(pe = this))
+
 
     // Repeated
 
@@ -77,19 +80,15 @@ public sealed class Operators {
     public fun not(pe: PE<*>): PE<Unit> = Predicate(type = Not, pe)
 
 
-    // Sequence
+    // Group - Sequence & Prioritized Choice
 
-    public fun <T> seq(b: GroupBuilderBlock<T>): PE<T> = Sequence(b)
+    public fun <T> seq(b: GroupBuilderBlock<T>): PE<T> = Group.Sequence(b)
 
+    public fun <T> choice(b: GroupBuilderBlock<T>): PE<T> = Group.PrioritizedChoice(b)
 
-    // Prioritized Choice
-
-    public fun <T> choice(b: GroupBuilderBlock<T>): PE<T> = PrioritizedChoice(b)
-
-    public fun <T> choice(vararg pes: PE<T>): PE<T> = PrioritizedChoice {
-        val list = mutableListOf<StoredPE<T>>()
-
-        for (pe in pes) {
+    public fun <T> choice(firstPe: PE<T>, vararg otherPes: PE<T>): PE<T> = Group.PrioritizedChoice {
+        val list = mutableListOf(+firstPe)
+        for (pe in otherPes) {
             list += +pe
         }
 
@@ -99,8 +98,5 @@ public sealed class Operators {
 
     // Map
 
-    public inline fun <T, R> PE<T>.map(crossinline transform: (T) -> R): PE<R> = seq {
-        val storedPE = +this@map
-        value { transform(storedPE.value) }
-    }
+    public fun <T, R> PE<T>.map(transform: MapBuilderBlock<T, R>): PE<R> = Map(transform, pe = this)
 }

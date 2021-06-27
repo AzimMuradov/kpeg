@@ -21,40 +21,15 @@ import kpeg.Option
 import kpeg.Option.None
 import kpeg.Option.Some
 import kpeg.PegParser.ParserState
-import kpeg.StoredPE
 import kpeg.pe.GroupBuilder.ValueBuilder
 import kpeg.pe.NonTerminal.Predicate.PredicateType.And
 import kpeg.pe.NonTerminal.Predicate.PredicateType.Not
+import kpeg.unwrap
+import kpeg.unwrapOrNull
 import kpeg.pe.ParsingExpression as PE
 
 
-@KPegDsl
-public class GroupBuilder<T> internal constructor(private val ps: ParserState) : Operators() {
-
-    // Subexpressions
-
-    public operator fun <T> PE<T>.unaryPlus(): StoredPE<T> = StoredPE(pe = this).also { subexpressions += it }
-
-    internal val subexpressions = mutableListOf<StoredPE<*>>()
-
-
-    // Value
-
-    @KPegDsl
-    public object ValueBuilder
-
-    public fun value(b: ValueBuilderBlock<T>) {
-        valueBlock = b
-    }
-
-    internal lateinit var valueBlock: ValueBuilderBlock<T>
-}
-
-public typealias ValueBuilderBlock<T> = ValueBuilder.() -> T
-public typealias GroupBuilderBlock<T> = GroupBuilder<T>.() -> Unit
-
-
-public sealed class NonTerminal<T> : PE<T>() {
+internal sealed class NonTerminal<T> : PE<T>() {
 
     internal class Optional<T>(pe: PE<T>) : NonTerminal<Option<T>>() {
 
@@ -100,41 +75,98 @@ public sealed class NonTerminal<T> : PE<T>() {
             }.also { ps.i = initI }
         }
 
-        enum class PredicateType { And, Not }
+        internal enum class PredicateType { And, Not }
     }
 
-    internal class Sequence<T>(private val b: GroupBuilderBlock<T>) : NonTerminal<T>() {
+    internal sealed class Group<T>(private val b: GroupBuilderBlock<T>) : NonTerminal<T>() {
 
-        override fun parse(ps: ParserState): Option<T> {
+        final override fun parse(ps: ParserState): Option<T> {
             val initI = ps.i
+            val (subexpressions, valueBlock) = GroupBuilder<T>().build(b)
 
-            return with(GroupBuilder<T>(ps).also(b)) {
-                if (subexpressions.all { it.parse(ps) != None }) {
-                    Some(ValueBuilder.valueBlock())
-                } else {
+            return if (successCondition(subexpressions, ps)) {
+                Some(ValueBuilder.valueBlock())
+            } else {
+                ps.i = initI
+                None
+            }
+        }
+
+        protected abstract fun successCondition(subexpressions: List<StoredPE<*>>, ps: ParserState): Boolean
+
+
+        internal class Sequence<T>(b: GroupBuilderBlock<T>) : Group<T>(b) {
+
+            override fun successCondition(subexpressions: List<StoredPE<*>>, ps: ParserState): Boolean {
+                return subexpressions.all { it.parse(ps) != None }
+            }
+        }
+
+        internal class PrioritizedChoice<T>(b: GroupBuilderBlock<T>) : Group<T>(b) {
+
+            override fun successCondition(subexpressions: List<StoredPE<*>>, ps: ParserState): Boolean {
+                if (subexpressions.isEmpty()) return true
+
+                val initI = ps.i
+                val indexOfFirstSuccess = subexpressions.indexOfFirst {
                     ps.i = initI
-                    None
+                    it.parse(ps) != None
                 }
+                return indexOfFirstSuccess != -1
             }
         }
     }
 
-    internal class PrioritizedChoice<T>(private val b: GroupBuilderBlock<T>) : NonTerminal<T>() {
+    internal class Map<T, R>(private val transform: MapBuilderBlock<T, R>, private val pe: PE<T>) : NonTerminal<R>() {
 
-        override fun parse(ps: ParserState): Option<T> {
-            val initI = ps.i
-
-            return with(GroupBuilder<T>(ps).also(b)) {
-                if (
-                    subexpressions.isEmpty() ||
-                    subexpressions.indexOfFirst { ps.i = initI; it.parse(ps) != None } != -1
-                ) {
-                    Some(ValueBuilder.valueBlock())
-                } else {
-                    ps.i = initI
-                    None
-                }
-            }
+        override fun parse(ps: ParserState): Option<R> = when (val res = pe.parse(ps)) {
+            is Some -> Some(MapBuilder.transform(res.value))
+            None -> None
         }
     }
 }
+
+
+public class GroupBuilder<T> internal constructor() : Operators() {
+
+    // Subexpressions
+
+    public operator fun <T> PE<T>.unaryPlus(): StoredPE<T> = StoredPE(pe = this).also(subexpressions::add)
+
+    private val subexpressions = mutableListOf<StoredPE<*>>()
+
+
+    // Value
+
+    @KPegDsl
+    public object ValueBuilder {
+
+        public val <T> StoredPE<T>.value: T get() = parsedValue.unwrap()
+
+        public val <T> StoredPE<T>.nullable: T? get() = parsedValue.unwrapOrNull()
+
+        public val <T> StoredPE<T>.option: Option<T> get() = parsedValue
+    }
+
+    public fun value(b: ValueBuilder.() -> T) {
+        valueBlock = b
+    }
+
+    private lateinit var valueBlock: ValueBuilder.() -> T
+
+
+    // Build
+
+    internal fun build(b: GroupBuilderBlock<T>): Pair<List<StoredPE<*>>, ValueBuilder.() -> T> {
+        this.b()
+        return subexpressions to valueBlock
+    }
+}
+
+public typealias GroupBuilderBlock<T> = GroupBuilder<T>.() -> Unit
+
+
+@KPegDsl
+public object MapBuilder
+
+public typealias MapBuilderBlock<T, R> = MapBuilder.(T) -> R

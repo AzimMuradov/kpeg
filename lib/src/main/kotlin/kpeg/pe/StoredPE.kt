@@ -14,23 +14,19 @@
  * limitations under the License.
  */
 
-package kpeg
+package kpeg.pe
 
+import kpeg.Option
 import kpeg.Option.None
 import kpeg.Option.Some
 import kpeg.PegParser.ParserState
-import kpeg.pe.ParsingExpression
+import kpeg.alsoIfSome
 
 
 public class StoredPE<T> internal constructor(private val pe: ParsingExpression<T>) {
 
-    public var option: Option<T> = None
+    internal var parsedValue: Option<T> = None
         private set
 
-    public val nullable: T? get() = option.unwrapOrNull()
-
-    public val value: T get() = option.unwrap()
-
-
-    internal fun parse(ps: ParserState): Option<T> = pe.parse(ps).alsoIfSome { option = Some(it) }
+    internal fun parse(ps: ParserState): Option<T> = pe.parse(ps).alsoIfSome { parsedValue = Some(it) }
 }

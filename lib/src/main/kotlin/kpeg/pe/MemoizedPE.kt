@@ -20,7 +20,18 @@ import kpeg.Option
 import kpeg.PegParser.ParserState
 
 
-public sealed class ParsingExpression<out T> {
+internal class MemoizedPE<T>(private val pe: ParsingExpression<T>) {
 
-    internal abstract fun parse(ps: ParserState): Option<T>
+    internal fun parseMemoized(ps: ParserState): Option<T> =
+        if (pe in ps.mem[ps.i]) {
+            val (nextI, parsedValue) = ps.mem[ps.i].getValue(pe)
+
+            ps.i = nextI
+
+            @Suppress("UNCHECKED_CAST")
+            parsedValue as Option<T>
+        } else {
+            val initI = ps.i
+            pe.parse(ps).also { ps.mem[initI][pe] = ps.i to it }
+        }
 }

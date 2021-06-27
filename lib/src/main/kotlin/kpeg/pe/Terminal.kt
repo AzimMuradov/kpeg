@@ -38,7 +38,10 @@ internal sealed class Terminal<T>(protected val moveBy: Int) : ParsingExpression
 
     final override fun parse(ps: ParserState): Option<T> = with(ps) {
         if (i + moveBy <= s.length) {
-            parseBody().alsoIfSome { ps.i += moveBy }
+            parseBody().alsoIfSome {
+                i += moveBy
+                handleWS()
+            }
         } else {
             None
         }

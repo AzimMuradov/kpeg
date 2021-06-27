@@ -24,13 +24,13 @@ class TerminalTest {
     @TestInstance(PER_CLASS)
     inner class Character {
 
-        private val symA = object : Symbol<Char>(Terminal.Character { it == a }) {}
-        private val symD = object : Symbol<Char>(Terminal.Character { it == d }) {}
+        private val symA = Terminal.Character { it == a }
+        private val symD = Terminal.Character { it == d }
 
 
         @Test
         fun `parse 1 char in correct string`() {
-            ps = ParserState("$a", 0)
+            ps = ParserState("$a")
             val actualA = symA.parse(ps)
             assertEquals(expected = Some(a), actual = actualA)
             assertEquals(expected = 1, actual = ps.i)
@@ -38,7 +38,7 @@ class TerminalTest {
 
         @Test
         fun `parse 2 chars in correct string`() {
-            ps = ParserState("$a$d", 0)
+            ps = ParserState("$a$d")
             val actualA = symA.parse(ps)
             assertEquals(expected = Some(a), actual = actualA)
             assertEquals(expected = 1, actual = ps.i)
@@ -50,7 +50,7 @@ class TerminalTest {
 
         @Test
         fun `parse char in incorrect string`() {
-            ps = ParserState("$d", 0)
+            ps = ParserState("$d")
             val actualA = symA.parse(ps)
             assertEquals(expected = None, actual = actualA)
             assertEquals(expected = 0, actual = ps.i)
@@ -58,7 +58,7 @@ class TerminalTest {
 
         @Test
         fun `parse 2 chars in incorrect string`() {
-            ps = ParserState("$d$a", 0)
+            ps = ParserState("$d$a")
             val actualA = symA.parse(ps)
             assertEquals(expected = None, actual = actualA)
             assertEquals(expected = 0, actual = ps.i)
@@ -71,7 +71,7 @@ class TerminalTest {
 
         @Test
         fun `parse char in empty string`() {
-            ps = ParserState("", 0)
+            ps = ParserState("")
             val actualA = symA.parse(ps)
             assertEquals(expected = None, actual = actualA)
             assertEquals(expected = 0, actual = ps.i)
@@ -79,7 +79,7 @@ class TerminalTest {
 
         @Test
         fun `parse char that could not fit`() {
-            ps = ParserState("$a", 1)
+            ps = ParserState("$a").apply { i = 1 }
             val actualA = symA.parse(ps)
             assertEquals(expected = None, actual = actualA)
             assertEquals(expected = 1, actual = ps.i)
@@ -90,13 +90,13 @@ class TerminalTest {
     @TestInstance(PER_CLASS)
     inner class Literal {
 
-        private val symAlpha = object : Symbol<String>(Terminal.Literal(len = alpha.length) { it == alpha }) {}
-        private val symDelta = object : Symbol<String>(Terminal.Literal(len = delta.length) { it == delta }) {}
+        private val symAlpha = Terminal.Literal(len = alpha.length) { it == alpha }
+        private val symDelta = Terminal.Literal(len = delta.length) { it == delta }
 
 
         @Test
         fun `parse 1 literal in correct string`() {
-            ps = ParserState(alpha, 0)
+            ps = ParserState(alpha)
             val actualAlpha = symAlpha.parse(ps)
             assertEquals(expected = Some(alpha), actual = actualAlpha)
             assertEquals(expected = alpha.length, actual = ps.i)
@@ -104,7 +104,7 @@ class TerminalTest {
 
         @Test
         fun `parse 2 literals in correct string`() {
-            ps = ParserState("$alpha$delta", 0)
+            ps = ParserState("$alpha$delta")
             val actualAlpha = symAlpha.parse(ps)
             assertEquals(expected = Some(alpha), actual = actualAlpha)
             assertEquals(expected = alpha.length, actual = ps.i)
@@ -116,7 +116,7 @@ class TerminalTest {
 
         @Test
         fun `parse literal in incorrect string`() {
-            ps = ParserState(delta, 0)
+            ps = ParserState(delta)
             val actualAlpha = symAlpha.parse(ps)
             assertEquals(expected = None, actual = actualAlpha)
             assertEquals(expected = 0, actual = ps.i)
@@ -124,7 +124,7 @@ class TerminalTest {
 
         @Test
         fun `parse 2 literals in incorrect string`() {
-            ps = ParserState("$delta$alpha", 0)
+            ps = ParserState("$delta$alpha")
             val actualAlpha = symAlpha.parse(ps)
             assertEquals(expected = None, actual = actualAlpha)
             assertEquals(expected = 0, actual = ps.i)
@@ -137,7 +137,7 @@ class TerminalTest {
 
         @Test
         fun `parse literal in empty string`() {
-            ps = ParserState("", 0)
+            ps = ParserState("")
             val actualAlpha = symAlpha.parse(ps)
             assertEquals(expected = None, actual = actualAlpha)
             assertEquals(expected = 0, actual = ps.i)
@@ -145,7 +145,7 @@ class TerminalTest {
 
         @Test
         fun `parse literal that could not fit`() {
-            ps = ParserState(alpha.dropLast(2), 0)
+            ps = ParserState(alpha.dropLast(2))
             val actualAlpha = symAlpha.parse(ps)
             assertEquals(expected = None, actual = actualAlpha)
             assertEquals(expected = 0, actual = ps.i)

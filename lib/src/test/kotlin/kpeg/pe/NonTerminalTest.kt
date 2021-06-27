@@ -1,6 +1,5 @@
 package kpeg.pe
 
-import kpeg.Option
 import kpeg.Option.None
 import kpeg.Option.Some
 import kpeg.PegParser.ParserState
@@ -42,12 +41,12 @@ class NonTerminalTest {
     @TestInstance(PER_CLASS)
     inner class Optional {
 
-        private val symOpt = object : Symbol<Option<Char>>(Optional(Terminal.Character { it == a })) {}
+        private val symOpt = NonTerminal.Optional(Terminal.Character { it == a })
 
 
         @Test
         fun `parse optional in correct string`() {
-            ps = ParserState("$a", 0)
+            ps = ParserState("$a")
             val actualOpt = symOpt.parse(ps)
             assertEquals(expected = Some(Some(a)), actual = actualOpt)
             assertEquals(expected = 1, actual = ps.i)
@@ -55,7 +54,7 @@ class NonTerminalTest {
 
         @Test
         fun `parse optional in incorrect string`() {
-            ps = ParserState("$d", 0)
+            ps = ParserState("$d")
             val actualOpt = symOpt.parse(ps)
             assertEquals(expected = Some(None), actual = actualOpt)
             assertEquals(expected = 0, actual = ps.i)
@@ -63,7 +62,7 @@ class NonTerminalTest {
 
         @Test
         fun `parse optional in empty string`() {
-            ps = ParserState("", 0)
+            ps = ParserState("")
             val actualOpt = symOpt.parse(ps)
             assertEquals(expected = Some(None), actual = actualOpt)
             assertEquals(expected = 0, actual = ps.i)
@@ -71,7 +70,7 @@ class NonTerminalTest {
 
         @Test
         fun `parse optional that could not fit`() {
-            ps = ParserState("$a", 1)
+            ps = ParserState("$a").apply { i = 1 }
             val actualOpt = symOpt.parse(ps)
             assertEquals(expected = Some(None), actual = actualOpt)
             assertEquals(expected = 1, actual = ps.i)
@@ -89,27 +88,27 @@ class NonTerminalTest {
 
         @ParameterizedTest
         @MethodSource("correctProvider")
-        fun `parse repeated in correct string`(data: PTDataRep) {
-            ps = ParserState(data.s, 0)
-            val actualRepeated = data.sym.parse(ps)
+        internal fun `parse repeated in correct string`(data: PTDataRep) {
+            ps = ParserState(data.s)
+            val actualRepeated = data.namedPE.pe.parse(ps)
             assertEquals(expected = data.expected, actual = actualRepeated)
             assertEquals(expected = data.expected.get().size, actual = ps.i)
         }
 
         @ParameterizedTest
         @MethodSource("incorrectProvider")
-        fun `parse repeated in incorrect string`(data: PTDataRep) {
-            ps = ParserState(data.s, 0)
-            val actualRepeated = data.sym.parse(ps)
+        internal fun `parse repeated in incorrect string`(data: PTDataRep) {
+            ps = ParserState(data.s)
+            val actualRepeated = data.namedPE.pe.parse(ps)
             assertEquals(expected = data.expected, actual = actualRepeated)
             assertEquals(expected = 0, actual = ps.i)
         }
 
         @ParameterizedTest
         @MethodSource("emptyProvider")
-        fun `parse repeated in empty string`(data: PTDataRep) {
-            ps = ParserState(data.s, 0)
-            val actualRepeated = data.sym.parse(ps)
+        internal fun `parse repeated in empty string`(data: PTDataRep) {
+            ps = ParserState(data.s)
+            val actualRepeated = data.namedPE.pe.parse(ps)
             assertEquals(expected = data.expected, actual = actualRepeated)
             assertEquals(expected = 0, actual = ps.i)
         }
@@ -123,14 +122,15 @@ class NonTerminalTest {
         @TestInstance(PER_CLASS)
         inner class And {
 
-            private val symAndP = object : Symbol<Unit>(
-                Predicate(type = And, pe = Terminal.Literal(len = alpha.length) { it == alpha })
-            ) {}
+            private val symAndP = NonTerminal.Predicate(
+                type = And,
+                pe = Terminal.Literal(len = alpha.length) { it == alpha },
+            )
 
 
             @Test
             fun `parse 'and' predicate in correct string`() {
-                ps = ParserState(alpha, 0)
+                ps = ParserState(alpha)
                 val actualAndPredicate = symAndP.parse(ps)
                 assertEquals(expected = Some(Unit), actual = actualAndPredicate)
                 assertEquals(expected = 0, actual = ps.i)
@@ -138,7 +138,7 @@ class NonTerminalTest {
 
             @Test
             fun `parse 'and' predicate in incorrect string`() {
-                ps = ParserState(delta, 0)
+                ps = ParserState(delta)
                 val actualAndPredicate = symAndP.parse(ps)
                 assertEquals(expected = None, actual = actualAndPredicate)
                 assertEquals(expected = 0, actual = ps.i)
@@ -146,7 +146,7 @@ class NonTerminalTest {
 
             @Test
             fun `parse 'and' predicate in empty string`() {
-                ps = ParserState("", 0)
+                ps = ParserState("")
                 val actualAndPredicate = symAndP.parse(ps)
                 assertEquals(expected = None, actual = actualAndPredicate)
                 assertEquals(expected = 0, actual = ps.i)
@@ -154,7 +154,7 @@ class NonTerminalTest {
 
             @Test
             fun `parse 'and' predicate that could not fit`() {
-                ps = ParserState(alpha, alpha.length)
+                ps = ParserState(alpha).apply { i = alpha.length }
                 val actualAndPredicate = symAndP.parse(ps)
                 assertEquals(expected = None, actual = actualAndPredicate)
                 assertEquals(expected = alpha.length, actual = ps.i)
@@ -165,14 +165,15 @@ class NonTerminalTest {
         @TestInstance(PER_CLASS)
         inner class Not {
 
-            private val symNotP = object : Symbol<Unit>(
-                Predicate(type = Not, pe = Terminal.Literal(len = alpha.length) { it == alpha })
-            ) {}
+            private val symNotP = NonTerminal.Predicate(
+                type = Not,
+                pe = Terminal.Literal(len = alpha.length) { it == alpha },
+            )
 
 
             @Test
             fun `parse 'not' predicate in correct string`() {
-                ps = ParserState(delta, 0)
+                ps = ParserState(delta)
                 val actualNotPredicate = symNotP.parse(ps)
                 assertEquals(expected = Some(Unit), actual = actualNotPredicate)
                 assertEquals(expected = 0, actual = ps.i)
@@ -180,7 +181,7 @@ class NonTerminalTest {
 
             @Test
             fun `parse 'not' predicate in incorrect string`() {
-                ps = ParserState(alpha, 0)
+                ps = ParserState(alpha)
                 val actualNotPredicate = symNotP.parse(ps)
                 assertEquals(expected = None, actual = actualNotPredicate)
                 assertEquals(expected = 0, actual = ps.i)
@@ -188,7 +189,7 @@ class NonTerminalTest {
 
             @Test
             fun `parse 'not' predicate in empty string`() {
-                ps = ParserState("", 0)
+                ps = ParserState("")
                 val actualNotPredicate = symNotP.parse(ps)
                 assertEquals(expected = Some(Unit), actual = actualNotPredicate)
                 assertEquals(expected = 0, actual = ps.i)
@@ -196,7 +197,7 @@ class NonTerminalTest {
 
             @Test
             fun `parse 'not' predicate that could not fit`() {
-                ps = ParserState(delta, delta.length)
+                ps = ParserState(delta).apply { i = delta.length }
                 val actualNotPredicate = symNotP.parse(ps)
                 assertEquals(expected = Some(Unit), actual = actualNotPredicate)
                 assertEquals(expected = delta.length, actual = ps.i)
@@ -215,27 +216,27 @@ class NonTerminalTest {
 
         @ParameterizedTest
         @MethodSource("correctProvider")
-        fun `parse sequence in correct string`(data: PTDataSeq) {
-            ps = ParserState(data.s, 0)
-            val actualSequence = data.sym.parse(ps)
+        internal fun `parse sequence in correct string`(data: PTDataSeq) {
+            ps = ParserState(data.s)
+            val actualSequence = data.namedPE.pe.parse(ps)
             assertEquals(expected = data.expected, actual = actualSequence)
             assertEquals(expected = data.expected.get().length, actual = ps.i)
         }
 
         @ParameterizedTest
         @MethodSource("incorrectProvider")
-        fun `parse sequence in incorrect string`(data: PTDataSeq) {
-            ps = ParserState(data.s, 0)
-            val actualSequence = data.sym.parse(ps)
+        internal fun `parse sequence in incorrect string`(data: PTDataSeq) {
+            ps = ParserState(data.s)
+            val actualSequence = data.namedPE.pe.parse(ps)
             assertEquals(expected = data.expected, actual = actualSequence)
             assertEquals(expected = 0, actual = ps.i)
         }
 
         @ParameterizedTest
         @MethodSource("emptyProvider")
-        fun `parse sequence in empty string`(data: PTDataSeq) {
-            ps = ParserState(data.s, 0)
-            val actualSequence = data.sym.parse(ps)
+        internal fun `parse sequence in empty string`(data: PTDataSeq) {
+            ps = ParserState(data.s)
+            val actualSequence = data.namedPE.pe.parse(ps)
             assertEquals(expected = data.expected, actual = actualSequence)
             assertEquals(expected = 0, actual = ps.i)
         }
@@ -252,27 +253,27 @@ class NonTerminalTest {
 
         @ParameterizedTest
         @MethodSource("correctProvider")
-        fun `parse prioritized choice in correct string`(data: PTDataPrChoice) {
-            ps = ParserState(data.s, 0)
-            val actualPrChoice = data.sym.parse(ps)
+        internal fun `parse prioritized choice in correct string`(data: PTDataPrChoice) {
+            ps = ParserState(data.s)
+            val actualPrChoice = data.sym.pe.parse(ps)
             assertEquals(expected = data.expected, actual = actualPrChoice)
             assertEquals(expected = data.expected.get().length, actual = ps.i)
         }
 
         @ParameterizedTest
         @MethodSource("incorrectProvider")
-        fun `parse prioritized choice in incorrect string`(data: PTDataPrChoice) {
-            ps = ParserState(data.s, 0)
-            val actualPrChoice = data.sym.parse(ps)
+        internal fun `parse prioritized choice in incorrect string`(data: PTDataPrChoice) {
+            ps = ParserState(data.s)
+            val actualPrChoice = data.sym.pe.parse(ps)
             assertEquals(expected = data.expected, actual = actualPrChoice)
             assertEquals(expected = 0, actual = ps.i)
         }
 
         @ParameterizedTest
         @MethodSource("emptyProvider")
-        fun `parse prioritized choice in empty string`(data: PTDataPrChoice) {
-            ps = ParserState(data.s, 0)
-            val actualPrChoice = data.sym.parse(ps)
+        internal fun `parse prioritized choice in empty string`(data: PTDataPrChoice) {
+            ps = ParserState(data.s)
+            val actualPrChoice = data.sym.pe.parse(ps)
             assertEquals(expected = data.expected, actual = actualPrChoice)
             assertEquals(expected = 0, actual = ps.i)
         }

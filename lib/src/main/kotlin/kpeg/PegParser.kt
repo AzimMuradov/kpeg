@@ -17,33 +17,47 @@
 package kpeg
 
 import kpeg.Option.None
+import kpeg.pe.ParsingExpression
+import kpeg.pe.Special.Whitespace
 import kpeg.pe.Symbol
 
 
-public class PegParser(private val grammar: Set<Symbol<*>>) {
+public class PegParser {
 
-    public fun <T> parse(start: Symbol<T>, s: String): Option<T> {
-        check(start in grammar, ErrorMessages::WRONG_START)
+    public fun <T> parse(symbol: Symbol<T>, text: String, whitespace: List<Char> = DEFAULT_WS): Option<T> {
+        val ps = ParserState(text, Whitespace(whitespace))
 
-        // TODO(memoization)
+        val result = symbol.parse(ps)
 
-        val newPs = ParserState(s, i = 0).also { ps = it }
+        return if (ps.i == text.length) result else None
+    }
 
-        val result = start.parse(newPs)
+    internal class ParserState(internal val s: String, private val ws: Whitespace = Whitespace(NO_WS)) {
 
-        return if (newPs.i == s.length) result else None
+        // Current index in s
+
+        internal var i: Int = 0
+
+
+        // Whitespace handling
+
+        internal var ignoreWS: Boolean = false
+
+        internal fun handleWS() {
+            if (ignoreWS) ws.parse(this)
+        }
+
+
+        // Memoization (for packrat)
+
+        internal val mem: List<MutableMap<ParsingExpression<*>, Pair<Int, Option<*>>>> =
+            List(size = s.length + 1) { mutableMapOf() }
     }
 
 
-    private var ps: ParserState? = null
+    public companion object {
 
-    internal data class ParserState(val s: String, var i: Int)
-
-
-    internal companion object {
-
-        private object ErrorMessages {
-            const val WRONG_START: String = "Start element must be in grammar"
-        }
+        public val NO_WS: List<Char> = listOf()
+        public val DEFAULT_WS: List<Char> = listOf(' ', '\t', '\r', '\n')
     }
 }
