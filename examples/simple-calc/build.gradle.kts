@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "1.5.10"
+    kotlin("jvm") version "1.5.20"
 
     application
 }
@@ -17,5 +17,5 @@ dependencies {
 }
 
 application {
-    mainClass.set("kpeg.examples.MainKt")
+    mainClass.set("kpeg.examples.simple_calc.MainKt")
 }
