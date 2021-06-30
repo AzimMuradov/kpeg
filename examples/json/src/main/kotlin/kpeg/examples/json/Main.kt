@@ -6,47 +6,26 @@ import kpeg.examples.json.JsonValue.*
 import kpeg.pe.Symbol
 
 
+// Example is based on https://pest.rs/book/examples/json.html
+
 object JsonGrammar {
 
     val JsonSym by lazy {
-        Symbol.rule<Json> {
-            choice(ObjectSym, ArraySym).map { Json(it) }
-        }
+        Symbol.rule { choice(ObjectSym, ArraySym).map { Json(it) } }
     }
 
     private val ValueSym: Symbol<JsonValue> by lazy {
-        Symbol.rule<JsonValue> {
-            choice(ObjectSym, ArraySym, NumberSym, StringSym, BooleanSym, NullSym)
-        }
+        Symbol.rule { choice(ObjectSym, ArraySym, NumberSym, StringSym, BooleanSym, NullSym) }
     }
 
 
     // Json values
 
     private val ObjectSym by lazy {
-        Symbol.rule<JsonObject> {
-            choice<List<Pair<String, JsonValue>>>(
-                seq {
-                    +LeftCurBr
-                    +RightCurBr
-
-                    value { listOf() }
-                },
-                seq {
-                    +LeftCurBr
-
-                    val first = +ObjectPairSym
-                    val others = +seq<Pair<String, JsonValue>> {
-                        +Comma
-                        val pair = +ObjectPairSym
-                        value { pair.value }
-                    }.zeroOrMore()
-
-                    +RightCurBr
-
-                    value { listOf(first.value) + others.value }
-                },
-            ).map { JsonObject(it) }
+        Symbol.rule {
+            ObjectPairSym
+                .list(separator = Comma, prefix = LeftCurBr, postfix = RightCurBr)
+                .map { JsonObject(it) }
         }
     }
 
@@ -57,36 +36,19 @@ object JsonGrammar {
                 +Colon
                 val jsonValue = +ValueSym
 
-                value { name.value.value to jsonValue.value }
+                value { name.get.value to jsonValue.get }
             }
         }
     }
 
 
     private val ArraySym by lazy {
-        Symbol.rule<JsonArray> {
-            choice<List<JsonValue>>(
-                seq {
-                    +LeftSqBr
-                    +RightSqBr
-
-                    value { listOf() }
-                },
-                seq {
-                    +LeftSqBr
-
-                    val first = +ValueSym
-                    val others = +seq<JsonValue> {
-                        +Comma
-                        val jsonValue = +ValueSym
-                        value { jsonValue.value }
-                    }.zeroOrMore()
-
-                    +RightSqBr
-
-                    value { listOf(first.value) + others.value }
-                },
-            ).map { JsonArray(it) }
+        Symbol.rule {
+            // Workaround for bug (compiler bug?)
+            seq<JsonValue> {
+                val sym = +ValueSym
+                value { sym.get }
+            }.list(separator = Comma, prefix = LeftSqBr, postfix = RightSqBr).map { JsonArray(it) }
         }
     }
 
@@ -98,63 +60,58 @@ object JsonGrammar {
 
                 val abs = +choice(literal("0"), seq {
                     val first = +char('1'..'9')
-                    val others = +char('0'..'9').zeroOrMore().map { it.joinToString(separator = "") }
+                    val others = +DIGIT.zeroOrMore().joinToString()
 
-                    value { "${first.value}${others.value}" }
+                    value { "${first.get}${others.get}" }
                 })
 
                 val pointPart = +seq<String> {
                     val point = +char('.')
-                    val digits = +char('0'..'9').oneOrMore().map { it.joinToString(separator = "") }
+                    val digits = +DIGIT.oneOrMore().joinToString()
 
-                    value { "${point.value}${digits.value}" }
+                    value { "${point.get}${digits.get}" }
                 }.orDefault("")
 
                 val ePart = +seq<String> {
                     val e = +char('e', 'E')
                     val sign = +char('+', '-').orDefault('+')
-                    val eDigits = +char('0'..'9').oneOrMore().map { it.joinToString(separator = "") }
+                    val eDigits = +DIGIT.oneOrMore().joinToString()
 
-                    value { "${e.value}${sign.value}${eDigits.value}" }
+                    value { "${e.get}${sign.get}${eDigits.get}" }
                 }.orDefault("")
 
-                value { JsonNumber("${minus.value}${abs.value}${pointPart.value}${ePart.value}".toDouble()) }
+                value { JsonNumber("${minus.get}${abs.get}${pointPart.get}${ePart.get}".toDouble()) }
             }
         }
     }
 
 
     private val StringSym by lazy {
-        Symbol.rule<JsonString>(ignoreWS = false) {
-            seq {
-                +char('"')
-                val chars = +CharSym.zeroOrMore()
-                +char('"')
-
-                value { JsonString(chars.value.joinToString(separator = "")) }
-            }
+        Symbol.rule(ignoreWS = false) {
+            CharSym
+                .list(prefix = char('"'), postfix = char('"'))
+                .joinToString()
+                .map { JsonString(it) }
         }
     }
 
     private val CharSym by lazy {
-        Symbol.rule<String>(ignoreWS = false) {
+        Symbol.rule(ignoreWS = false) {
             choice(
                 seq {
                     +not(char('"', '\\'))
-                    val c = +any
+                    val c = +ANY
 
-                    value { c.value.toString() }
+                    value { c.get.toString() }
                 },
                 literal(len = 2) {
                     it in listOf("\\\"", "\\\\", "\\/", "\\b", "\\f", "\\n", "\\r", "\\t")
                 },
                 seq {
                     val prefix = +literal("\\u")
-                    val unicode = +char {
-                        it.isDigit() || it in 'a'..'f' || it in 'A'..'F'
-                    }.repeatedExactly(4u).map { it.joinToString(separator = "") }
+                    val unicode = +HEX_DIGIT.repeatedExactly(4u).joinToString()
 
-                    value { prefix.value + unicode.value }
+                    value { prefix.get + unicode.get }
                 }
             )
         }
@@ -162,16 +119,12 @@ object JsonGrammar {
 
 
     private val BooleanSym by lazy {
-        Symbol.rule<JsonBoolean> {
-            choice(TrueLiteral, FalseLiteral).map { JsonBoolean(it.toBooleanStrict()) }
-        }
+        Symbol.rule { choice(TrueLiteral, FalseLiteral).map { JsonBoolean(it.toBooleanStrict()) } }
     }
 
 
     private val NullSym by lazy {
-        Symbol.rule<JsonNull> {
-            NullLiteral.map { JsonNull }
-        }
+        Symbol.rule { NullLiteral.map { JsonNull } }
     }
 
 
@@ -193,7 +146,6 @@ object JsonGrammar {
 fun main() {
     val parser = PegParser()
 
-    // Example from https://pest.rs/book/examples/json.html
     println(parser.parse(
         symbol = JsonSym,
         text = """

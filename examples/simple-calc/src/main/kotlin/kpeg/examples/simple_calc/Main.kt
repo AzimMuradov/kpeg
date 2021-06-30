@@ -13,7 +13,7 @@ object ExprGrammar {
             val operations = +Additive.zeroOrMore()
 
             value {
-                operations.value.fold(init.value) { lhs, (op, rhs) ->
+                operations.get.fold(init.get) { lhs, (op, rhs) ->
                     when (op) {
                         Op.Add -> lhs + rhs
                         Op.Sub -> lhs - rhs
@@ -29,16 +29,16 @@ object ExprGrammar {
             val op = +char('+', '-').map { Op.fromChar(it) }
             val rhs = +Num
 
-            value { op.value to rhs.value }
+            value { op.get to rhs.get }
         }
     }
 
     private val Num = Symbol.rule<Int>(ignoreWS = false) {
         seq {
             val sign = +char('+', '-').orDefault('+')
-            val digits = +char('0'..'9').oneOrMore()
+            val digits = +DIGIT.oneOrMore().joinToString()
 
-            value { (sign.value + digits.value.joinToString(separator = "")).toInt() }
+            value { (sign.get + digits.get).toInt() }
         }
     }
 
