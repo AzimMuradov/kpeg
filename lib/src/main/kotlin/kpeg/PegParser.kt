@@ -19,7 +19,7 @@ package kpeg
 import kpeg.WhitespaceChars.DEFAULT_WS
 import kpeg.WhitespaceChars.NO_WS
 import kpeg.pe.ParsingExpression
-import kpeg.pe.Special.Whitespace
+import kpeg.pe.Ignorable.Whitespace
 import kpeg.pe.Symbol
 
 

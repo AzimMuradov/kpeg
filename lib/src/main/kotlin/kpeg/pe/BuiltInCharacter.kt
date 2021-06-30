@@ -23,18 +23,18 @@ import kpeg.PegParser.ParserState
 import kpeg.pe.Terminal.Character
 
 
-internal sealed class BuiltIn(b: CharacterBuilderBlock) : Memoized<Char>() {
+internal sealed class BuiltInCharacter(b: CharacterBuilderBlock) : Memoized<Char>() {
 
     private val pe = Character(b)
 
     final override fun parseBody(ps: ParserState): Option<Char> = pe.parse(ps)
 
 
-    internal object ANY : BuiltIn({ true })
+    internal object ANY : BuiltInCharacter({ true })
 
-    internal object DIGIT : BuiltIn({ it.isDigit() })
+    internal object DIGIT : BuiltInCharacter({ it.isDigit() })
 
-    internal object LETTER : BuiltIn({ it.isLetter() })
+    internal object HEX_DIGIT : BuiltInCharacter({ it.isDigit() || it in 'a'..'f' || it in 'A'..'F' })
 
-    internal object HEX_DIGIT : BuiltIn({ it.isDigit() || it in 'a'..'f' || it in 'A'..'F' })
+    internal object LETTER : BuiltInCharacter({ it.isLetter() })
 }

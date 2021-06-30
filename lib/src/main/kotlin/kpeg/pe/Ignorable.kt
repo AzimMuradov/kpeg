@@ -22,9 +22,9 @@ import kpeg.Option.Some
 import kpeg.PegParser.ParserState
 
 
-internal sealed class Special<T> : Memoized<T>() {
+internal sealed class Ignorable<T> : Memoized<T>() {
 
-    internal class Whitespace(private val wsChars: List<Char>) : Special<List<Char>>() {
+    internal class Whitespace(private val wsChars: List<Char>) : Ignorable<List<Char>>() {
 
         override fun parseBody(ps: ParserState): Option<List<Char>> {
             val list = mutableListOf<Char>()
@@ -40,5 +40,5 @@ internal sealed class Special<T> : Memoized<T>() {
         }
     }
 
-    // TODO(class Comment : Special<String>())
+    // TODO(class Comment : Ignorable<String>())
 }

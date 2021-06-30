@@ -34,15 +34,15 @@ import kpeg.pe.ParsingExpression as PE
 @KPegDsl
 public sealed class Operators {
 
-    // Built-in rules
+    // Built-in characters
 
-    public val ANY: PE<Char> = BuiltIn.ANY
+    public val ANY: PE<Char> = BuiltInCharacter.ANY
 
-    public val DIGIT: PE<Char> = BuiltIn.DIGIT
+    public val DIGIT: PE<Char> = BuiltInCharacter.DIGIT
 
-    public val LETTER: PE<Char> = BuiltIn.LETTER
+    public val LETTER: PE<Char> = BuiltInCharacter.LETTER
 
-    public val HEX_DIGIT: PE<Char> = BuiltIn.HEX_DIGIT
+    public val HEX_DIGIT: PE<Char> = BuiltInCharacter.HEX_DIGIT
 
 
     // Character

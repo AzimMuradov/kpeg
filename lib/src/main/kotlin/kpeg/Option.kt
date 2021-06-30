@@ -4,7 +4,7 @@ import kpeg.Option.None
 import kpeg.Option.Some
 
 
-// Soon would be replaced with the Option class of the Λrrow library
+// Soon will be replaced by the Option class of the Λrrow library
 // See: https://arrow-kt.io/
 
 /**
