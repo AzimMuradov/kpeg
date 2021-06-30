@@ -72,10 +72,11 @@ public sealed class Operators {
 
     // Repeated
 
-    public fun <T> PE<T>.repeated(range: UIntRange): PE<List<T>> = Repeated(range, pe = this)
+    public fun <T> PE<T>.repeated(range: UIntRange): PE<List<T>> =
+        if (!range.isEmpty()) Repeated(range, pe = this) else Fail
 
     public fun <T> PE<T>.repeated(min: UInt = 0u, max: UInt = UInt.MAX_VALUE): PE<List<T>> =
-        Repeated(range = min..max, pe = this)
+        if (min <= max) Repeated(range = min..max, pe = this) else Fail
 
     public fun <T> PE<T>.repeatedExactly(times: UInt): PE<List<T>> = Repeated(range = times..times, pe = this)
 
