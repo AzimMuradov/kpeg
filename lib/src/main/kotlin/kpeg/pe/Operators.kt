@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("PropertyName")
+
 package kpeg.pe
 
 import kpeg.KPegDsl
@@ -32,9 +34,18 @@ import kpeg.pe.ParsingExpression as PE
 @KPegDsl
 public sealed class Operators {
 
-    // Character
+    // Built-in rules
 
-    public val any: PE<Char> = Character { true }
+    public val ANY: PE<Char> = BuiltIn.ANY
+
+    public val DIGIT: PE<Char> = BuiltIn.DIGIT
+
+    public val LETTER: PE<Char> = BuiltIn.LETTER
+
+    public val HEX_DIGIT: PE<Char> = BuiltIn.HEX_DIGIT
+
+
+    // Character
 
     public fun char(b: CharacterBuilderBlock): PE<Char> = Character(b)
 
