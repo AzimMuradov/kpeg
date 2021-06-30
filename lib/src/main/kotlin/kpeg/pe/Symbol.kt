@@ -46,4 +46,4 @@ public class Symbol<T> internal constructor(pe: PE<T>, private val ignoreWS: Boo
     }
 }
 
-public typealias RuleBlock<T> = Rule.() -> PE<T>
+internal typealias RuleBlock<T> = Rule.() -> PE<T>

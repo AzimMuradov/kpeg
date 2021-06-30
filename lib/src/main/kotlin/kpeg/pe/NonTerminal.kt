@@ -163,10 +163,10 @@ public class GroupBuilder<T> internal constructor() : Operators() {
     }
 }
 
-public typealias GroupBuilderBlock<T> = GroupBuilder<T>.() -> Unit
+internal typealias GroupBuilderBlock<T> = GroupBuilder<T>.() -> Unit
 
 
 @KPegDsl
 public object MapBuilder
 
-public typealias MapBuilderBlock<T, R> = MapBuilder.(T) -> R
+internal typealias MapBuilderBlock<T, R> = MapBuilder.(T) -> R

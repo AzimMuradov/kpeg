@@ -30,8 +30,8 @@ public object CharacterBuilder
 @KPegDsl
 public object LiteralBuilder
 
-public typealias CharacterBuilderBlock = CharacterBuilder.(Char) -> Boolean
-public typealias LiteralBuilderBlock = LiteralBuilder.(String) -> Boolean
+internal typealias CharacterBuilderBlock = CharacterBuilder.(Char) -> Boolean
+internal typealias LiteralBuilderBlock = LiteralBuilder.(String) -> Boolean
 
 
 internal sealed class Terminal<T>(protected val moveBy: Int) : ParsingExpression<T>() {
