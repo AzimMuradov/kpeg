@@ -130,7 +130,7 @@ object TestUtils {
             val symLiteral =
                 if (addLiteral) +Terminal.Literal(len = alpha.length) { it == alpha || it == delta } else null
 
-            value { (if (addChar) "${symChar?.value}" else "") + (if (addLiteral) symLiteral?.value else "") }
+            value { (if (addChar) "${symChar?.get}" else "") + (if (addLiteral) symLiteral?.get else "") }
         },
         name = run {
             val list = mutableListOf<String>()

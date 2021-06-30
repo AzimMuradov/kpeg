@@ -92,7 +92,7 @@ public sealed class Operators {
             list += +pe
         }
 
-        value { list.first { it.option != None }.value }
+        value { list.first { it.option != None }.get }
     }
 
 

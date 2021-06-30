@@ -141,7 +141,7 @@ public class GroupBuilder<T> internal constructor() : Operators() {
     @KPegDsl
     public object ValueBuilder {
 
-        public val <T> StoredPE<T>.value: T get() = parsedValue.unwrap()
+        public val <T> StoredPE<T>.get: T get() = parsedValue.unwrap()
 
         public val <T> StoredPE<T>.nullable: T? get() = parsedValue.unwrapOrNull()
 
