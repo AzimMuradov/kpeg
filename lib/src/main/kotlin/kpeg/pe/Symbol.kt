@@ -22,6 +22,11 @@ import kpeg.pe.Symbol.Rule
 import kpeg.pe.ParsingExpression as PE
 
 
+/**
+ * User-defined symbol, that represents [parsing expression][PE] of type [T].
+ *
+ * To create it, you should call the [Symbol.rule] function.
+ */
 public class Symbol<T> internal constructor(
     private val pe: PE<T>,
     private val ignoreWS: Boolean,
@@ -40,8 +45,27 @@ public class Symbol<T> internal constructor(
     }
 
 
+    /**
+     * Symbol builder scope named "Rule" from which you can call any available [operator][Operators].
+     *
+     * To create [Symbol], you should call the [rule] function.
+     */
     public companion object Rule : Operators() {
 
+        /**
+         * This is the builder for [Symbol] class.
+         *
+         * You can define is this symbol should ignore whitespace or not by setting [ignoreWS] parameter, by default its `true`.
+         *
+         *
+         * @sample
+         *
+         * ```kotlin
+         * fun main() {
+         *     val A = Symbol.rule(ignoreWS = false) { char('a', 'A') }
+         * }
+         * ```
+         */
         public fun <T> rule(ignoreWS: Boolean = true, b: RuleBlock<T>): Symbol<T> =
             Symbol(pe = Rule.b(), ignoreWS)
     }
