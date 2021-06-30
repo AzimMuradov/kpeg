@@ -22,18 +22,11 @@ import kpeg.Option.Some
 import kpeg.PegParser.ParserState
 
 
-internal sealed class Special<T> : ParsingExpression<T>() {
+internal sealed class Special<T> : Memoized<T>() {
 
-    internal class Whitespace(wsChars: List<Char>) : Special<List<Char>>() {
+    internal class Whitespace(private val wsChars: List<Char>) : Special<List<Char>>() {
 
-        private val memoizedPE = MemoizedPE(WhitespacePE(wsChars))
-
-        override fun parse(ps: ParserState): Option<List<Char>> = memoizedPE.parseMemoized(ps)
-    }
-
-    private class WhitespacePE(private val wsChars: List<Char>) : Special<List<Char>>() {
-
-        override fun parse(ps: ParserState): Option<List<Char>> {
+        override fun parseBody(ps: ParserState): Option<List<Char>> {
             val list = mutableListOf<Char>()
             while (true) {
                 if (ps.i < ps.s.length && ps.s[ps.i] in wsChars) {
@@ -46,4 +39,6 @@ internal sealed class Special<T> : ParsingExpression<T>() {
             return if (list.isNotEmpty()) Some(list) else None
         }
     }
+
+    // TODO(class Comment : Special<String>())
 }

@@ -22,16 +22,17 @@ import kpeg.pe.Symbol.Rule
 import kpeg.pe.ParsingExpression as PE
 
 
-public class Symbol<T> internal constructor(pe: PE<T>, private val ignoreWS: Boolean) : PE<T>() {
+public class Symbol<T> internal constructor(
+    private val pe: PE<T>,
+    private val ignoreWS: Boolean,
+) : Memoized<T>() {
 
-    private val memoizedPE = MemoizedPE(pe)
-
-    override fun parse(ps: ParserState): Option<T> {
+    override fun parseBody(ps: ParserState): Option<T> {
         val ignoreWSinParent = ps.ignoreWS
         ps.ignoreWS = ignoreWS
 
         ps.handleWS()
-        val result = memoizedPE.parseMemoized(ps)
+        val result = pe.parse(ps)
 
         ps.ignoreWS = ignoreWSinParent
 

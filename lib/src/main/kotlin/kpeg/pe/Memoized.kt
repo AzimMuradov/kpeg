@@ -20,11 +20,13 @@ import kpeg.Option
 import kpeg.PegParser.ParserState
 
 
-internal class MemoizedPE<T>(private val pe: ParsingExpression<T>) {
+public sealed class Memoized<T> : ParsingExpression<T>() {
 
-    internal fun parseMemoized(ps: ParserState): Option<T> =
-        if (pe in ps.mem[ps.i]) {
-            val (nextI, parsedValue) = ps.mem[ps.i].getValue(pe)
+    internal abstract fun parseBody(ps: ParserState): Option<T>
+
+    final override fun parse(ps: ParserState): Option<T> =
+        if (this in ps.mem[ps.i]) {
+            val (nextI, parsedValue) = ps.mem[ps.i].getValue(this)
 
             ps.i = nextI
 
@@ -32,6 +34,6 @@ internal class MemoizedPE<T>(private val pe: ParsingExpression<T>) {
             parsedValue as Option<T>
         } else {
             val initI = ps.i
-            pe.parse(ps).also { ps.mem[initI][pe] = ps.i to it }
+            this.parseBody(ps).also { ps.mem[initI][this] = ps.i to it }
         }
 }
