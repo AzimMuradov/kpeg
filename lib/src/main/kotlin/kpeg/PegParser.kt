@@ -16,20 +16,29 @@
 
 package kpeg
 
-import kpeg.Option.None
+import kpeg.WhitespaceChars.DEFAULT_WS
+import kpeg.WhitespaceChars.NO_WS
 import kpeg.pe.ParsingExpression
 import kpeg.pe.Special.Whitespace
 import kpeg.pe.Symbol
 
 
+/**
+ * The starting point to run [peg parser][parse].
+ */
 public class PegParser {
 
+    /**
+     * Parse [text] with defined [whitespace] to get [symbol] using packrat parser.
+     *
+     * It returns [Some(value)][Option.Some] on success and [None][Option.None] otherwise.
+     */
     public fun <T> parse(symbol: Symbol<T>, text: String, whitespace: List<Char> = DEFAULT_WS): Option<T> {
         val ps = ParserState(text, Whitespace(whitespace))
 
         val result = symbol.parse(ps)
 
-        return if (ps.i == text.length) result else None
+        return if (ps.i == text.length) result else Option.None
     }
 
     internal class ParserState(internal val s: String, private val ws: Whitespace = Whitespace(NO_WS)) {
@@ -53,11 +62,21 @@ public class PegParser {
         internal val mem: List<MutableMap<ParsingExpression<*>, Pair<Int, Option<*>>>> =
             List(size = s.length + 1) { mutableMapOf() }
     }
+}
 
 
-    public companion object {
+/**
+ * Built-in whitespace variants.
+ */
+public object WhitespaceChars {
 
-        public val NO_WS: List<Char> = listOf()
-        public val DEFAULT_WS: List<Char> = listOf(' ', '\t', '\r', '\n')
-    }
+    /**
+     * Use no whitespace characters.
+     */
+    public val NO_WS: List<Char> = listOf()
+
+    /**
+     * Use default whitespace characters (`' '`, `'\t'`, `'\r'`, `'\n'`).
+     */
+    public val DEFAULT_WS: List<Char> = listOf(' ', '\t', '\r', '\n')
 }
