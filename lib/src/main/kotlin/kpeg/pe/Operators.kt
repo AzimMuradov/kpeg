@@ -18,16 +18,16 @@
 
 package kpeg.pe
 
+import arrow.core.None
+import arrow.core.Option
+import arrow.core.getOrElse
 import kpeg.KPegDsl
-import kpeg.Option
-import kpeg.Option.None
+import kpeg.ParseErrorMessages.RANGE_IS_EMPTY
 import kpeg.pe.NonTerminal.*
 import kpeg.pe.NonTerminal.Map
 import kpeg.pe.NonTerminal.Predicate.PredicateType.And
 import kpeg.pe.NonTerminal.Predicate.PredicateType.Not
-import kpeg.pe.Terminal.Character
-import kpeg.pe.Terminal.Literal
-import kpeg.unwrapOrNull
+import kpeg.pe.Terminal.*
 import kpeg.pe.ParsingExpression as PE
 
 
@@ -36,18 +36,18 @@ public sealed class Operators {
 
     // Built-in characters
 
-    public val ANY: PE<Char> = BuiltInCharacter.ANY
+    public val ANY: PE<Char> = Character(packrat = true) { true }
 
-    public val DIGIT: PE<Char> = BuiltInCharacter.DIGIT
+    public val DIGIT: PE<Char> = Character(packrat = true) { it.isDigit() }
 
-    public val LETTER: PE<Char> = BuiltInCharacter.LETTER
+    public val LETTER: PE<Char> = Character(packrat = true) { it.isDigit() || it in 'a'..'f' || it in 'A'..'F' }
 
-    public val HEX_DIGIT: PE<Char> = BuiltInCharacter.HEX_DIGIT
+    public val HEX_DIGIT: PE<Char> = Character(packrat = true) { it.isLetter() }
 
 
     // Character
 
-    public fun char(b: CharacterBuilderBlock): PE<Char> = Character(b)
+    public fun char(b: CharacterBuilderBlock): PE<Char> = Character(b = b)
 
     public fun char(c: Char): PE<Char> = Character { it == c }
 
@@ -76,16 +76,16 @@ public sealed class Operators {
 
     public fun <T> PE<T>.optional(): PE<Option<T>> = Optional(pe = this)
 
-    public fun <T> PE<T>.orDefault(value: T): PE<T> = Map({ it.unwrapOrNull() ?: value }, pe = Optional(pe = this))
+    public fun <T> PE<T>.orDefault(value: T): PE<T> = Map({ it.getOrElse { value } }, pe = Optional(pe = this))
 
 
     // Repeated
 
     public fun <T> PE<T>.repeated(range: UIntRange): PE<List<T>> =
-        if (!range.isEmpty()) Repeated(range, pe = this) else Fail
+        if (!range.isEmpty()) Repeated(range, pe = this) else Fail(message = RANGE_IS_EMPTY)
 
     public fun <T> PE<T>.repeated(min: UInt = 0u, max: UInt = UInt.MAX_VALUE): PE<List<T>> =
-        if (min <= max) Repeated(range = min..max, pe = this) else Fail
+        if (min <= max) Repeated(range = min..max, pe = this) else Fail(message = RANGE_IS_EMPTY)
 
     public fun <T> PE<T>.repeatedExactly(times: UInt): PE<List<T>> = Repeated(range = times..times, pe = this)
 
@@ -135,7 +135,7 @@ public sealed class Operators {
                 value { content.get }
             }
         } else {
-            Fail
+            Fail(message = RANGE_IS_EMPTY)
         }
 
 

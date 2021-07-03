@@ -16,8 +16,10 @@
 
 package kpeg.pe
 
-import kpeg.Option
-import kpeg.PegParser.ParserState
+import arrow.core.None
+import arrow.core.Option
+import kpeg.ParseErrorMessages.wrong
+import kpeg.ParserState
 import kpeg.pe.Symbol.Rule
 import kpeg.pe.ParsingExpression as PE
 
@@ -28,16 +30,19 @@ import kpeg.pe.ParsingExpression as PE
  * To create it, you should call the [Symbol.rule] function.
  */
 public class Symbol<T> internal constructor(
+    public val name: String,
     private val pe: PE<T>,
     private val ignoreWS: Boolean,
-) : Memoized<T>() {
+) : PE<T>(packrat = true) {
 
-    override fun parseBody(ps: ParserState): Option<T> {
+    override val logName: String = "Symbol($name)"
+
+    override fun parseCore(ps: ParserState): Option<T> {
         val ignoreWSinParent = ps.ignoreWS
         ps.ignoreWS = ignoreWS
 
         ps.handleWS()
-        val result = pe.parse(ps)
+        val result = pe.parse(ps).also { if (it == None) ps.addErr(wrong(logName)) }
 
         ps.ignoreWS = ignoreWSinParent
 
@@ -66,8 +71,11 @@ public class Symbol<T> internal constructor(
          * }
          * ```
          */
-        public fun <T> rule(ignoreWS: Boolean = true, b: RuleBlock<T>): Symbol<T> =
-            Symbol(pe = Rule.b(), ignoreWS)
+        public fun <T> rule(
+            name: String,
+            ignoreWS: Boolean = true,
+            b: RuleBlock<T>,
+        ): Symbol<T> = Symbol(name, pe = Rule.b(), ignoreWS)
     }
 }
 

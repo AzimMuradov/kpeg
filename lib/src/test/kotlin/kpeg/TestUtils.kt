@@ -1,7 +1,8 @@
 package kpeg
 
-import kpeg.Option.None
-import kpeg.Option.Some
+import arrow.core.None
+import arrow.core.Option
+import arrow.core.Some
 import kpeg.pe.NonTerminal
 import kpeg.pe.ParsingExpression
 import kpeg.pe.Terminal

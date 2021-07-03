@@ -16,12 +16,14 @@
 
 package kpeg.pe
 
+import arrow.core.None
+import arrow.core.Option
+import arrow.core.some
 import kpeg.KPegDsl
-import kpeg.Option
-import kpeg.Option.None
-import kpeg.PegParser.ParserState
+import kpeg.ParseErrorMessages.TEXT_IS_TOO_LONG
+import kpeg.ParseErrorMessages.wrong
+import kpeg.ParserState
 import kpeg.alsoIfSome
-import kpeg.takeAsOptionIf
 
 
 @KPegDsl
@@ -34,29 +36,49 @@ internal typealias CharacterBuilderBlock = CharacterBuilder.(Char) -> Boolean
 internal typealias LiteralBuilderBlock = LiteralBuilder.(String) -> Boolean
 
 
-internal sealed class Terminal<T>(protected val moveBy: Int) : ParsingExpression<T>() {
+internal sealed class Terminal<T>(packrat: Boolean = false, private val moveBy: Int) : ParsingExpression<T>(packrat) {
 
-    final override fun parse(ps: ParserState): Option<T> = with(ps) {
+    final override fun parseCore(ps: ParserState) = with(ps) {
         if (i + moveBy <= s.length) {
-            parseBody().alsoIfSome {
+            peek().alsoIfSome {
                 i += moveBy
                 handleWS()
             }
         } else {
-            None
+            None.also { addErr(TEXT_IS_TOO_LONG) }
         }
     }
 
-    protected abstract fun ParserState.parseBody(): Option<T>
+    protected abstract fun ParserState.peek(): Option<T>
 
 
-    internal class Character(val b: CharacterBuilderBlock) : Terminal<Char>(moveBy = 1) {
+    internal class Character(
+        packrat: Boolean = false,
+        private val b: CharacterBuilderBlock,
+    ) : Terminal<Char>(packrat, moveBy = 1) {
 
-        override fun ParserState.parseBody() = s[i].takeAsOptionIf { CharacterBuilder.b(it) }
+        override fun ParserState.peek() = s[i]
+            .takeIf { CharacterBuilder.b(it) }?.some()
+            ?: None.also { addErr(wrong(logName)) }
     }
 
-    internal class Literal(private val len: Int, val b: LiteralBuilderBlock) : Terminal<String>(moveBy = len) {
+    internal class Literal(private val len: Int, private val b: LiteralBuilderBlock) : Terminal<String>(moveBy = len) {
 
-        override fun ParserState.parseBody() = s.substring(i until i + len).takeAsOptionIf { LiteralBuilder.b(it) }
+        override fun ParserState.peek() = s.substring(i until i + len)
+            .takeIf { LiteralBuilder.b(it) }?.some()
+            ?: None.also { addErr(wrong(logName)) }
+    }
+
+
+    // Utils
+
+    internal object Empty : Terminal<Unit>(moveBy = 0) {
+
+        override fun ParserState.peek() = Unit.some()
+    }
+
+    internal class Fail(private val message: String) : Terminal<Nothing>(moveBy = 0) {
+
+        override fun ParserState.peek() = None.also { addErr(message) }
     }
 }

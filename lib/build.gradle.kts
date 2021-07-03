@@ -20,6 +20,8 @@ dependencies {
 
     implementation(kotlin("stdlib-jdk8"))
 
+    api("io.arrow-kt:arrow-core:0.13.2")
+
     testImplementation(kotlin("test"))
     testImplementation("org.junit.jupiter:junit-jupiter:5.7.2")
 }

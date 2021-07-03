@@ -16,9 +16,11 @@
 
 package kpeg
 
+import arrow.core.None
+import arrow.core.Option
+import kpeg.ParseErrorMessages.TEXT_IS_TOO_SHORT
+import kpeg.PegParser.parse
 import kpeg.WhitespaceChars.DEFAULT_WS
-import kpeg.WhitespaceChars.NO_WS
-import kpeg.pe.ParsingExpression
 import kpeg.pe.Ignorable.Whitespace
 import kpeg.pe.Symbol
 
@@ -26,41 +28,27 @@ import kpeg.pe.Symbol
 /**
  * The starting point to run [peg parser][parse].
  */
-public class PegParser {
+public object PegParser {
 
     /**
      * Parse [text] with defined [whitespace] to get [symbol] using packrat parser.
      *
      * It returns [Some(value)][Option.Some] on success and [None][Option.None] otherwise.
      */
-    public fun <T> parse(symbol: Symbol<T>, text: String, whitespace: List<Char> = DEFAULT_WS): Option<T> {
+    public fun <T> parse(
+        symbol: Symbol<T>,
+        text: String,
+        whitespace: List<Char> = DEFAULT_WS,
+    ): ParseResult<T> {
+
         val ps = ParserState(text, Whitespace(whitespace))
 
-        val result = symbol.parse(ps)
+        val parsedSymbol = symbol
+            .parse(ps)
+            .takeIf { ps.i == text.length }
+            ?: None.also { ps.addErr(TEXT_IS_TOO_SHORT) }
 
-        return if (ps.i == text.length) result else Option.None
-    }
-
-    internal class ParserState(internal val s: String, private val ws: Whitespace = Whitespace(NO_WS)) {
-
-        // Current index in s
-
-        internal var i: Int = 0
-
-
-        // Whitespace handling
-
-        internal var ignoreWS: Boolean = false
-
-        internal fun handleWS() {
-            if (ignoreWS) ws.parse(this)
-        }
-
-
-        // Memoization (for packrat)
-
-        internal val mem: List<MutableMap<ParsingExpression<*>, Pair<Int, Option<*>>>> =
-            List(size = s.length + 1) { mutableMapOf() }
+        return parsedSymbol.toEither(ps::errs)
     }
 }
 

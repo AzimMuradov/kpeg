@@ -16,11 +16,9 @@
 
 package kpeg.pe
 
-import kpeg.Option
-import kpeg.Option.None
-import kpeg.Option.Some
-import kpeg.PegParser.ParserState
-import kpeg.alsoIfSome
+import arrow.core.None
+import arrow.core.Option
+import kpeg.ParserState
 
 
 public class StoredPE<T> internal constructor(private val pe: ParsingExpression<T>) {
@@ -28,5 +26,5 @@ public class StoredPE<T> internal constructor(private val pe: ParsingExpression<
     internal var parsedValue: Option<T> = None
         private set
 
-    internal fun parse(ps: ParserState): Option<T> = pe.parse(ps).alsoIfSome { parsedValue = Some(it) }
+    internal fun parse(ps: ParserState) = pe.parse(ps).also { parsedValue = it }
 }

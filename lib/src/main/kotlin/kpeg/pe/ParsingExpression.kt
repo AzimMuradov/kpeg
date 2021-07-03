@@ -16,11 +16,45 @@
 
 package kpeg.pe
 
-import kpeg.Option
-import kpeg.PegParser.ParserState
+import arrow.core.None
+import arrow.core.Option
+import arrow.core.Some
+import kpeg.ParserState
 
 
-public sealed class ParsingExpression<out T> {
+public sealed class ParsingExpression<out T>(private val packrat: Boolean) {
 
-    internal abstract fun parse(ps: ParserState): Option<T>
+    internal open val logName: String get() = "${this::class.simpleName}"
+
+
+    internal fun parse(ps: ParserState): Option<T> =
+        if (packrat) {
+            when (this) {
+                in ps.memNone[ps.i] -> {
+                    val memErrs = ps.memNone[ps.i].getValue(this)
+
+                    None.also { ps.errs = memErrs }
+                }
+                in ps.memSome[ps.i] -> {
+                    val (nextI, result) = ps.memSome[ps.i].getValue(this)
+
+                    @Suppress("UNCHECKED_CAST")
+                    (result as Some<T>).also { ps.i = nextI }
+                }
+                else -> {
+                    val initI = ps.i
+
+                    parseCore(ps).also {
+                        when (it) {
+                            None -> ps.memNone[initI][this] = ArrayDeque(ps.errs)
+                            is Some -> ps.memSome[initI][this] = ps.i to it
+                        }
+                    }
+                }
+            }
+        } else {
+            parseCore(ps)
+        }
+
+    internal abstract fun parseCore(ps: ParserState): Option<T>
 }

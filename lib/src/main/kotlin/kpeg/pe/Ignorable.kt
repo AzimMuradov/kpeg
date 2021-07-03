@@ -16,27 +16,20 @@
 
 package kpeg.pe
 
-import kpeg.Option
-import kpeg.Option.None
-import kpeg.Option.Some
-import kpeg.PegParser.ParserState
+import arrow.core.Option
+import arrow.core.some
+import kpeg.ParserState
 
 
-internal sealed class Ignorable<T> : Memoized<T>() {
+internal sealed class Ignorable : ParsingExpression<Unit>(packrat = true) {
 
-    internal class Whitespace(private val wsChars: List<Char>) : Ignorable<List<Char>>() {
+    internal class Whitespace(private val wsChars: List<Char>) : Ignorable() {
 
-        override fun parseBody(ps: ParserState): Option<List<Char>> {
-            val list = mutableListOf<Char>()
-            while (true) {
-                if (ps.i < ps.s.length && ps.s[ps.i] in wsChars) {
-                    list += ps.s[ps.i]
-                    ps.i += 1
-                } else {
-                    break
-                }
+        override fun parseCore(ps: ParserState): Option<Unit> {
+            while (ps.i < ps.s.length && ps.s[ps.i] in wsChars) {
+                ps.i += 1
             }
-            return if (list.isNotEmpty()) Some(list) else None
+            return Unit.some()
         }
     }
 

@@ -1,5 +1,6 @@
 package kpeg.examples.json
 
+import arrow.core.Either
 import kpeg.PegParser
 import kpeg.examples.json.JsonGrammar.JsonSym
 import kpeg.examples.json.JsonValue.*
@@ -11,18 +12,18 @@ import kpeg.pe.Symbol
 object JsonGrammar {
 
     val JsonSym by lazy {
-        Symbol.rule { choice(ObjectSym, ArraySym).map { Json(it) } }
+        Symbol.rule(name = "Json") { choice(ObjectSym, ArraySym).map { Json(it) } }
     }
 
     private val ValueSym: Symbol<JsonValue> by lazy {
-        Symbol.rule { choice(ObjectSym, ArraySym, NumberSym, StringSym, BooleanSym, NullSym) }
+        Symbol.rule(name = "JsonValue") { choice(ObjectSym, ArraySym, NumberSym, StringSym, BooleanSym, NullSym) }
     }
 
 
     // Json values
 
     private val ObjectSym by lazy {
-        Symbol.rule {
+        Symbol.rule(name = "Object") {
             ObjectPairSym
                 .list(separator = Comma, prefix = LeftCurBr, postfix = RightCurBr)
                 .map { JsonObject(it) }
@@ -30,7 +31,7 @@ object JsonGrammar {
     }
 
     private val ObjectPairSym by lazy {
-        Symbol.rule<Pair<String, JsonValue>> {
+        Symbol.rule<Pair<String, JsonValue>>(name = "ObjectPair") {
             seq {
                 val name = +StringSym
                 +Colon
@@ -43,7 +44,7 @@ object JsonGrammar {
 
 
     private val ArraySym by lazy {
-        Symbol.rule {
+        Symbol.rule(name = "Array") {
             // Workaround for bug (compiler bug?)
             seq<JsonValue> {
                 val sym = +ValueSym
@@ -54,7 +55,7 @@ object JsonGrammar {
 
 
     private val NumberSym by lazy {
-        Symbol.rule<JsonNumber>(ignoreWS = false) {
+        Symbol.rule<JsonNumber>(name = "Number", ignoreWS = false) {
             seq {
                 val minus = +literal("-").orDefault("")
 
@@ -87,7 +88,7 @@ object JsonGrammar {
 
 
     private val StringSym by lazy {
-        Symbol.rule(ignoreWS = false) {
+        Symbol.rule(name = "String", ignoreWS = false) {
             CharSym
                 .list(prefix = char('"'), postfix = char('"'))
                 .joinToString()
@@ -96,7 +97,7 @@ object JsonGrammar {
     }
 
     private val CharSym by lazy {
-        Symbol.rule(ignoreWS = false) {
+        Symbol.rule(name = "Char", ignoreWS = false) {
             choice(
                 seq {
                     +not(char('"', '\\'))
@@ -119,34 +120,31 @@ object JsonGrammar {
 
 
     private val BooleanSym by lazy {
-        Symbol.rule { choice(TrueLiteral, FalseLiteral).map { JsonBoolean(it.toBooleanStrict()) } }
+        Symbol.rule(name = "Boolean") { choice(TrueLiteral, FalseLiteral).map { JsonBoolean(it.toBooleanStrict()) } }
     }
 
 
     private val NullSym by lazy {
-        Symbol.rule { NullLiteral.map { JsonNull } }
+        Symbol.rule(name = "Null") { NullLiteral.map { JsonNull } }
     }
 
 
     // Util symbols
 
-    private val LeftSqBr by lazy { Symbol.rule { char('[') } }
-    private val LeftCurBr by lazy { Symbol.rule { char('{') } }
-    private val RightSqBr by lazy { Symbol.rule { char(']') } }
-    private val RightCurBr by lazy { Symbol.rule { char('}') } }
-    private val Colon by lazy { Symbol.rule { char(':') } }
-    private val Comma by lazy { Symbol.rule { char(',') } }
-
-    private val TrueLiteral by lazy { Symbol.rule { literal("true") } }
-    private val FalseLiteral by lazy { Symbol.rule { literal("false") } }
-    private val NullLiteral by lazy { Symbol.rule { literal("null") } }
+    private val LeftSqBr = Symbol.rule(name = "LeftSqBr") { char('[') }
+    private val LeftCurBr = Symbol.rule(name = "LeftCurBr") { char('{') }
+    private val RightSqBr = Symbol.rule(name = "RightSqBr") { char(']') }
+    private val RightCurBr = Symbol.rule(name = "RightCurBr") { char('}') }
+    private val Colon = Symbol.rule(name = "Colon") { char(':') }
+    private val Comma = Symbol.rule(name = "Comma") { char(',') }
+    private val TrueLiteral = Symbol.rule(name = "TrueLiteral") { literal("true") }
+    private val FalseLiteral = Symbol.rule(name = "FalseLiteral") { literal("false") }
+    private val NullLiteral = Symbol.rule(name = "NullLiteral") { literal("null") }
 }
 
 
 fun main() {
-    val parser = PegParser()
-
-    println(parser.parse(
+    val result = PegParser.parse(
         symbol = JsonSym,
         text = """
             {
@@ -155,5 +153,18 @@ fun main() {
                 "string with escaped double quotes": "\"quick brown foxes\""
             }
             """.trimIndent()
-    ))
+    )
+
+    when (result) {
+        is Either.Left -> {
+            println("Fail")
+            for ((index, message) in result.value) {
+                println("$index: $message")
+            }
+        }
+        is Either.Right -> {
+            println("Success")
+            println(result.value)
+        }
+    }
 }

@@ -1,8 +1,8 @@
 package kpeg.pe
 
-import kpeg.Option.None
-import kpeg.Option.Some
-import kpeg.PegParser.ParserState
+import arrow.core.None
+import arrow.core.Some
+import kpeg.ParserState
 import kpeg.TestUtils.a
 import kpeg.TestUtils.alpha
 import kpeg.TestUtils.d

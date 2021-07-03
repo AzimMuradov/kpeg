@@ -1,13 +1,13 @@
 package kpeg.examples.simple_calc
 
-import kpeg.PegParser
+import kpeg.PegParser.parse
 import kpeg.examples.simple_calc.ExprGrammar.Expr
 import kpeg.pe.Symbol
 
 
 object ExprGrammar {
 
-    val Expr = Symbol.rule<Int> {
+    val Expr = Symbol.rule<Int>(name = "Expr") {
         seq {
             val init = +Num
             val operations = +Additive.zeroOrMore()
@@ -24,7 +24,7 @@ object ExprGrammar {
     }
 
 
-    private val Additive = Symbol.rule<Pair<Op, Int>> {
+    private val Additive = Symbol.rule<Pair<Op, Int>>(name = "Additive") {
         seq {
             val op = +char('+', '-').map { Op.fromChar(it) }
             val rhs = +Num
@@ -33,7 +33,7 @@ object ExprGrammar {
         }
     }
 
-    private val Num = Symbol.rule<Int>(ignoreWS = false) {
+    private val Num = Symbol.rule<Int>(name = "Num", ignoreWS = false) {
         seq {
             val sign = +char('+', '-').orDefault('+')
             val digits = +DIGIT.oneOrMore().joinToString()
@@ -59,18 +59,22 @@ object ExprGrammar {
 
 
 fun main() {
-    val parser = PegParser()
+    val results = listOf(
+        parse(symbol = Expr, "1"),
+        parse(symbol = Expr, "+1"),
+        parse(symbol = Expr, "+ 1"),
+        parse(symbol = Expr, "+1 +"),
+        parse(symbol = Expr, "-17"),
+        parse(symbol = Expr, "-1 7"),
+        parse(symbol = Expr, "1+3-4-3"),
+        parse(symbol = Expr, "1+2+3+4+5"),
+        parse(symbol = Expr, "1 + +2 + -3 + +4 + 5"),
+        parse(symbol = Expr, "-1-2-3-4-5"),
+        parse(symbol = Expr, "definitely not expression"),
+        parse(symbol = Expr, ""),
+    )
 
-    println(parser.parse(symbol = Expr, "1"))
-    println(parser.parse(symbol = Expr, "+1"))
-    println(parser.parse(symbol = Expr, "+ 1"))
-    println(parser.parse(symbol = Expr, "+1 +"))
-    println(parser.parse(symbol = Expr, "-17"))
-    println(parser.parse(symbol = Expr, "-1 7"))
-    println(parser.parse(symbol = Expr, "1+3-4-3"))
-    println(parser.parse(symbol = Expr, "1+2+3+4+5"))
-    println(parser.parse(symbol = Expr, "1 + +2 + -3 + +4 + 5"))
-    println(parser.parse(symbol = Expr, "-1-2-3-4-5"))
-    println(parser.parse(symbol = Expr, "definitely not expression"))
-    println(parser.parse(symbol = Expr, ""))
+    for (res in results) {
+        println(res)
+    }
 }
