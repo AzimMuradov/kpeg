@@ -23,6 +23,9 @@ import kpeg.ParserState
 
 public class StoredPE<T> internal constructor(private val pe: ParsingExpression<T>) {
 
+    internal val peLogName: String = pe.logName
+
+
     internal var parsedValue: Option<T> = None
         private set
 

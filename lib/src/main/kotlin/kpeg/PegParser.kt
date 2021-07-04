@@ -18,7 +18,7 @@ package kpeg
 
 import arrow.core.None
 import arrow.core.Option
-import kpeg.ParseErrorMessages.TEXT_IS_TOO_SHORT
+import kpeg.ParseErrorMessages.TEXT_IS_TOO_LONG
 import kpeg.PegParser.parse
 import kpeg.WhitespaceChars.DEFAULT_WS
 import kpeg.pe.Ignorable.Whitespace
@@ -46,7 +46,7 @@ public object PegParser {
         val parsedSymbol = symbol
             .parse(ps)
             .takeIf { ps.i == text.length }
-            ?: None.also { ps.addErr(TEXT_IS_TOO_SHORT) }
+            ?: None.also { ps.addErr(TEXT_IS_TOO_LONG) }
 
         return parsedSymbol.toEither(ps::errs)
     }

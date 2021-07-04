@@ -31,12 +31,19 @@ internal sealed class NonTerminal<T> : PE<T>(packrat = false) {
 
     internal class Optional<T>(pe: PE<T>) : NonTerminal<Option<T>>() {
 
+        override val logName: String = "Optional(${pe.logName})"
+
         private val repeated = Repeated(0u..1u, pe)
 
         override fun parseCore(ps: ParserState) = repeated.parse(ps).map(List<T>::firstOrNone)
     }
 
     internal class Repeated<T>(private val range: UIntRange, private val pe: PE<T>) : NonTerminal<List<T>>() {
+
+        init {
+            require(!range.isEmpty()) { "Range is empty" }
+        }
+
 
         override val logName: String = "Repeated(${pe.logName}) $range times"
 
@@ -47,25 +54,30 @@ internal sealed class NonTerminal<T> : PE<T>(packrat = false) {
             while (list.size.toUInt() < range.last) {
                 when (val res = pe.parse(ps)) {
                     is Some -> list += res.value
-                    None -> {
-                        ps.errs.clear()
-                        break
-                    }
+                    None -> break
                 }
             }
 
-            return list
-                .takeIf { it.size.toUInt() in range }?.some()
-                ?: None.also {
-                    ps.i = initI
-                    ps.addErr(wrong(logName) + " (was repeated ${list.size} times)")
+            val result = list.takeIf { it.size.toUInt() in range }.toOption()
+
+            return result.also {
+                when (it) {
+                    is Some -> {
+                        ps.errs.clear()
+                    }
+                    None -> {
+                        ps.i = initI
+                        ps.addErr(wrong(logName) + ", but was repeated ${list.size} times")
+                    }
                 }
+            }
         }
     }
 
     internal class Predicate(private val type: PredicateType, private val pe: PE<*>) : NonTerminal<Unit>() {
 
         override val logName: String = "${type.name}(${pe.logName})"
+
 
         override fun parseCore(ps: ParserState): Option<Unit> {
             val initI = ps.i
@@ -75,9 +87,9 @@ internal sealed class NonTerminal<T> : PE<T>(packrat = false) {
                 Not -> if (pe.parse(ps) == None) Some(Unit) else None
             }.also {
                 ps.i = initI
-                ps.errs.clear()
-                if (it == None) {
-                    ps.addErr(wrong(logName))
+                when (it) {
+                    None -> ps.addErr(wrong(logName))
+                    is Some -> ps.errs.clear()
                 }
             }
         }
@@ -86,6 +98,9 @@ internal sealed class NonTerminal<T> : PE<T>(packrat = false) {
     }
 
     internal sealed class Group<T>(private val b: GroupBuilderBlock<T>) : NonTerminal<T>() {
+
+        protected val logNames = GroupBuilder<T>().build(b).first.map(StoredPE<*>::peLogName)
+
 
         final override fun parseCore(ps: ParserState): Option<T> {
             val initI = ps.i
@@ -106,6 +121,8 @@ internal sealed class NonTerminal<T> : PE<T>(packrat = false) {
 
         internal class Sequence<T>(b: GroupBuilderBlock<T>) : Group<T>(b) {
 
+            override val logName: String = "Sequence(${logNames.joinToString()})"
+
             override fun successCondition(subexpressions: List<StoredPE<*>>, ps: ParserState): Boolean {
                 return subexpressions.all { it.parse(ps) != None }
             }
@@ -113,21 +130,29 @@ internal sealed class NonTerminal<T> : PE<T>(packrat = false) {
 
         internal class PrioritizedChoice<T>(b: GroupBuilderBlock<T>) : Group<T>(b) {
 
+            override val logName: String = "PrioritizedChoice(${logNames.joinToString(separator = " / ")})"
+
             override fun successCondition(subexpressions: List<StoredPE<*>>, ps: ParserState): Boolean {
                 if (subexpressions.isEmpty()) return true
 
                 val initI = ps.i
                 val indexOfFirstSuccess = subexpressions.indexOfFirst {
                     ps.i = initI
-                    ps.errs.clear()
                     it.parse(ps) != None
                 }
+
+                if (indexOfFirstSuccess != -1) {
+                    ps.errs.clear()
+                }
+
                 return indexOfFirstSuccess != -1
             }
         }
     }
 
     internal class Map<T, R>(private val transform: MapBuilderBlock<T, R>, private val pe: PE<T>) : NonTerminal<R>() {
+
+        override val logName: String = pe.logName
 
         override fun parseCore(ps: ParserState) = pe.parse(ps).map { MapBuilder.transform(it) }
     }

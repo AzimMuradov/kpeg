@@ -22,12 +22,12 @@ import arrow.core.None
 import arrow.core.Option
 import arrow.core.getOrElse
 import kpeg.KPegDsl
-import kpeg.ParseErrorMessages.RANGE_IS_EMPTY
 import kpeg.pe.NonTerminal.*
 import kpeg.pe.NonTerminal.Map
 import kpeg.pe.NonTerminal.Predicate.PredicateType.And
 import kpeg.pe.NonTerminal.Predicate.PredicateType.Not
-import kpeg.pe.Terminal.*
+import kpeg.pe.Terminal.Character
+import kpeg.pe.Terminal.Literal
 import kpeg.pe.ParsingExpression as PE
 
 
@@ -40,9 +40,9 @@ public sealed class Operators {
 
     public val DIGIT: PE<Char> = Character(packrat = true) { it.isDigit() }
 
-    public val LETTER: PE<Char> = Character(packrat = true) { it.isDigit() || it in 'a'..'f' || it in 'A'..'F' }
+    public val LETTER: PE<Char> = Character(packrat = true) { it.isLetter() }
 
-    public val HEX_DIGIT: PE<Char> = Character(packrat = true) { it.isLetter() }
+    public val HEX_DIGIT: PE<Char> = Character(packrat = true) { it.isDigit() || it in 'a'..'f' || it in 'A'..'F' }
 
 
     // Character
@@ -81,11 +81,10 @@ public sealed class Operators {
 
     // Repeated
 
-    public fun <T> PE<T>.repeated(range: UIntRange): PE<List<T>> =
-        if (!range.isEmpty()) Repeated(range, pe = this) else Fail(message = RANGE_IS_EMPTY)
+    public fun <T> PE<T>.repeated(range: UIntRange): PE<List<T>> = Repeated(range, pe = this)
 
     public fun <T> PE<T>.repeated(min: UInt = 0u, max: UInt = UInt.MAX_VALUE): PE<List<T>> =
-        if (min <= max) Repeated(range = min..max, pe = this) else Fail(message = RANGE_IS_EMPTY)
+        Repeated(range = min..max, pe = this)
 
     public fun <T> PE<T>.repeatedExactly(times: UInt): PE<List<T>> = Repeated(range = times..times, pe = this)
 
@@ -98,45 +97,45 @@ public sealed class Operators {
         prefix: PE<*>? = null,
         postfix: PE<*>? = null,
         min: UInt = 0u, max: UInt = UInt.MAX_VALUE,
-    ): PE<List<T>> =
-        if (min <= max) {
-            Group.Sequence {
-                prefix?.unaryPlus()
+    ): PE<List<T>> {
 
-                val content =
-                    if (min == 0u && max > 0u) {
-                        +Group.Sequence<List<T>> {
-                            val first = +this@list
-                            val others = +Repeated(range = 0u..(max - 1u), pe = Group.Sequence<T> {
-                                separator?.unaryPlus()
-                                val next = +this@list
-                                value { next.get }
-                            })
+        require(min <= max) { "Range is empty" }
 
-                            value { listOf(first.get) + others.get }
-                        }.orDefault(emptyList())
-                    } else if (min > 0u && max > 0u) {
-                        +Group.Sequence<List<T>> {
-                            val first = +this@list
-                            val others = +Repeated(range = (min - 1u)..(max - 1u), pe = Group.Sequence<T> {
-                                separator?.unaryPlus()
-                                val next = +this@list
-                                value { next.get }
-                            })
+        val pe = this
 
-                            value { listOf(first.get) + others.get }
-                        }
-                    } else {
-                        +Empty.map { emptyList<T>() }
+        return seq {
+            prefix?.unaryPlus()
+
+            val content =
+                if (min == 0u) {
+                    +seq<List<T>> {
+                        val first = +pe
+                        val others = +seq<T> {
+                            separator?.unaryPlus()
+                            val next = +pe
+                            value { next.get }
+                        }.repeated(max = if (max > 0u) max - 1u else 0u)
+
+                        value { listOf(first.get) + others.get }
+                    }.orDefault(emptyList())
+                } else {
+                    +seq<List<T>> {
+                        val first = +pe
+                        val others = +seq<T> {
+                            separator?.unaryPlus()
+                            val next = +pe
+                            value { next.get }
+                        }.repeated(min = min - 1u, max = max - 1u)
+
+                        value { listOf(first.get) + others.get }
                     }
+                }
 
-                postfix?.unaryPlus()
+            postfix?.unaryPlus()
 
-                value { content.get }
-            }
-        } else {
-            Fail(message = RANGE_IS_EMPTY)
+            value { content.get }
         }
+    }
 
 
     // Predicate

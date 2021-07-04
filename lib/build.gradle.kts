@@ -22,8 +22,10 @@ dependencies {
 
     api("io.arrow-kt:arrow-core:0.13.2")
 
-    testImplementation(kotlin("test"))
     testImplementation("org.junit.jupiter:junit-jupiter:5.7.2")
+    testImplementation("io.kotest:kotest-assertions-core:4.6.0")
+    testImplementation("io.kotest.extensions:kotest-assertions-arrow:1.0.2")
+    testImplementation("com.marcinmoskala:DiscreteMathToolkit:1.0.3")
 }
 
 

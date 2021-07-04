@@ -20,7 +20,7 @@ import arrow.core.None
 import arrow.core.Option
 import arrow.core.some
 import kpeg.KPegDsl
-import kpeg.ParseErrorMessages.TEXT_IS_TOO_LONG
+import kpeg.ParseErrorMessages.notEnoughTextFor
 import kpeg.ParseErrorMessages.wrong
 import kpeg.ParserState
 import kpeg.alsoIfSome
@@ -45,7 +45,7 @@ internal sealed class Terminal<T>(packrat: Boolean = false, private val moveBy: 
                 handleWS()
             }
         } else {
-            None.also { addErr(TEXT_IS_TOO_LONG) }
+            None.also { addErr(notEnoughTextFor(logName)) }
         }
     }
 
@@ -67,18 +67,5 @@ internal sealed class Terminal<T>(packrat: Boolean = false, private val moveBy: 
         override fun ParserState.peek() = s.substring(i until i + len)
             .takeIf { LiteralBuilder.b(it) }?.some()
             ?: None.also { addErr(wrong(logName)) }
-    }
-
-
-    // Utils
-
-    internal object Empty : Terminal<Unit>(moveBy = 0) {
-
-        override fun ParserState.peek() = Unit.some()
-    }
-
-    internal class Fail(private val message: String) : Terminal<Nothing>(moveBy = 0) {
-
-        override fun ParserState.peek() = None.also { addErr(message) }
     }
 }

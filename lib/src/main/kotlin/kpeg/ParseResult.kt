@@ -26,7 +26,7 @@ public data class ParseError(val index: Int, val message: String)
 
 internal object ParseErrorMessages {
 
-    internal const val TEXT_IS_TOO_SHORT = "Text is too short"
+    internal fun notEnoughTextFor(peLogName: String) = "Can't parse $peLogName - text is too short"
 
     internal const val TEXT_IS_TOO_LONG = "Text is too long"
 
@@ -43,9 +43,4 @@ internal fun <T> Option<T>.get() = getOrElse { error("Option is empty") }
 internal inline fun <T> Option<T>.alsoIfSome(block: (T) -> Unit) = when (this) {
     None -> this
     is Some -> Some(value.also(block))
-}
-
-internal inline fun <T> Option<T>.applyIfRight(block: T.() -> Unit) = when (this) {
-    None -> this
-    is Some -> Some(value.apply(block))
 }
