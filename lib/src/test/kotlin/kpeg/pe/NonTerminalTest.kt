@@ -1,5 +1,6 @@
 package kpeg.pe
 
+import arrow.core.Eval.Now
 import arrow.core.None
 import arrow.core.Some
 import io.kotest.assertions.arrow.option.beNone
@@ -59,7 +60,7 @@ class NonTerminalTest {
     @Nested
     inner class Optional {
 
-        private val optPe = Opt(Ch { it == a })
+        private val optPe = Opt(Now(Ch { it == a }))
 
 
         @Test
@@ -127,7 +128,7 @@ class NonTerminalTest {
 
         @Test
         fun `check logName`() {
-            val repPe = Rep(1u..3u, Ch { it == a })
+            val repPe = Rep(1u..3u, Now(Ch { it == a }))
 
             repPe.logName shouldBe "Repeated(Character) 1..3 times"
             repPe.toString() shouldBe "Repeated(Character) 1..3 times"
@@ -136,7 +137,7 @@ class NonTerminalTest {
         @Test
         fun `wrong init`() {
             val e = shouldThrow<IllegalArgumentException> {
-                Rep(2u..1u, Ch { it == a })
+                Rep(2u..1u, Now(Ch { it == a }))
             }
 
             e.message shouldBe "Range is empty"
@@ -202,7 +203,7 @@ class NonTerminalTest {
 
             private val andPredPe = Pred(
                 type = And,
-                pe = Lit(len = alpha.length) { it == alpha },
+                pe = Now(Lit(len = alpha.length) { it == alpha }),
             )
 
 
@@ -272,7 +273,7 @@ class NonTerminalTest {
 
             private val notPredPe = Pred(
                 type = Not,
-                pe = Lit(len = alpha.length) { it == alpha },
+                pe = Now(Lit(len = alpha.length) { it == alpha }),
             )
 
 
@@ -343,8 +344,8 @@ class NonTerminalTest {
         @Test
         fun `check logName`() {
             val seqPe = Seq<String> {
-                val symChar = +Ch { it == a }
-                val symLiteral = +Lit(len = alpha.length) { it == alpha }
+                val symChar = +Now(Ch { it == a })
+                val symLiteral = +Now(Lit(len = alpha.length) { it == alpha })
 
                 value { "${symChar.get}${symLiteral.get}" }
             }
@@ -416,8 +417,8 @@ class NonTerminalTest {
         @Test
         fun `check logName`() {
             val prChoicePe = PrCh<String> {
-                val symChar = +Ch { it == a }
-                val symLiteral = +Lit(len = alpha.length) { it == alpha }
+                val symChar = +Now(Ch { it == a })
+                val symLiteral = +Now(Lit(len = alpha.length) { it == alpha })
 
                 value { "${symChar.nullable ?: symLiteral.get}" }
             }
@@ -481,7 +482,7 @@ class NonTerminalTest {
     @Nested
     inner class Map {
 
-        private val mapPe = M(transform = { it.toString() }, pe = Ch { it == a })
+        private val mapPe = M(transform = { it.toString() }, pe = Now(Ch { it == a }))
 
 
         @Test

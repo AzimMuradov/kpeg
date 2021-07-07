@@ -26,7 +26,7 @@ object ExprGrammar {
 
     private val Additive = Symbol.rule<Pair<Op, Int>>(name = "Additive") {
         seq {
-            val op = +char('+', '-').map { Op.fromChar(it) }
+            val op = +char('+', '-').mapPe { Op.fromChar(it) }
             val rhs = +Num
 
             value { op.get to rhs.get }
@@ -59,19 +59,21 @@ object ExprGrammar {
 
 
 fun main() {
+    val expr = Expr.value()
+
     val results = listOf(
-        parse(symbol = Expr, "1"),
-        parse(symbol = Expr, "+1"),
-        parse(symbol = Expr, "+ 1"),
-        parse(symbol = Expr, "+1 +"),
-        parse(symbol = Expr, "-17"),
-        parse(symbol = Expr, "-1 7"),
-        parse(symbol = Expr, "1+3-4-3"),
-        parse(symbol = Expr, "1+2+3+4+5"),
-        parse(symbol = Expr, "1 + +2 + -3 + +4 + 5"),
-        parse(symbol = Expr, "-1-2-3-4-5"),
-        parse(symbol = Expr, "definitely not expression"),
-        parse(symbol = Expr, ""),
+        parse(symbol = expr, "1"),
+        parse(symbol = expr, "+1"),
+        parse(symbol = expr, "+ 1"),
+        parse(symbol = expr, "+1 +"),
+        parse(symbol = expr, "-17"),
+        parse(symbol = expr, "-1 7"),
+        parse(symbol = expr, "1+3-4-3"),
+        parse(symbol = expr, "1+2+3+4+5"),
+        parse(symbol = expr, "1 + +2 + -3 + +4 + 5"),
+        parse(symbol = expr, "-1-2-3-4-5"),
+        parse(symbol = expr, "definitely not expression"),
+        parse(symbol = expr, ""),
     )
 
     for (res in results) {

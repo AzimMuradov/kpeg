@@ -27,7 +27,7 @@ object OperatorsTestUtils {
         listOf('a', 'B', 'ы', 'ñ', '桜'),
     ))
         .flatMap { (pe, list) -> list.map { c -> pe to c } }
-        .map { (pe, c) -> PtDataCh(pe, c) }
+        .map { (pe, c) -> PtDataCh(pe.value(), c) }
         .asSequence().asStream()
 
     internal fun ptDataBiChIncorrectProvider() = biCharPes.zip(listOf(
@@ -37,18 +37,18 @@ object OperatorsTestUtils {
         listOf('5', '\n', '\u0000'),
     ))
         .flatMap { (pe, list) -> list.map { c -> pe to c } }
-        .map { (pe, c) -> PtDataCh(pe, c) }
+        .map { (pe, c) -> PtDataCh(pe.value(), c) }
         .asSequence().asStream()
 
 
     // Character
 
     internal fun ptDataChCorrectProvider() = (charPesA * listOf('a') + charPesAbc * listOf('a', 'b', 'c'))
-        .map { (pe, c) -> PtDataCh(pe, c) }
+        .map { (pe, c) -> PtDataCh(pe.value(), c) }
         .asSequence().asStream()
 
     internal fun ptDataChIncorrectProvider() = (charPesA * listOf('b', 'x') + charPesAbc * listOf('x', 'y'))
-        .map { (pe, c) -> PtDataCh(pe, c) }
+        .map { (pe, c) -> PtDataCh(pe.value(), c) }
         .asSequence().asStream()
 
 
@@ -72,12 +72,12 @@ object OperatorsTestUtils {
 
     internal fun ptDataLitCorrectProvider() =
         (litPesAlpha * listOf("alpha") + litPesAlphaCaseInsensitive * listOf("Alpha", "alpha", "ALPhA"))
-            .map { (pe, l) -> PtDataLit(pe, l) }
+            .map { (pe, l) -> PtDataLit(pe.value(), l) }
             .asSequence().asStream()
 
     internal fun ptDataLitIncorrectProvider() =
         (litPesAlpha * listOf("Alpha") + litPesAlphaCaseInsensitive * listOf("alpho", "omega"))
-            .map { (pe, l) -> PtDataLit(pe, l) }
+            .map { (pe, l) -> PtDataLit(pe.value(), l) }
             .asSequence().asStream()
 
 

@@ -17,24 +17,14 @@
 package kpeg
 
 import arrow.core.None
-import arrow.core.Option
 import kpeg.ParseErrorMessages.TEXT_IS_TOO_LONG
-import kpeg.PegParser.parse
 import kpeg.WhitespaceChars.DEFAULT_WS
 import kpeg.pe.Ignorable.Whitespace
 import kpeg.pe.Symbol
 
 
-/**
- * The starting point to run [peg parser][parse].
- */
 public object PegParser {
 
-    /**
-     * Parse [text] with defined [whitespace] to get [symbol] using packrat parser.
-     *
-     * It returns [Some(value)][Option.Some] on success and [None][Option.None] otherwise.
-     */
     public fun <T> parse(
         symbol: Symbol<T>,
         text: String,

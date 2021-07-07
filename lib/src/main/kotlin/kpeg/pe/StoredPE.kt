@@ -21,13 +21,13 @@ import arrow.core.Option
 import kpeg.ParserState
 
 
-public class StoredPE<T> internal constructor(private val pe: ParsingExpression<T>) {
+public class StoredPE<T> internal constructor(private val pe: EvalPE<T>) {
 
-    internal val peLogName: String = pe.logName
+    internal val peLogName: String get() = pe.value().logName
 
 
     internal var parsedValue: Option<T> = None
         private set
 
-    internal fun parse(ps: ParserState) = pe.parse(ps).also { parsedValue = it }
+    internal fun parse(ps: ParserState) = pe.value().parse(ps).also { parsedValue = it }
 }

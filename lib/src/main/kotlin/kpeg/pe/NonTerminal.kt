@@ -24,35 +24,34 @@ import kpeg.get
 import kpeg.pe.GroupBuilder.ValueBuilder
 import kpeg.pe.NonTerminal.Predicate.PredicateType.And
 import kpeg.pe.NonTerminal.Predicate.PredicateType.Not
-import kpeg.pe.ParsingExpression as PE
 
 
-internal sealed class NonTerminal<T> : PE<T>(packrat = false) {
+internal sealed class NonTerminal<T> : ParsingExpression<T>(packrat = false) {
 
-    internal class Optional<T>(pe: PE<T>) : NonTerminal<Option<T>>() {
+    internal class Optional<T>(private val pe: EvalPE<T>) : NonTerminal<Option<T>>() {
 
-        override val logName: String = "Optional(${pe.logName})"
+        override val logName: String get() = "Optional(${pe.value().logName})"
 
         private val repeated = Repeated(0u..1u, pe)
 
         override fun parseCore(ps: ParserState) = repeated.parse(ps).map(List<T>::firstOrNone)
     }
 
-    internal class Repeated<T>(private val range: UIntRange, private val pe: PE<T>) : NonTerminal<List<T>>() {
+    internal class Repeated<T>(private val range: UIntRange, private val pe: EvalPE<T>) : NonTerminal<List<T>>() {
 
         init {
             require(!range.isEmpty()) { "Range is empty" }
         }
 
 
-        override val logName: String = "Repeated(${pe.logName}) $range times"
+        override val logName: String get() = "Repeated(${pe.value().logName}) $range times"
 
         override fun parseCore(ps: ParserState): Option<List<T>> {
             val initI = ps.i
 
             val list = mutableListOf<T>()
             while (list.size.toUInt() < range.last) {
-                when (val res = pe.parse(ps)) {
+                when (val res = pe.value().parse(ps)) {
                     is Some -> list += res.value
                     None -> break
                 }
@@ -74,17 +73,17 @@ internal sealed class NonTerminal<T> : PE<T>(packrat = false) {
         }
     }
 
-    internal class Predicate(private val type: PredicateType, private val pe: PE<*>) : NonTerminal<Unit>() {
+    internal class Predicate(private val type: PredicateType, private val pe: EvalPE<*>) : NonTerminal<Unit>() {
 
-        override val logName: String = "${type.name}(${pe.logName})"
+        override val logName: String get() = "${type.name}(${pe.value().logName})"
 
 
         override fun parseCore(ps: ParserState): Option<Unit> {
             val initI = ps.i
 
             return when (type) {
-                And -> if (pe.parse(ps) != None) Some(Unit) else None
-                Not -> if (pe.parse(ps) == None) Some(Unit) else None
+                And -> if (pe.value().parse(ps) != None) Some(Unit) else None
+                Not -> if (pe.value().parse(ps) == None) Some(Unit) else None
             }.also {
                 ps.i = initI
                 when (it) {
@@ -150,11 +149,12 @@ internal sealed class NonTerminal<T> : PE<T>(packrat = false) {
         }
     }
 
-    internal class Map<T, R>(private val transform: MapBuilderBlock<T, R>, private val pe: PE<T>) : NonTerminal<R>() {
+    internal class Map<T, R>(private val transform: MapBuilderBlock<T, R>, private val pe: EvalPE<T>) :
+        NonTerminal<R>() {
 
-        override val logName: String = pe.logName
+        override val logName: String get() = pe.value().logName
 
-        override fun parseCore(ps: ParserState) = pe.parse(ps).map { MapBuilder.transform(it) }
+        override fun parseCore(ps: ParserState) = pe.value().parse(ps).map { MapBuilder.transform(it) }
     }
 }
 
@@ -163,7 +163,7 @@ public class GroupBuilder<T> internal constructor() : Operators() {
 
     // Subexpressions
 
-    public operator fun <T> PE<T>.unaryPlus(): StoredPE<T> = StoredPE(pe = this).also(subexpressions::add)
+    public operator fun <T> EvalPE<T>.unaryPlus(): StoredPE<T> = StoredPE(pe = this).also(subexpressions::add)
 
     private val subexpressions = mutableListOf<StoredPE<*>>()
 

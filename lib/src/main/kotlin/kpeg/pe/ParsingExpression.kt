@@ -16,11 +16,14 @@
 
 package kpeg.pe
 
+import arrow.core.Eval
 import arrow.core.None
 import arrow.core.Option
 import arrow.core.Some
 import kpeg.ParserState
 
+
+public typealias EvalPE<T> = Eval<ParsingExpression<T>>
 
 public sealed class ParsingExpression<out T>(private val packrat: Boolean) {
 

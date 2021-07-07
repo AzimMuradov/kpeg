@@ -1,5 +1,6 @@
 package kpeg.testutils
 
+import arrow.core.Eval.Now
 import arrow.core.None
 import arrow.core.Option
 import arrow.core.Some
@@ -104,7 +105,7 @@ object NonTerminalTestUtils {
     )
 
 
-    private fun repPe(range: UIntRange) = Rep(range, Ch { it == a || it == d })
+    private fun repPe(range: UIntRange) = Rep(range, Now(Ch { it == a || it == d }))
 
 
     // Sequence
@@ -201,8 +202,8 @@ object NonTerminalTestUtils {
 
     private fun seqPe(ch: Boolean = false, lit: Boolean = false) =
         Seq<String> {
-            val chPe = if (ch) +Ch { it == a || it == d } else null
-            val litPe = if (lit) +Lit(len = alpha.length) { it == alpha || it == delta } else null
+            val chPe = if (ch) +Now(Ch { it == a || it == d }) else null
+            val litPe = if (lit) +Now(Lit(len = alpha.length) { it == alpha || it == delta }) else null
 
             value { (if (ch) "${chPe?.get}" else "") + (if (lit) litPe?.get else "") }
         }
@@ -328,9 +329,9 @@ object NonTerminalTestUtils {
 
     private fun prChoicePe(lit1: Boolean = false, ch: Boolean = false, lit2: Boolean = false) =
         PrCh<String> {
-            val lit1Pe = if (lit1) +Lit(len = alpha.length) { it == alpha } else null
-            val chPe = if (ch) +Ch { it == a } else null
-            val lit2Pe = if (lit2) +Lit(len = omega.length) { it == omega } else null
+            val lit1Pe = if (lit1) +Now(Lit(len = alpha.length) { it == alpha }) else null
+            val chPe = if (ch) +Now(Ch { it == a }) else null
+            val lit2Pe = if (lit2) +Now(Lit(len = omega.length) { it == omega }) else null
 
             value { (lit1Pe?.nullable ?: "") + ("${chPe?.nullable ?: ""}") + (lit2Pe?.nullable ?: "") }
         }

@@ -16,24 +16,21 @@
 
 package kpeg.pe
 
+import arrow.core.Eval
+import arrow.core.Eval.Later
+import arrow.core.Eval.Now
 import arrow.core.None
 import arrow.core.Option
 import kpeg.ParseErrorMessages.wrong
 import kpeg.ParserState
 import kpeg.pe.Symbol.Rule
-import kpeg.pe.ParsingExpression as PE
 
 
-/**
- * User-defined symbol, that represents [parsing expression][PE] of type [T].
- *
- * To create it, you should call the [Symbol.rule] function.
- */
 public class Symbol<T> internal constructor(
     public val name: String,
-    private val pe: PE<T>,
+    private val pe: EvalPE<T>,
     private val ignoreWS: Boolean,
-) : PE<T>(packrat = true) {
+) : ParsingExpression<T>(packrat = true) {
 
     override val logName: String = "Symbol($name)"
 
@@ -42,7 +39,7 @@ public class Symbol<T> internal constructor(
         ps.ignoreWS = ignoreWS
 
         ps.handleWS()
-        val result = pe.parse(ps).also { if (it == None) ps.addErr(wrong(logName)) }
+        val result = pe.value().parse(ps).also { if (it == None) ps.addErr(wrong(logName)) }
 
         ps.ignoreWS = ignoreWSinParent
 
@@ -50,33 +47,20 @@ public class Symbol<T> internal constructor(
     }
 
 
-    /**
-     * Symbol builder scope named "Rule" from which you can call any available [operator][Operators].
-     *
-     * To create [Symbol], you should call the [rule] function.
-     */
     public companion object Rule : Operators() {
 
-        /**
-         * This is the builder for [Symbol] class.
-         *
-         * You can define is this symbol should ignore whitespace or not by setting [ignoreWS] parameter, by default its `true`.
-         *
-         *
-         * @sample
-         *
-         * ```kotlin
-         * fun main() {
-         *     val A = Symbol.rule(ignoreWS = false) { char('a', 'A') }
-         * }
-         * ```
-         */
         public fun <T> rule(
             name: String,
             ignoreWS: Boolean = true,
             b: RuleBlock<T>,
-        ): Symbol<T> = Symbol(name, pe = Rule.b(), ignoreWS)
+        ): Eval<Symbol<T>> = Now(Symbol(name, pe = Rule.b(), ignoreWS))
+
+        public fun <T> lazyRule(
+            name: String,
+            ignoreWS: Boolean = true,
+            b: RuleBlock<T>,
+        ): Eval<Symbol<T>> = Later { Symbol(name, pe = Rule.b(), ignoreWS) }
     }
 }
 
-internal typealias RuleBlock<T> = Rule.() -> PE<T>
+internal typealias RuleBlock<T> = Rule.() -> EvalPE<T>
