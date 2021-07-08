@@ -21,9 +21,9 @@ import kpeg.KPegDsl
 import kpeg.ParseErrorMessages.wrong
 import kpeg.ParserState
 import kpeg.get
-import kpeg.pe.GroupBuilder.ValueBuilder
 import kpeg.pe.NonTerminal.Predicate.PredicateType.And
 import kpeg.pe.NonTerminal.Predicate.PredicateType.Not
+import kpeg.pe.SequenceBuilder.ValueBuilder
 
 
 internal sealed class NonTerminal<T> : ParsingExpression<T>(packrat = false) {
@@ -96,16 +96,17 @@ internal sealed class NonTerminal<T> : ParsingExpression<T>(packrat = false) {
         internal enum class PredicateType { And, Not }
     }
 
-    internal sealed class Group<T>(private val b: GroupBuilderBlock<T>) : NonTerminal<T>() {
+    internal class Sequence<T>(private val b: SequenceBuilderBlock<T>) : NonTerminal<T>() {
 
-        protected val logNames by lazy { SequenceBuilder<T>().build(b).first.map(StoredPE<*>::peLogName) }
+        override val logName: String by lazy { "Sequence(${logNames.joinToString()})" }
 
+        private val logNames by lazy { SequenceBuilder<T>().build(b).first.map(StoredPE<*>::peLogName) }
 
-        final override fun parseCore(ps: ParserState): Option<T> {
+        override fun parseCore(ps: ParserState): Option<T> {
             val initI = ps.i
-            val (subexpressions, valueBlock) = GroupBuilder<T>().build(b)
+            val (subexpressions, valueBlock) = SequenceBuilder<T>().build(b)
 
-            return if (successCondition(subexpressions, ps)) {
+            return if (subexpressions.all { it.parse(ps) != None }) {
                 Some(ValueBuilder.valueBlock())
             } else {
                 None.also {
@@ -114,37 +115,35 @@ internal sealed class NonTerminal<T> : ParsingExpression<T>(packrat = false) {
                 }
             }
         }
+    }
 
-        protected abstract fun successCondition(subexpressions: List<StoredPE<*>>, ps: ParserState): Boolean
+    internal class PrioritizedChoice<T>(private val pes: List<EvalPE<T>>) : NonTerminal<T>() {
 
-
-        internal class Sequence<T>(b: GroupBuilderBlock<T>) : Group<T>(b) {
-
-            override val logName: String by lazy { "Sequence(${logNames.joinToString()})" }
-
-            override fun successCondition(subexpressions: List<StoredPE<*>>, ps: ParserState): Boolean {
-                return subexpressions.all { it.parse(ps) != None }
-            }
+        override val logName: String by lazy {
+            "PrioritizedChoice(${pes.joinToString(separator = " / ") { it.value().logName }})"
         }
 
-        internal class PrioritizedChoice<T>(b: GroupBuilderBlock<T>) : Group<T>(b) {
+        override fun parseCore(ps: ParserState): Option<T> {
+            val initI = ps.i
 
-            override val logName: String by lazy { "PrioritizedChoice(${logNames.joinToString(separator = " / ")})" }
+            var parsedValue: Option<T> = None
 
-            override fun successCondition(subexpressions: List<StoredPE<*>>, ps: ParserState): Boolean {
-                if (subexpressions.isEmpty()) return true
+            pes.asSequence().map(EvalPE<T>::value).firstOrNull {
+                ps.i = initI
+                parsedValue = it.parse(ps)
+                parsedValue != None
+            }
 
-                val initI = ps.i
-                val indexOfFirstSuccess = subexpressions.indexOfFirst {
-                    ps.i = initI
-                    it.parse(ps) != None
+            return parsedValue.also {
+                when (it) {
+                    is Some -> {
+                        ps.errs.clear()
+                    }
+                    None -> {
+                        ps.i = initI
+                        ps.addErr(wrong(logName))
+                    }
                 }
-
-                if (indexOfFirstSuccess != -1) {
-                    ps.errs.clear()
-                }
-
-                return indexOfFirstSuccess != -1
             }
         }
     }
@@ -159,7 +158,7 @@ internal sealed class NonTerminal<T> : ParsingExpression<T>(packrat = false) {
 }
 
 
-public class GroupBuilder<T> internal constructor() : Operators() {
+public class SequenceBuilder<T> internal constructor() : Operators() {
 
     // Subexpressions
 
@@ -174,28 +173,25 @@ public class GroupBuilder<T> internal constructor() : Operators() {
     public object ValueBuilder {
 
         public val <T> StoredPE<T>.get: T get() = parsedValue.get()
-
-        public val <T> StoredPE<T>.nullable: T? get() = parsedValue.orNull()
-
-        public val <T> StoredPE<T>.option: Option<T> get() = parsedValue
     }
 
-    public fun value(b: ValueBuilder.() -> T) {
+    public fun value(b: ValueBuilderBlock<T>) {
         valueBlock = b
     }
 
-    private lateinit var valueBlock: ValueBuilder.() -> T
+    private lateinit var valueBlock: ValueBuilderBlock<T>
 
 
     // Build
 
-    internal fun build(b: GroupBuilderBlock<T>): Pair<List<StoredPE<*>>, ValueBuilder.() -> T> {
+    internal fun build(b: SequenceBuilderBlock<T>): Pair<List<StoredPE<*>>, ValueBuilderBlock<T>> {
         this.b()
         return subexpressions to valueBlock
     }
 }
 
-internal typealias GroupBuilderBlock<T> = GroupBuilder<T>.() -> Unit
+internal typealias SequenceBuilderBlock<T> = SequenceBuilder<T>.() -> Unit
+internal typealias ValueBuilderBlock<T> = ValueBuilder.() -> T
 
 
 @KPegDsl

@@ -19,7 +19,6 @@
 package kpeg.pe
 
 import arrow.core.Eval.Now
-import arrow.core.None
 import arrow.core.Option
 import arrow.core.getOrElse
 import kpeg.KPegDsl
@@ -148,20 +147,15 @@ public sealed class Operators {
     public fun not(pe: EvalPE<*>): EvalPE<Unit> = Now(Predicate(type = Not, pe))
 
 
-    // Group - Sequence & Prioritized Choice
+    // Sequence
 
-    public fun <T> seq(b: GroupBuilderBlock<T>): EvalPE<T> = Now(Group.Sequence(b))
+    public fun <T> seq(b: SequenceBuilderBlock<T>): EvalPE<T> = Now(Sequence(b))
 
-    public fun <T> choice(b: GroupBuilderBlock<T>): EvalPE<T> = Now(Group.PrioritizedChoice(b))
 
-    public fun <T> choice(firstPe: EvalPE<T>, vararg otherPes: EvalPE<T>): EvalPE<T> = choice {
-        val list = mutableListOf(+firstPe)
-        for (pe in otherPes) {
-            list += +pe
-        }
+    // Prioritized Choice
 
-        value { list.first { it.option != None }.get }
-    }
+    public fun <T> choice(firstPe: EvalPE<T>, vararg otherPes: EvalPE<T>): EvalPE<T> =
+        Now(PrioritizedChoice(pes = listOf(firstPe) + otherPes))
 
 
     // Map

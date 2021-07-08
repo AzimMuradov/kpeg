@@ -42,12 +42,12 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
-import kpeg.pe.NonTerminal.Group.PrioritizedChoice as PrCh
-import kpeg.pe.NonTerminal.Group.Sequence as Seq
 import kpeg.pe.NonTerminal.Map as M
 import kpeg.pe.NonTerminal.Optional as Opt
 import kpeg.pe.NonTerminal.Predicate as Pred
+import kpeg.pe.NonTerminal.PrioritizedChoice as PrCh
 import kpeg.pe.NonTerminal.Repeated as Rep
+import kpeg.pe.NonTerminal.Sequence as Seq
 import kpeg.pe.Terminal.Character as Ch
 import kpeg.pe.Terminal.Literal as Lit
 
@@ -416,12 +416,12 @@ class NonTerminalTest {
 
         @Test
         fun `check logName`() {
-            val prChoicePe = PrCh<String> {
-                val symChar = +Now(Ch { it == a })
-                val symLiteral = +Now(Lit(len = alpha.length) { it == alpha })
-
-                value { "${symChar.nullable ?: symLiteral.get}" }
-            }
+            val prChoicePe = PrCh(
+                listOf(
+                    Now(M(transform = { "$it" }, pe = Now(Ch { it == a }))),
+                    Now(Lit(len = alpha.length) { it == alpha })
+                )
+            )
 
             prChoicePe.logName shouldBe "PrioritizedChoice(Character / Literal)"
             prChoicePe.toString() shouldBe "PrioritizedChoice(Character / Literal)"

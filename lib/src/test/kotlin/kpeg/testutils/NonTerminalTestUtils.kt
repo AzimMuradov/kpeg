@@ -7,9 +7,10 @@ import arrow.core.Some
 import kpeg.ParseError
 import java.util.stream.Stream
 import kotlin.UInt.Companion.MAX_VALUE
-import kpeg.pe.NonTerminal.Group.PrioritizedChoice as PrCh
-import kpeg.pe.NonTerminal.Group.Sequence as Seq
+import kpeg.pe.NonTerminal.Map as M
+import kpeg.pe.NonTerminal.PrioritizedChoice as PrCh
 import kpeg.pe.NonTerminal.Repeated as Rep
+import kpeg.pe.NonTerminal.Sequence as Seq
 import kpeg.pe.ParsingExpression as PE
 import kpeg.pe.Terminal.Character as Ch
 import kpeg.pe.Terminal.Literal as Lit
@@ -328,13 +329,13 @@ object NonTerminalTestUtils {
 
 
     private fun prChoicePe(lit1: Boolean = false, ch: Boolean = false, lit2: Boolean = false) =
-        PrCh<String> {
-            val lit1Pe = if (lit1) +Now(Lit(len = alpha.length) { it == alpha }) else null
-            val chPe = if (ch) +Now(Ch { it == a }) else null
-            val lit2Pe = if (lit2) +Now(Lit(len = omega.length) { it == omega }) else null
-
-            value { (lit1Pe?.nullable ?: "") + ("${chPe?.nullable ?: ""}") + (lit2Pe?.nullable ?: "") }
-        }
+        PrCh(
+            listOfNotNull(
+                Now(Lit(len = alpha.length) { it == alpha }).takeIf { lit1 },
+                Now(M(transform = { "$it" }, pe = Now(Ch { it == a }))).takeIf { ch },
+                Now(Lit(len = omega.length) { it == omega }).takeIf { lit2 }
+            )
+        )
 
 
     // Errs
