@@ -30,7 +30,7 @@ internal sealed class NonTerminal<T> : ParsingExpression<T>(packrat = false) {
 
     internal class Optional<T>(private val pe: EvalPE<T>) : NonTerminal<Option<T>>() {
 
-        override val logName: String get() = "Optional(${pe.value().logName})"
+        override val logName: String by lazy { "Optional(${pe.value().logName})" }
 
         private val repeated = Repeated(0u..1u, pe)
 
@@ -44,7 +44,7 @@ internal sealed class NonTerminal<T> : ParsingExpression<T>(packrat = false) {
         }
 
 
-        override val logName: String get() = "Repeated(${pe.value().logName}) $range times"
+        override val logName: String by lazy { "Repeated(${pe.value().logName}) $range times" }
 
         override fun parseCore(ps: ParserState): Option<List<T>> {
             val initI = ps.i
@@ -75,7 +75,7 @@ internal sealed class NonTerminal<T> : ParsingExpression<T>(packrat = false) {
 
     internal class Predicate(private val type: PredicateType, private val pe: EvalPE<*>) : NonTerminal<Unit>() {
 
-        override val logName: String get() = "${type.name}(${pe.value().logName})"
+        override val logName: String by lazy { "${type.name}(${pe.value().logName})" }
 
 
         override fun parseCore(ps: ParserState): Option<Unit> {
@@ -98,7 +98,7 @@ internal sealed class NonTerminal<T> : ParsingExpression<T>(packrat = false) {
 
     internal sealed class Group<T>(private val b: GroupBuilderBlock<T>) : NonTerminal<T>() {
 
-        protected val logNames get() = GroupBuilder<T>().build(b).first.map(StoredPE<*>::peLogName)
+        protected val logNames by lazy { SequenceBuilder<T>().build(b).first.map(StoredPE<*>::peLogName) }
 
 
         final override fun parseCore(ps: ParserState): Option<T> {
@@ -120,7 +120,7 @@ internal sealed class NonTerminal<T> : ParsingExpression<T>(packrat = false) {
 
         internal class Sequence<T>(b: GroupBuilderBlock<T>) : Group<T>(b) {
 
-            override val logName: String get() = "Sequence(${logNames.joinToString()})"
+            override val logName: String by lazy { "Sequence(${logNames.joinToString()})" }
 
             override fun successCondition(subexpressions: List<StoredPE<*>>, ps: ParserState): Boolean {
                 return subexpressions.all { it.parse(ps) != None }
@@ -129,7 +129,7 @@ internal sealed class NonTerminal<T> : ParsingExpression<T>(packrat = false) {
 
         internal class PrioritizedChoice<T>(b: GroupBuilderBlock<T>) : Group<T>(b) {
 
-            override val logName: String get() = "PrioritizedChoice(${logNames.joinToString(separator = " / ")})"
+            override val logName: String by lazy { "PrioritizedChoice(${logNames.joinToString(separator = " / ")})" }
 
             override fun successCondition(subexpressions: List<StoredPE<*>>, ps: ParserState): Boolean {
                 if (subexpressions.isEmpty()) return true
@@ -152,7 +152,7 @@ internal sealed class NonTerminal<T> : ParsingExpression<T>(packrat = false) {
     internal class Map<T, R>(private val transform: MapBuilderBlock<T, R>, private val pe: EvalPE<T>) :
         NonTerminal<R>() {
 
-        override val logName: String get() = pe.value().logName
+        override val logName: String by lazy { pe.value().logName }
 
         override fun parseCore(ps: ParserState) = pe.value().parse(ps).map { MapBuilder.transform(it) }
     }

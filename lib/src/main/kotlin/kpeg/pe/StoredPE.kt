@@ -23,7 +23,7 @@ import kpeg.ParserState
 
 public class StoredPE<T> internal constructor(private val pe: EvalPE<T>) {
 
-    internal val peLogName: String get() = pe.value().logName
+    internal val peLogName: String by lazy { pe.value().logName }
 
 
     internal var parsedValue: Option<T> = None

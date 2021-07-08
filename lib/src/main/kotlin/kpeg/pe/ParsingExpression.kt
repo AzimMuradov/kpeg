@@ -27,7 +27,7 @@ public typealias EvalPE<T> = Eval<ParsingExpression<T>>
 
 public sealed class ParsingExpression<out T>(private val packrat: Boolean) {
 
-    internal open val logName: String get() = "${this::class.simpleName}"
+    internal open val logName: String by lazy { "${this::class.simpleName}" }
 
 
     internal fun parse(ps: ParserState): Option<T> =
