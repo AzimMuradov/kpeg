@@ -18,7 +18,6 @@
 
 package kpeg.pe
 
-import arrow.core.Eval.Later
 import arrow.core.Eval.Now
 import arrow.core.None
 import arrow.core.Option
@@ -151,9 +150,9 @@ public sealed class Operators {
 
     // Group - Sequence & Prioritized Choice
 
-    public fun <T> seq(b: GroupBuilderBlock<T>): EvalPE<T> = Later { Group.Sequence(b) }
+    public fun <T> seq(b: GroupBuilderBlock<T>): EvalPE<T> = Now(Group.Sequence(b))
 
-    public fun <T> choice(b: GroupBuilderBlock<T>): EvalPE<T> = Later { Group.PrioritizedChoice(b) }
+    public fun <T> choice(b: GroupBuilderBlock<T>): EvalPE<T> = Now(Group.PrioritizedChoice(b))
 
     public fun <T> choice(firstPe: EvalPE<T>, vararg otherPes: EvalPE<T>): EvalPE<T> = choice {
         val list = mutableListOf(+firstPe)
