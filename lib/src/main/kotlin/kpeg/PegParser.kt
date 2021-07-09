@@ -24,8 +24,16 @@ import kpeg.pe.Ignorable.Whitespace
 import kpeg.pe.Symbol
 
 
+/**
+ * The starting point to run [peg parser][PegParser.parse].
+ */
 public object PegParser {
 
+    /**
+     * Parse [text] with defined [whitespace] to get [symbol] using packrat parser.
+     *
+     * It returns [ParseResult] instance, which is either [Right(value)][arrow.core.Either.Right] on success or [Left(parse errors)][arrow.core.Either.Left] otherwise.
+     */
     public fun <T> parse(
         symbol: Symbol<T>,
         text: String,
