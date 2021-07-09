@@ -66,7 +66,6 @@ class NonTerminalTest {
         @Test
         fun `check logName`() {
             optPe.logName shouldBe "Optional(Character)"
-            optPe.toString() shouldBe "Optional(Character)"
         }
 
         @Test
@@ -131,7 +130,6 @@ class NonTerminalTest {
             val repPe = Rep(1u..3u, Now(Ch { it == a }))
 
             repPe.logName shouldBe "Repeated(Character) 1..3 times"
-            repPe.toString() shouldBe "Repeated(Character) 1..3 times"
         }
 
         @Test
@@ -210,7 +208,6 @@ class NonTerminalTest {
             @Test
             fun `check logName`() {
                 andPredPe.logName shouldBe "And(Literal)"
-                andPredPe.toString() shouldBe "And(Literal)"
             }
 
             @Test
@@ -280,7 +277,6 @@ class NonTerminalTest {
             @Test
             fun `check logName`() {
                 notPredPe.logName shouldBe "Not(Literal)"
-                notPredPe.toString() shouldBe "Not(Literal)"
             }
 
             @Test
@@ -351,7 +347,6 @@ class NonTerminalTest {
             }
 
             seqPe.logName shouldBe "Sequence(Character, Literal)"
-            seqPe.toString() shouldBe "Sequence(Character, Literal)"
         }
 
         @ParameterizedTest
@@ -424,7 +419,6 @@ class NonTerminalTest {
             )
 
             prChoicePe.logName shouldBe "PrioritizedChoice(Character / Literal)"
-            prChoicePe.toString() shouldBe "PrioritizedChoice(Character / Literal)"
         }
 
         @ParameterizedTest
@@ -488,7 +482,6 @@ class NonTerminalTest {
         @Test
         fun `check logName`() {
             mapPe.logName shouldBe "Character"
-            mapPe.toString() shouldBe "Character"
         }
 
         @Test

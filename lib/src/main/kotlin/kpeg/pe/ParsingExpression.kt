@@ -60,7 +60,4 @@ public sealed class ParsingExpression<out T>(private val packrat: Boolean) {
         }
 
     internal abstract fun parseCore(ps: ParserState): Option<T>
-
-
-    override fun toString(): String = logName
 }

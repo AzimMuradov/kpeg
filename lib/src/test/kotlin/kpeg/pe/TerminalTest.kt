@@ -35,7 +35,6 @@ class TerminalTest {
         @Test
         fun `check logName`() {
             aPe.logName shouldBe "Character"
-            aPe.toString() shouldBe "Character"
         }
 
         @Test
@@ -184,7 +183,6 @@ class TerminalTest {
         @Test
         fun `check logName`() {
             alphaPe.logName shouldBe "Literal"
-            alphaPe.toString() shouldBe "Literal"
         }
 
         @Test
