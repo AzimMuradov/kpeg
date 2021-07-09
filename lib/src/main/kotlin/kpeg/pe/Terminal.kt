@@ -25,9 +25,15 @@ import kpeg.ParseErrorMessages.wrong
 import kpeg.ParserState
 
 
+/**
+ * Object marked by [DslMarker] to have scope to define "character" [parsing expression][ParsingExpression].
+ */
 @KPegDsl
 public object CharacterBuilder
 
+/**
+ * Object marked by [DslMarker] to have scope to define "literal" [parsing expression][ParsingExpression].
+ */
 @KPegDsl
 public object LiteralBuilder
 
@@ -55,18 +61,21 @@ internal sealed class Terminal<T>(packrat: Boolean = false, private val moveBy: 
 
     internal class Character(
         packrat: Boolean = false,
-        private val b: CharacterBuilderBlock,
+        private val block: CharacterBuilderBlock,
     ) : Terminal<Char>(packrat, moveBy = 1) {
 
         override fun ParserState.peek() = s[i]
-            .takeIf { CharacterBuilder.b(it) }?.some()
+            .takeIf { CharacterBuilder.block(it) }?.some()
             ?: None.also { addErr(wrong(logName)) }
     }
 
-    internal class Literal(private val len: Int, private val b: LiteralBuilderBlock) : Terminal<String>(moveBy = len) {
+    internal class Literal(
+        private val len: Int,
+        private val block: LiteralBuilderBlock,
+    ) : Terminal<String>(moveBy = len) {
 
         override fun ParserState.peek() = s.substring(i until i + len)
-            .takeIf { LiteralBuilder.b(it) }?.some()
+            .takeIf { LiteralBuilder.block(it) }?.some()
             ?: None.also { addErr(wrong(logName)) }
     }
 }
