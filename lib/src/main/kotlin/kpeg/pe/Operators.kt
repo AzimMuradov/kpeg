@@ -154,8 +154,8 @@ public sealed class Operators {
 
     // Prioritized Choice
 
-    public fun <T> choice(firstPe: EvalPE<T>, vararg otherPes: EvalPE<T>): EvalPE<T> =
-        Now(PrioritizedChoice(pes = listOf(firstPe) + otherPes))
+    public fun <T> choice(firstPe: EvalPE<T>, secondPe: EvalPE<T>, vararg otherPes: EvalPE<T>): EvalPE<T> =
+        Now(PrioritizedChoice(firstPe, secondPe, *otherPes))
 
 
     // Map

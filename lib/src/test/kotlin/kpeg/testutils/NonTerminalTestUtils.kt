@@ -201,6 +201,15 @@ object NonTerminalTestUtils {
     )
 
 
+    internal data class SequenceException(
+        val peBlock: () -> Seq<String>,
+    )
+
+    internal fun seqExProvider() = Stream.of(
+        SequenceException { seqPe() },
+    )
+
+
     private fun seqPe(ch: Boolean = false, lit: Boolean = false) =
         Seq<String> {
             val chPe = if (ch) +Now(Ch { it == a || it == d }) else null
@@ -220,8 +229,6 @@ object NonTerminalTestUtils {
     )
 
     internal fun prChoiceCorrectProvider() = Stream.of(
-        PrChoiceCorrect(s = alpha, prChoicePe(lit1 = true), expected = Some(alpha), i = 5),
-        PrChoiceCorrect(s = "$alpha$omega", prChoicePe(lit1 = true), expected = Some(alpha), i = 5),
         PrChoiceCorrect(s = alpha, prChoicePe(lit1 = true, ch = true), expected = Some(alpha), i = 5),
         PrChoiceCorrect(s = "$alpha$a", prChoicePe(lit1 = true, ch = true), expected = Some(alpha), i = 5),
         PrChoiceCorrect(s = "$a$alpha", prChoicePe(lit1 = true, ch = true), expected = Some("$a"), i = 1),
@@ -229,9 +236,6 @@ object NonTerminalTestUtils {
         PrChoiceCorrect(s = alpha, prChoicePe(lit1 = true, lit2 = true), expected = Some(alpha), i = 5),
         PrChoiceCorrect(s = omega, prChoicePe(lit1 = true, lit2 = true), expected = Some(omega), i = 5),
         PrChoiceCorrect(s = "$omega$alpha", prChoicePe(lit1 = true, lit2 = true), expected = Some(omega), i = 5),
-        PrChoiceCorrect(s = "$a", prChoicePe(ch = true), expected = Some("$a"), i = 1),
-        PrChoiceCorrect(s = alpha, prChoicePe(ch = true), expected = Some("$a"), i = 1),
-        PrChoiceCorrect(s = "$a$o", prChoicePe(ch = true), expected = Some("$a"), i = 1),
         PrChoiceCorrect(s = alpha, prChoicePe(lit1 = true, ch = true, lit2 = true), expected = Some(alpha), i = 5),
         PrChoiceCorrect(s = "$a", prChoicePe(lit1 = true, ch = true, lit2 = true), expected = Some("$a"), i = 1),
         PrChoiceCorrect(s = omega, prChoicePe(lit1 = true, ch = true, lit2 = true), expected = Some(omega), i = 5),
@@ -251,18 +255,6 @@ object NonTerminalTestUtils {
     )
 
     internal fun prChoiceIncorrectProvider() = Stream.of(
-        PrChoiceIncorrect(s = "$a", prChoicePe(lit1 = true), errs(
-            0 to "Can't parse Literal - text is too short",
-            0 to "Wrong PrioritizedChoice(Literal)",
-        )),
-        PrChoiceIncorrect(s = "$a$alpha", prChoicePe(lit1 = true), errs(
-            0 to "Wrong Literal",
-            0 to "Wrong PrioritizedChoice(Literal)",
-        )),
-        PrChoiceIncorrect(s = omega, prChoicePe(lit1 = true), errs(
-            0 to "Wrong Literal",
-            0 to "Wrong PrioritizedChoice(Literal)",
-        )),
         PrChoiceIncorrect(s = omega, prChoicePe(lit1 = true, ch = true), errs(
             0 to "Wrong Literal",
             0 to "Wrong Character",
@@ -277,14 +269,6 @@ object NonTerminalTestUtils {
             0 to "Can't parse Literal - text is too short",
             0 to "Can't parse Literal - text is too short",
             0 to "Wrong PrioritizedChoice(Literal / Literal)",
-        )),
-        PrChoiceIncorrect(s = omega, prChoicePe(ch = true), errs(
-            0 to "Wrong Character",
-            0 to "Wrong PrioritizedChoice(Character)",
-        )),
-        PrChoiceIncorrect(s = "$o", prChoicePe(ch = true), errs(
-            0 to "Wrong Character",
-            0 to "Wrong PrioritizedChoice(Character)",
         )),
         PrChoiceIncorrect(s = "$o", prChoicePe(lit1 = true, ch = true, lit2 = true), errs(
             0 to "Can't parse Literal - text is too short",
@@ -301,10 +285,6 @@ object NonTerminalTestUtils {
     )
 
     internal fun prChoiceEmptyProvider() = Stream.of(
-        PrChoiceEmpty(prChoicePe(lit1 = true), errs(
-            0 to "Can't parse Literal - text is too short",
-            0 to "Wrong PrioritizedChoice(Literal)",
-        )),
         PrChoiceEmpty(prChoicePe(lit1 = true, ch = true), errs(
             0 to "Can't parse Literal - text is too short",
             0 to "Can't parse Character - text is too short",
@@ -315,10 +295,6 @@ object NonTerminalTestUtils {
             0 to "Can't parse Literal - text is too short",
             0 to "Wrong PrioritizedChoice(Literal / Literal)",
         )),
-        PrChoiceEmpty(prChoicePe(ch = true), errs(
-            0 to "Can't parse Character - text is too short",
-            0 to "Wrong PrioritizedChoice(Character)",
-        )),
         PrChoiceEmpty(prChoicePe(lit1 = true, ch = true, lit2 = true), errs(
             0 to "Can't parse Literal - text is too short",
             0 to "Can't parse Character - text is too short",
@@ -328,14 +304,19 @@ object NonTerminalTestUtils {
     )
 
 
-    private fun prChoicePe(lit1: Boolean = false, ch: Boolean = false, lit2: Boolean = false) =
-        PrCh(
-            listOfNotNull(
-                Now(Lit(len = alpha.length) { it == alpha }).takeIf { lit1 },
-                Now(M(transform = { "$it" }, pe = Now(Ch { it == a }))).takeIf { ch },
-                Now(Lit(len = omega.length) { it == omega }).takeIf { lit2 }
-            )
+    private fun prChoicePe(lit1: Boolean = false, ch: Boolean = false, lit2: Boolean = false): PrCh<String> {
+        val subexpressions = listOfNotNull(
+            Now(Lit(len = alpha.length) { it == alpha }).takeIf { lit1 },
+            Now(M(transform = { "$it" }, pe = Now(Ch { it == a }))).takeIf { ch },
+            Now(Lit(len = omega.length) { it == omega }).takeIf { lit2 },
         )
+
+        return PrCh(
+            subexpressions[0],
+            subexpressions[1],
+            *(subexpressions.slice(indices = 2 until subexpressions.size).toTypedArray()),
+        )
+    }
 
 
     // Errs

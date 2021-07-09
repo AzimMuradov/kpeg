@@ -24,6 +24,7 @@ import kpeg.testutils.NonTerminalTestUtils.RepeatedEmpty
 import kpeg.testutils.NonTerminalTestUtils.RepeatedIncorrect
 import kpeg.testutils.NonTerminalTestUtils.SequenceCorrect
 import kpeg.testutils.NonTerminalTestUtils.SequenceEmpty
+import kpeg.testutils.NonTerminalTestUtils.SequenceException
 import kpeg.testutils.NonTerminalTestUtils.SequenceIncorrect
 import kpeg.testutils.NonTerminalTestUtils.a
 import kpeg.testutils.NonTerminalTestUtils.alpha
@@ -37,6 +38,7 @@ import kpeg.testutils.NonTerminalTestUtils.repEmptyProvider
 import kpeg.testutils.NonTerminalTestUtils.repIncorrectProvider
 import kpeg.testutils.NonTerminalTestUtils.seqCorrectProvider
 import kpeg.testutils.NonTerminalTestUtils.seqEmptyProvider
+import kpeg.testutils.NonTerminalTestUtils.seqExProvider
 import kpeg.testutils.NonTerminalTestUtils.seqIncorrectProvider
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -335,6 +337,7 @@ class NonTerminalTest {
         private fun correctProvider() = seqCorrectProvider()
         private fun incorrectProvider() = seqIncorrectProvider()
         private fun emptyProvider() = seqEmptyProvider()
+        private fun exProvider() = seqExProvider()
 
 
         @Test
@@ -399,6 +402,14 @@ class NonTerminalTest {
                 errs shouldBe data.errs
             }
         }
+
+        @ParameterizedTest
+        @MethodSource("exProvider")
+        internal fun `create sequence wrongly`(data: SequenceException) {
+            val e = shouldThrow<IllegalStateException> { data.peBlock() }
+
+            e.message shouldBe "The sequence must contain 1 or more subexpressions"
+        }
     }
 
     @Nested
@@ -412,10 +423,8 @@ class NonTerminalTest {
         @Test
         fun `check logName`() {
             val prChoicePe = PrCh(
-                listOf(
-                    Now(M(transform = { "$it" }, pe = Now(Ch { it == a }))),
-                    Now(Lit(len = alpha.length) { it == alpha })
-                )
+                Now(M(transform = { "$it" }, pe = Now(Ch { it == a }))),
+                Now(Lit(len = alpha.length) { it == alpha }),
             )
 
             prChoicePe.logName shouldBe "PrioritizedChoice(Character / Literal)"

@@ -95,15 +95,24 @@ internal sealed class NonTerminal<T> : ParsingExpression<T>(packrat = false) {
         internal enum class PredicateType { And, Not }
     }
 
-    internal class Sequence<T>(private val b: SequenceBuilderBlock<T>) : NonTerminal<T>() {
+    internal class Sequence<T>(private val block: SequenceBuilderBlock<T>) : NonTerminal<T>() {
+
+        init {
+            check(build().first.isNotEmpty()) { "The sequence must contain 1 or more subexpressions" }
+        }
+
+
+        private fun build() = SequenceBuilder<T>().build(block)
+
 
         override val logName: String by lazy { "Sequence(${logNames.joinToString()})" }
 
-        private val logNames by lazy { SequenceBuilder<T>().build(b).first.map(StoredPE<*>::peLogName) }
+        private val logNames by lazy { build().first.map(StoredPE<*>::peLogName) }
+
 
         override fun parseCore(ps: ParserState): Option<T> {
             val initI = ps.i
-            val (subexpressions, valueBlock) = SequenceBuilder<T>().build(b)
+            val (subexpressions, valueBlock) = build()
 
             return if (subexpressions.all { it.parse(ps) != None }) {
                 Some(ValueBuilder.valueBlock())
@@ -116,7 +125,11 @@ internal sealed class NonTerminal<T> : ParsingExpression<T>(packrat = false) {
         }
     }
 
-    internal class PrioritizedChoice<T>(private val pes: List<EvalPE<T>>) : NonTerminal<T>() {
+    internal class PrioritizedChoice<T>(
+        firstPe: EvalPE<T>, secondPe: EvalPE<T>, vararg otherPes: EvalPE<T>,
+    ) : NonTerminal<T>() {
+
+        private val pes: List<EvalPE<T>> = listOf(firstPe, secondPe) + otherPes
 
         override val logName: String by lazy {
             "PrioritizedChoice(${pes.joinToString(separator = " / ") { it.value().logName }})"
