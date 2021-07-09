@@ -32,6 +32,4 @@ internal sealed class Ignorable : ParsingExpression<Unit>(packrat = true) {
             return Unit.some()
         }
     }
-
-    // TODO(class Comment : Ignorable<String>())
 }
