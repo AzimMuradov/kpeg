@@ -16,7 +16,7 @@
 
 package kpeg
 
-import arrow.core.*
+import arrow.core.Either
 
 
 public typealias ParseResult<T> = Either<List<ParseError>, T>
@@ -33,14 +33,4 @@ internal object ParseErrorMessages {
     internal const val RANGE_IS_EMPTY = "Range is empty"
 
     internal fun wrong(peLogName: String) = "Wrong $peLogName"
-}
-
-
-// Option utils
-
-internal fun <T> Option<T>.get() = getOrElse { error("Option is empty") }
-
-internal inline fun <T> Option<T>.alsoIfSome(block: (T) -> Unit) = when (this) {
-    None -> this
-    is Some -> Some(value.also(block))
 }

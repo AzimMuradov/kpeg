@@ -20,7 +20,6 @@ import arrow.core.*
 import kpeg.KPegDsl
 import kpeg.ParseErrorMessages.wrong
 import kpeg.ParserState
-import kpeg.get
 import kpeg.pe.NonTerminal.Predicate.PredicateType.And
 import kpeg.pe.NonTerminal.Predicate.PredicateType.Not
 import kpeg.pe.SequenceBuilder.ValueBuilder
@@ -172,7 +171,7 @@ public class SequenceBuilder<T> internal constructor() : Operators() {
     @KPegDsl
     public object ValueBuilder {
 
-        public val <T> StoredPE<T>.get: T get() = parsedValue.get()
+        public val <T> StoredPE<T>.get: T get() = parsedPeValue
     }
 
     public fun value(b: ValueBuilderBlock<T>) {

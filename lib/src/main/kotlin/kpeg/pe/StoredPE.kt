@@ -18,6 +18,7 @@ package kpeg.pe
 
 import arrow.core.None
 import arrow.core.Option
+import arrow.core.getOrElse
 import kpeg.ParserState
 
 
@@ -26,8 +27,10 @@ public class StoredPE<T> internal constructor(private val pe: EvalPE<T>) {
     internal val peLogName: String by lazy { pe.value().logName }
 
 
-    internal var parsedValue: Option<T> = None
-        private set
+    internal val parsedPeValue: T by lazy { parsedPe.getOrElse { error("Option is empty") } }
 
-    internal fun parse(ps: ParserState) = pe.value().parse(ps).also { parsedValue = it }
+    private var parsedPe: Option<T> = None
+
+
+    internal fun parse(ps: ParserState) = pe.value().parse(ps).also { parsedPe = it }
 }

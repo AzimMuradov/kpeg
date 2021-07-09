@@ -23,7 +23,6 @@ import kpeg.KPegDsl
 import kpeg.ParseErrorMessages.notEnoughTextFor
 import kpeg.ParseErrorMessages.wrong
 import kpeg.ParserState
-import kpeg.alsoIfSome
 
 
 @KPegDsl
@@ -40,9 +39,11 @@ internal sealed class Terminal<T>(packrat: Boolean = false, private val moveBy: 
 
     final override fun parseCore(ps: ParserState) = with(ps) {
         if (i + moveBy <= s.length) {
-            peek().alsoIfSome {
-                i += moveBy
-                handleWS()
+            peek().also {
+                if (it != None) {
+                    i += moveBy
+                    handleWS()
+                }
             }
         } else {
             None.also { addErr(notEnoughTextFor(logName)) }
