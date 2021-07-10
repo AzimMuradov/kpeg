@@ -1,7 +1,7 @@
 package kpeg.examples.json
 
-import arrow.core.Either
 import arrow.core.Eval
+import arrow.core.getOrHandle
 import kpeg.PegParser
 import kpeg.examples.json.JsonGrammar.JsonSym
 import kpeg.examples.json.JsonValue.*
@@ -92,10 +92,10 @@ object JsonGrammar {
                 value { c.get.toString() }
             },
             literal(len = 2) {
-                it in listOf("\\\"", "\\\\", "\\/", "\\b", "\\f", "\\n", "\\r", "\\t")
+                it in listOf("""\"""", """\\""", """\/""", """\b""", """\f""", """\n""", """\r""", """\t""")
             },
             seq {
-                val prefix = +literal("\\u")
+                val prefix = +literal("""\u""")
                 val unicode = +HEX_DIGIT.repeatedExactly(4u).joinToString()
 
                 value { prefix.get + unicode.get }
@@ -129,29 +129,21 @@ object JsonGrammar {
     private val NullLiteral = Symbol.rule(name = "NullLiteral") { literal("null") }
 }
 
+fun parseJson(text: String) = PegParser.parse(symbol = JsonSym.value(), text).getOrHandle {
+    error(it.joinToString(separator = "\n"))
+}
+
 
 fun main() {
-    val result = PegParser.parse(
-        symbol = JsonSym.value(),
-        text = """
-            {
-                "nesting": { "inner object": {} },
-                "an array": [1.5, true, null, 1e-6],
-                "string with escaped double quotes": "\"quick brown foxes\""
-            }
-            """.trimIndent()
+    val result = parseJson(
+        """
+        {
+          "nesting": { "inner object": {} },
+          "an array": [1.5, true, null, 1e-6],
+          "string with escaped double quotes": "\"quick brown foxes\""
+        }
+        """.trimIndent()
     )
 
-    when (result) {
-        is Either.Left -> {
-            println("Fail")
-            for ((index, message) in result.value) {
-                println("$index: $message")
-            }
-        }
-        is Either.Right -> {
-            println("Success")
-            println(result.value)
-        }
-    }
+    println(result.toPrettyString())
 }

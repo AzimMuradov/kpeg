@@ -1,6 +1,7 @@
 package kpeg.examples.simple_calc
 
-import kpeg.PegParser.parse
+import arrow.core.getOrElse
+import kpeg.PegParser
 import kpeg.examples.simple_calc.ExprGrammar.Expr
 import kpeg.pe.Symbol
 
@@ -57,23 +58,23 @@ object ExprGrammar {
     }
 }
 
+fun evalExpr(expression: String) = PegParser.parse(symbol = Expr.value(), expression).getOrElse { null }
+
 
 fun main() {
-    val expr = Expr.value()
-
     val results = listOf(
-        parse(symbol = expr, "1"),
-        parse(symbol = expr, "+1"),
-        parse(symbol = expr, "+ 1"),
-        parse(symbol = expr, "+1 +"),
-        parse(symbol = expr, "-17"),
-        parse(symbol = expr, "-1 7"),
-        parse(symbol = expr, "1+3-4-3"),
-        parse(symbol = expr, "1+2+3+4+5"),
-        parse(symbol = expr, "1 + +2 + -3 + +4 + 5"),
-        parse(symbol = expr, "-1-2-3-4-5"),
-        parse(symbol = expr, "definitely not expression"),
-        parse(symbol = expr, ""),
+        evalExpr("1"),
+        evalExpr("+1"),
+        evalExpr("+ 1"),
+        evalExpr("+1 +"),
+        evalExpr("-17"),
+        evalExpr("-1 7"),
+        evalExpr("1+3-4-3"),
+        evalExpr("1+2+3+4+5"),
+        evalExpr("1 + +2 + -3 + +4 + 5"),
+        evalExpr("-1-2-3-4-5"),
+        evalExpr("definitely not expression"),
+        evalExpr(""),
     )
 
     for (res in results) {
