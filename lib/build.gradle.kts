@@ -1,3 +1,4 @@
+import org.jetbrains.dokka.Platform
 import java.net.URL
 
 
@@ -76,52 +77,42 @@ tasks {
         dokkaSourceSets {
             configureEach {
 
-                // Use to include or exclude non public members
-                includeNonPublic.set(false)
-
                 // Do not output deprecated members. Applies globally, can be overridden by packageOptions
                 skipDeprecated.set(true)
 
                 // Emit warnings about not documented members. Applies globally, also can be overridden by packageOptions
                 reportUndocumented.set(true)
 
-                // Do not create index pages for empty packages
-                skipEmptyPackages.set(true)
-
                 // This name will be shown in the final output
                 displayName.set("JVM")
 
                 // Platform used for code analysis. See the "Platforms" section of this readme
-                platform.set(org.jetbrains.dokka.Platform.jvm)
+                platform.set(Platform.jvm)
 
                 // List of files with module and package documentation
                 // https://kotlinlang.org/docs/reference/kotlin-doc.html#module-and-package-documentation
                 // includes.from("packages.md", "extra.md")
 
                 // List of files or directories containing sample code (referenced with @sample tags)
-                // samples.from("samples/basic.kt", "samples/advanced.kt")
+                samples.from(
+                    file("/$projectDir/src/test/kotlin/io/kpeg/samples/").listFiles()!!.map { it.canonicalPath }
+                )
 
                 // Specifies the location of the project source code on the Web.
-                // If provided, Dokka generates "source" links for each declaration.
-                // Repeat for multiple mappings
                 sourceLink {
-                    // Unix based directory relative path to the root of the project (where you execute gradle respectively).
                     localDirectory.set(file("src/main/kotlin"))
-
-                    // URL showing where the source code can be accessed through the web browser
-                    remoteUrl.set(URL("https://github.com/AzimMuradov/kpeg/blob/dev/lib/src/main/kotlin"))
-                    // Suffix which is used to append the line number to the URL. Use #L for GitHub
+                    remoteUrl.set(URL("https://github.com/AzimMuradov/kpeg/blob/master/lib/src/main/kotlin"))
                     remoteLineSuffix.set("#L")
+                }
+
+                // Λrrow Core library
+                externalDocumentationLink {
+                    url.set(URL("https://arrow-kt.io/docs/apidocs/arrow-core/"))
+                    packageListUrl.set(URL("file://$rootDir/docs/resources/arrow-core-package-list"))
                 }
 
                 // Used for linking to JDK documentation
                 jdkVersion.set(15)
-
-                // Disable linking to online kotlin-stdlib documentation
-                noStdlibLink.set(false)
-
-                // Disable linking to online JDK documentation
-                noJdkLink.set(false)
             }
         }
 
