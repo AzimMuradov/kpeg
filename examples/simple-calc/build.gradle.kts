@@ -17,5 +17,5 @@ dependencies {
 }
 
 application {
-    mainClass.set("kpeg.examples.simple_calc.MainKt")
+    mainClass.set("io.kpeg.examples.simple_calc.MainKt")
 }

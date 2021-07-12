@@ -17,5 +17,5 @@ dependencies {
 }
 
 application {
-    mainClass.set("kpeg.examples.json.MainKt")
+    mainClass.set("io.kpeg.examples.json.MainKt")
 }
