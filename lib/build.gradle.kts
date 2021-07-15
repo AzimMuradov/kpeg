@@ -91,7 +91,7 @@ tasks {
 
                 // List of files with module and package documentation
                 // https://kotlinlang.org/docs/reference/kotlin-doc.html#module-and-package-documentation
-                // includes.from("packages.md", "extra.md")
+                includes.from("../docs/resources/modules-and-packages.md")
 
                 // List of files or directories containing sample code (referenced with @sample tags)
                 samples.from(
