@@ -79,6 +79,21 @@ dependencies {
 ```-->
 
 
+## Things to improve before **stable**:
+
+- **add more docs**
+- **provide the site for the user guide and docs**
+- **add more tests, improve the code coverage**
+- add more built-in characters
+- add ability to define `Comment` parsing expression
+- better error messages and error handling
+- support left recursion
+- provide more examples
+- multiplatform
+
+Suggestions are welcome!
+
+
 ## License
 
 kpeg is released under the [Apache 2.0 license](https://github.com/AzimMuradov/kpeg/blob/master/LICENSE).
