@@ -25,7 +25,9 @@ import io.kpeg.pe.Symbol
 
 
 /**
- * The starting point to run [peg parser][PegParser.parse].
+ * The starting point to run the [peg parser][PegParser.parse].
+ *
+ * @sample io.kpeg.samples.dsl
  */
 public object PegParser {
 
