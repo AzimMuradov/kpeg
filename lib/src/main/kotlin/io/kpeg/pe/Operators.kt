@@ -305,5 +305,5 @@ public sealed class Operators {
      *
      * @sample io.kpeg.samples.mapPe
      */
-    public fun <T, R> EvalPE<T>.mapPe(transform: MapBuilderBlock<T, R>): EvalPE<R> = Now(Map(transform, pe = this))
+    public fun <T, R> EvalPE<T>.mapPe(transform: MapBuilderBlock<T, R>): EvalPE<R> = Now(MapPe(transform, pe = this))
 }

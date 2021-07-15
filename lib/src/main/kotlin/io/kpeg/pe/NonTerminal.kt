@@ -160,7 +160,7 @@ internal sealed class NonTerminal<T> : ParsingExpression<T>(packrat = false) {
         }
     }
 
-    internal class Map<T, R>(private val transform: MapBuilderBlock<T, R>, private val pe: EvalPE<T>) :
+    internal class MapPe<T, R>(private val transform: MapBuilderBlock<T, R>, private val pe: EvalPE<T>) :
         NonTerminal<R>() {
 
         override val logName: String by lazy { pe.value().logName }

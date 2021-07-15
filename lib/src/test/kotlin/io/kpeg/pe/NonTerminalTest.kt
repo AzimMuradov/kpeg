@@ -44,7 +44,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
-import io.kpeg.pe.NonTerminal.Map as M
+import io.kpeg.pe.NonTerminal.MapPe as M
 import io.kpeg.pe.NonTerminal.Optional as Opt
 import io.kpeg.pe.NonTerminal.Predicate as Pred
 import io.kpeg.pe.NonTerminal.PrioritizedChoice as PrCh
@@ -483,7 +483,7 @@ class NonTerminalTest {
     }
 
     @Nested
-    inner class Map {
+    inner class MapPe {
 
         private val mapPe = M(transform = { it.toString() }, pe = Now(Ch { it == a }))
 
@@ -494,11 +494,11 @@ class NonTerminalTest {
         }
 
         @Test
-        fun `parse 1 map in correct string`() {
+        fun `parse 1 map pe in correct string`() {
             ps = ParserState("$a")
-            val actualMap = mapPe.parse(ps)
+            val actualMapPe = mapPe.parse(ps)
 
-            actualMap shouldBeSome "$a"
+            actualMapPe shouldBeSome "$a"
 
             assertSoftly(ps) {
                 i shouldBe 1
@@ -510,11 +510,11 @@ class NonTerminalTest {
         }
 
         @Test
-        fun `parse 1 map in incorrect string`() {
+        fun `parse 1 map pe in incorrect string`() {
             ps = ParserState("$d")
-            val actualMap = mapPe.parse(ps)
+            val actualMapPe = mapPe.parse(ps)
 
-            actualMap should beNone()
+            actualMapPe should beNone()
 
             assertSoftly(ps) {
                 i shouldBe 0
@@ -526,11 +526,11 @@ class NonTerminalTest {
         }
 
         @Test
-        fun `parse 1 map in empty string`() {
+        fun `parse 1 map pe in empty string`() {
             ps = ParserState("")
-            val actualMap = mapPe.parse(ps)
+            val actualMapPe = mapPe.parse(ps)
 
-            actualMap should beNone()
+            actualMapPe should beNone()
 
             assertSoftly(ps) {
                 i shouldBe 0

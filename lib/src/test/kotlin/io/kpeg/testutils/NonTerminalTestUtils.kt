@@ -7,7 +7,7 @@ import arrow.core.Some
 import io.kpeg.ParseError
 import java.util.stream.Stream
 import kotlin.UInt.Companion.MAX_VALUE
-import io.kpeg.pe.NonTerminal.Map as M
+import io.kpeg.pe.NonTerminal.MapPe as M
 import io.kpeg.pe.NonTerminal.PrioritizedChoice as PrCh
 import io.kpeg.pe.NonTerminal.Repeated as Rep
 import io.kpeg.pe.NonTerminal.Sequence as Seq
