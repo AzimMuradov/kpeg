@@ -25,15 +25,11 @@ import io.kpeg.ParseErrorMessages.wrong
 import io.kpeg.ParserState
 
 
-/**
- * Object marked by [DslMarker] to have scope to define "character" [parsing expression][ParsingExpression].
- */
+/** @suppress */
 @KPegDsl
 public object CharacterBuilder
 
-/**
- * Object marked by [DslMarker] to have scope to define "literal" [parsing expression][ParsingExpression].
- */
+/** @suppress */
 @KPegDsl
 public object LiteralBuilder
 

@@ -170,10 +170,22 @@ internal sealed class NonTerminal<T> : ParsingExpression<T>(packrat = false) {
 }
 
 
+/**
+ * Sequence builder, you will interact with it only by using the [seq][Operators.seq] operator.
+ * To register a [parsing expression][ParsingExpression] as an element of the sequence, use the [unary plus][unaryPlus] operator.
+ * You also must use the [value] block, which yields the result of the sequence.
+ *
+ * @sample io.kpeg.samples.seq
+ */
 public class SequenceBuilder<T> internal constructor() : Operators() {
 
     // Subexpressions
 
+    /**
+     * Registers the [parsing expression][ParsingExpression] as an element of the sequence.
+     *
+     * @receiver [Parsing expression][ParsingExpression] that would be registered.
+     */
     public operator fun <T> EvalPE<T>.unaryPlus(): StoredPE<T> = StoredPE(pe = this).also(subexpressions::add)
 
     private val subexpressions = mutableListOf<StoredPE<*>>()
@@ -181,14 +193,26 @@ public class SequenceBuilder<T> internal constructor() : Operators() {
 
     // Value
 
+    /**
+     * Value builder, you will interact with it only by using the [value] function.
+     */
     @KPegDsl
     public object ValueBuilder {
 
+        /**
+         * Used to get the parsed values of the sequence elements.
+         *
+         * @receiver The [parsing expression][ParsingExpression] whose value you want to retrieve.
+         */
         public val <T> StoredPE<T>.get: T get() = parsedPeValue
     }
 
-    public fun value(b: ValueBuilderBlock<T>) {
-        valueBlock = b
+    /**
+     * Used to define the resulting value of the sequence.
+     * Within the [block], you can assume that all elements have been parsed successfully, so you can get their parsed values by using the [get][ValueBuilder.get] extension property.
+     */
+    public fun value(block: ValueBuilderBlock<T>) {
+        valueBlock = block
     }
 
     private lateinit var valueBlock: ValueBuilderBlock<T>
@@ -196,8 +220,8 @@ public class SequenceBuilder<T> internal constructor() : Operators() {
 
     // Build
 
-    internal fun build(b: SequenceBuilderBlock<T>): Pair<List<StoredPE<*>>, ValueBuilderBlock<T>> {
-        this.b()
+    internal fun build(block: SequenceBuilderBlock<T>): Pair<List<StoredPE<*>>, ValueBuilderBlock<T>> {
+        block()
         return subexpressions to valueBlock
     }
 }
@@ -206,6 +230,7 @@ internal typealias SequenceBuilderBlock<T> = SequenceBuilder<T>.() -> Unit
 internal typealias ValueBuilderBlock<T> = ValueBuilder.() -> T
 
 
+/** @suppress */
 @KPegDsl
 public object MapBuilder
 
