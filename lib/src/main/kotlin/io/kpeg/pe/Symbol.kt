@@ -26,9 +26,11 @@ import io.kpeg.ParserState
 import io.kpeg.pe.Symbol.Rule
 
 
+public typealias EvalSymbol<T> = Eval<Symbol<T>>
+
 
 public class Symbol<T> internal constructor(
-    public val name: String,
+    name: String,
     private val pe: EvalPE<T>,
     private val ignoreWS: Boolean,
 ) : ParsingExpression<T>(packrat = true) {
@@ -40,7 +42,11 @@ public class Symbol<T> internal constructor(
         ps.ignoreWS = ignoreWS
 
         ps.handleWS()
-        val result = pe.value().parse(ps).also { if (it == None) ps.addErr(wrong(logName)) }
+        val result = pe.value().parse(ps).also {
+            if (it == None) {
+                ps.addErr(wrong(logName))
+            }
+        }
 
         ps.ignoreWS = ignoreWSinParent
 
@@ -54,13 +60,13 @@ public class Symbol<T> internal constructor(
             name: String,
             ignoreWS: Boolean = true,
             b: RuleBlock<T>,
-        ): Eval<Symbol<T>> = Now(Symbol(name, pe = Rule.b(), ignoreWS))
+        ): EvalSymbol<T> = Now(Symbol(name, pe = Rule.b(), ignoreWS))
 
         public fun <T> lazyRule(
             name: String,
             ignoreWS: Boolean = true,
             b: RuleBlock<T>,
-        ): Eval<Symbol<T>> = Later { Symbol(name, pe = Rule.b(), ignoreWS) }
+        ): EvalSymbol<T> = Later { Symbol(name, pe = Rule.b(), ignoreWS) }
     }
 }
 
