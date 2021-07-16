@@ -21,12 +21,12 @@ dependencies {
 
     implementation(kotlin("stdlib-jdk8"))
 
-    api("io.arrow-kt:arrow-core:0.13.2")
+    api("io.arrow-kt:arrow-core:${V.ARROW}")
 
-    testImplementation("org.junit.jupiter:junit-jupiter:5.7.2")
-    testImplementation("io.kotest:kotest-assertions-core:4.6.0")
-    testImplementation("io.kotest.extensions:kotest-assertions-arrow:1.0.2")
-    testImplementation("com.marcinmoskala:DiscreteMathToolkit:1.0.3")
+    testImplementation("org.junit.jupiter:junit-jupiter:${V.JUPITER}")
+    testImplementation("io.kotest:kotest-assertions-core:${V.KOTEST_ASSERTIONS_CORE}")
+    testImplementation("io.kotest.extensions:kotest-assertions-arrow:${V.KOTEST_ASSERTIONS_ARROW}")
+    testImplementation("com.marcinmoskala:DiscreteMathToolkit:${V.DISCRETE_MATH_TOOLKIT}")
 }
 
 
