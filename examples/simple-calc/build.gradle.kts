@@ -13,7 +13,7 @@ dependencies {
 
     implementation(kotlin("stdlib-jdk8"))
 
-    implementation(project(":lib"))
+    implementation(projects.lib)
 }
 
 application {
