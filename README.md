@@ -51,7 +51,7 @@ for (res in results) {
 <!--- KDOC -->
 
 
-<!--## Installation guide
+## Installation guide
 ### Gradle
 
 #### Kotlin DSL
@@ -76,7 +76,7 @@ dependencies {
     <artifactId>kpeg</artifactId>
     <version>0.1.0</version>
 </dependency>
-```-->
+```
 
 
 ## Things to improve before **stable**:
