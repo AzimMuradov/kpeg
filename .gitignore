@@ -10,3 +10,8 @@ build
 ### Idea ###
 
 .idea
+
+
+### Credentials and other sensitive information ###
+
+local.properties

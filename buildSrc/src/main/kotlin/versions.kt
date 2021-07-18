@@ -3,6 +3,7 @@ object V {
     // Plugins
     const val P_KOTLIN: String = "1.5.20"
     const val P_DOKKA: String = "1.5.0"
+    const val P_NEXUS_PUBLISH: String = "1.1.0"
 
     // For main
     const val ARROW: String = "0.13.2"

@@ -1,6 +1,14 @@
 rootProject.name = "kpeg"
 
+
+// Library
+
 include("lib")
 
-include("examples:simple-calc")
-include("examples:json")
+
+// Examples
+
+include(
+    "examples:simple-calc",
+    "examples:json",
+)

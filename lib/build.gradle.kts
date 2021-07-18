@@ -7,9 +7,11 @@ plugins {
 
     `java-library`
 
+    id("org.jetbrains.dokka")
+
     jacoco
 
-    id("org.jetbrains.dokka")
+    `publishing-lib-script`
 }
 
 repositories {
@@ -17,9 +19,7 @@ repositories {
 }
 
 dependencies {
-    implementation(platform(kotlin("bom")))
-
-    implementation(kotlin("stdlib-jdk8"))
+    implementation(kotlin("stdlib"))
 
     api("io.arrow-kt:arrow-core:${V.ARROW}")
 
