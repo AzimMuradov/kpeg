@@ -1,5 +1,9 @@
 # kpeg
 
+[![Sonatype Nexus (Releases)](https://img.shields.io/nexus/r/io.kpeg/kpeg?color=green&label=latest%20release&server=https%3A%2F%2Fs01.oss.sonatype.org)](https://search.maven.org/artifact/io.kpeg/kpeg)
+[![License](https://img.shields.io/github/license/AzimMuradov/kpeg?color=blue)](https://www.apache.org/licenses/LICENSE-2.0)
+
+
 Welcome to the **Kotlin PEG parser** with **Kotlin DSL**!
 
 The project is inspired by the [pest parser](https://pest.rs/) and the [kotlin-peg-dsl project](https://github.com/mikaelhg/kotlin-peg-dsl).
@@ -46,9 +50,13 @@ for (res in results) {
 
 ### Resources
 
-<!--- [User guide](https://github.com/AzimMuradov/kpeg/blob/master/docs/user-guide.md)-->
-- [Examples](https://github.com/AzimMuradov/kpeg/blob/master/examples)
-<!--- KDOC -->
+<!--- [User guide](https://kpeg.io)-->
+- Examples
+  - [Simple calculator](https://github.com/AzimMuradov/kpeg/tree/master/examples/simple-calc)
+  - [Json parser](https://github.com/AzimMuradov/kpeg/tree/master/examples/json)
+- [About PEG](https://en.wikipedia.org/wiki/Parsing_expression_grammar)
+- [PEG formal description](https://bford.info/pub/lang/peg.pdf)
+- [Other useful papers](https://bford.info/packrat/)
 
 
 ## Installation guide
