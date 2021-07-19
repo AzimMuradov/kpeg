@@ -6,7 +6,9 @@ plugins {
 
 // Find credentials
 
-val localProps = getPropsFromFile(project.rootProject.file("local.properties"))
+val localPropsFile = rootDir.listFiles()!!.firstOrNull { it.name == "local.properties" }
+
+val localProps = getPropsFromFile(localPropsFile)
 
 val signingKeyId: String = localProps.findPropOrEnvVar(propName = "signing.keyId") ?: ""
 val signingKey: String = localProps.findPropOrEnvVar(propName = "signing.key") ?: ""

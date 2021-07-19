@@ -2,7 +2,7 @@ import java.io.File
 import java.util.*
 
 
-fun getPropsFromFile(file: File) = Properties().apply { load(file.inputStream()) }
+fun getPropsFromFile(file: File?) = Properties().apply { if (file != null) load(file.inputStream()) }
 
 fun Properties.findPropOrEnvVar(
     propName: String,

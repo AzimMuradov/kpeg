@@ -11,7 +11,9 @@ plugins {
 
 // Find credentials
 
-val localProps = getPropsFromFile(project.rootProject.file("local.properties"))
+val localPropsFile = rootDir.listFiles()!!.firstOrNull { it.name == "local.properties" }
+
+val localProps = getPropsFromFile(localPropsFile)
 
 val ossrhUsername: String = localProps.findPropOrEnvVar(propName = "ossrhUsername") ?: ""
 val ossrhPassword: String = localProps.findPropOrEnvVar(propName = "ossrhPassword") ?: ""
