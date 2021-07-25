@@ -1,6 +1,6 @@
-![logo.png](docs/resources/logo-with-bg.png)
+![logo.png](assets/images/logo-with-bg.png)
 
-[![Sonatype Nexus (Releases)](https://img.shields.io/nexus/r/io.kpeg/kpeg?color=green&label=latest%20release&server=https%3A%2F%2Fs01.oss.sonatype.org)](https://search.maven.org/artifact/io.kpeg/kpeg/0.1.0/jar)
+[![Sonatype Nexus (Releases)](https://img.shields.io/nexus/r/io.kpeg/kpeg?color=green&label=latest%20release&server=https%3A%2F%2Fs01.oss.sonatype.org)](https://search.maven.org/artifact/io.kpeg/kpeg/{{ project.version }}/jar)
 [![License](https://img.shields.io/github/license/AzimMuradov/kpeg?color=blue)](https://www.apache.org/licenses/LICENSE-2.0)
 
 
@@ -9,8 +9,7 @@ Welcome to the **Kotlin PEG parser** with **Kotlin DSL**!
 The project is inspired by the [pest parser](https://pest.rs/) and the [kotlin-peg-dsl project](https://github.com/mikaelhg/kotlin-peg-dsl).
 
 
-## Quick start
-### Simple example
+## Simple example
 
 ```kotlin
 val num = Symbol.rule<Int>(name = "Num", ignoreWS = false) {
@@ -48,43 +47,15 @@ for (res in results) {
 }
 ```
 
-### Resources
+## Resources
 
 - [Documentation](https://kpeg.io)
 - Examples
-  - [Simple calculator](https://kpeg.io/pages/examples/simple-calc/)
-  - [Json parser](https://kpeg.io/pages/examples/json/)
+    - [Simple calculator](https://kpeg.io/pages/examples/simple-calc/)
+    - [Json parser](https://kpeg.io/pages/examples/json/)
 - [About PEG](https://en.wikipedia.org/wiki/Parsing_expression_grammar)
 - [PEG formal description](https://bford.info/pub/lang/peg.pdf)
 - [Other useful papers](https://bford.info/packrat/)
-
-
-## Installation guide
-### Gradle
-
-#### Kotlin DSL
-```kotlin
-dependencies {
-    implementation("io.kpeg:kpeg:0.1.0")
-}
-```
-
-#### Groovy DSL
-```groovy
-dependencies {
-    implementation 'io.kpeg:kpeg:0.1.0'
-}
-```
-
-### Maven
-
-```xml
-<dependency>
-    <groupId>io.kpeg</groupId>
-    <artifactId>kpeg</artifactId>
-    <version>0.1.0</version>
-</dependency>
-```
 
 
 ## Things to improve before **stable**:
@@ -101,22 +72,7 @@ dependencies {
 Suggestions are welcome!
 
 
-## License
 
-kpeg is released under the [Apache 2.0 license](https://github.com/AzimMuradov/kpeg/blob/master/LICENSE).
+<!-- Add abbreviations -->
 
-```
-Copyright 2021-2021 Azim Muradov
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-```
+--8<-- "resources/abbreviations.md"

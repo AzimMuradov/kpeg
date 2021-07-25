@@ -1,0 +1,78 @@
+# Project information
+site_name: "kpeg"
+site_url: "https://kpeg.io"
+site_author: "Azim Muradov"
+site_description: "Kotlin PEG parser with Kotlin DSL"
+
+# Repository
+repo_name: "AzimMuradov/kpeg"
+repo_url: "https://github.com/AzimMuradov/kpeg"
+edit_uri: "edit/master/docs/docs/"
+
+# Copyright
+copyright: '<div>Copyright &copy; 2021-2021 Azim Muradov.<br/>Distributed under the <a href="https://github.com/AzimMuradov/kpeg/blob/master/LICENSE">Apache 2.0 license</a></div>'
+
+
+# Configuration
+theme:
+  name: "material"
+  logo: assets/images/logo-inv.png
+  features:
+    - navigation.expand
+    - toc.integrate
+    - search.suggest
+
+
+# Plugins
+plugins:
+  - macros
+  - search
+
+
+# Customization
+extra:
+  project:
+    # groupId: "io.kpeg"
+    # artifactId: "kpeg"
+    version: "0.1.0"
+  social:
+    - icon: "fontawesome/brands/github"
+      link: "https://github.com/AzimMuradov"
+
+
+# Extensions
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - toc:
+      permalink: ⚓︎
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.inlinehilite
+  - pymdownx.highlight:
+      linenums: true
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tabbed
+
+
+# Page tree
+nav:
+  - Home: index.md
+  - Installation guide: pages/installation-guide.md
+  - User guide: pages/user-guide.md
+  - Examples:
+      - Simple calculator: pages/examples/simple-calc.md
+      - Json parser: pages/examples/json.md
+  # Kdoc must be the last element for `kdoc-nav-item.js` to work properly
+  - "KDoc": kdoc/index.html
+
+extra_css:
+  - assets/stylesheets/tweak-header-logo.css
+  - assets/stylesheets/kdoc-nav-item.css
+  # TODO(syntax-highlighting.css)
+
+extra_javascript:
+  - assets/javascripts/tweak-header-logo.js
+  - assets/javascripts/kdoc-nav-item.js

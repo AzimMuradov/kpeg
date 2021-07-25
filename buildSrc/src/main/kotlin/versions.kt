@@ -13,4 +13,8 @@ object V {
     const val KOTEST_ASSERTIONS_CORE: String = "4.6.0"
     const val KOTEST_ASSERTIONS_ARROW: String = "1.0.2"
     const val DISCRETE_MATH_TOOLKIT: String = "1.0.3"
+
+    // For docs
+    const val P_MKDOCS: String = "2.1.1"
+    const val MKDOCS_MACROS: String = "0.5.12"
 }

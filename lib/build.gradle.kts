@@ -89,10 +89,6 @@ tasks {
                 // Platform used for code analysis. See the "Platforms" section of this readme
                 platform.set(Platform.jvm)
 
-                // List of files with module and package documentation
-                // https://kotlinlang.org/docs/reference/kotlin-doc.html#module-and-package-documentation
-                includes.from("../docs/resources/modules-and-packages.md")
-
                 // List of files or directories containing sample code (referenced with @sample tags)
                 samples.from(
                     file("/$projectDir/src/test/kotlin/io/kpeg/samples/").listFiles()!!.map { it.canonicalPath }
@@ -108,7 +104,9 @@ tasks {
                 // Λrrow Core library
                 externalDocumentationLink {
                     url.set(URL("https://arrow-kt.io/docs/apidocs/arrow-core/"))
-                    packageListUrl.set(URL("file://$rootDir/docs/resources/arrow-core-package-list"))
+
+                    val docsProjectDir = project.projects.docs.dependencyProject.projectDir
+                    packageListUrl.set(URL("file://$docsProjectDir/resources/kdoc/arrow-core-package-list"))
                 }
 
                 // Used for linking to JDK documentation
