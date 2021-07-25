@@ -1,2 +1,0 @@
-# kpeg
-Kotlin PEG parser
