@@ -20,13 +20,20 @@ python {
 }
 
 
-// Add kdoc to the site build
+gitPublish {
 
-gitPublish.contents {
-    val libProject = project.projects.lib.dependencyProject
+    // Add kdoc to the site build
+    contents {
+        val libProject = project.projects.lib.dependencyProject
 
-    from("${libProject.buildDir}/dokka") {
-        into("kdoc")
+        from("${libProject.buildDir}/dokka") {
+            into("kdoc")
+        }
+    }
+
+    // What to keep in the existing branch
+    preserve {
+        include("CNAME")
     }
 }
 
