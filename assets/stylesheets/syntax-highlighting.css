@@ -1,0 +1,333 @@
+/*
+ * See:
+ * - https://pygments.org/docs/tokens/
+ * - https://github.com/objcio/pygments/blob/master/pygments/token.py
+ */
+
+
+/* Text */
+.highlight {
+  color: #383a42;
+}
+
+/* Whitespace */
+.highlight .w {
+  color: #93a1a1;
+}
+
+/* Escape */
+.highlight .esc {
+  color: #383a42;
+}
+
+/* Error */
+.highlight .err {
+  color: #93a1a1;
+}
+
+/* Other */
+.highlight .x {
+  color: #383a42;
+}
+
+
+/* Keyword */
+.highlight .k {
+  color: #986801;
+}
+
+/* Keyword.Constant */
+.highlight .kc {
+  color: #a626a4;
+}
+
+/* Keyword.Declaration */
+.highlight .kd {
+  color: #a626a4;
+}
+
+/* Keyword.Namespace */
+.highlight .kn {
+  color: #a626a4;
+}
+
+/* Keyword.Pseudo */
+.highlight .kp {
+  color: #a626a4;
+}
+
+/* Keyword.Reserved */
+.highlight .kr {
+  color: #a626a4;
+}
+
+/* Keyword.Type */
+.highlight .kt {
+  color: #a626a4;
+}
+
+
+/* Name */
+.highlight .n {
+  color: #e45649;
+}
+
+/* Name.Attribute */
+.highlight .na {
+  color: #383a42;
+}
+
+/* Name.Builtin */
+.highlight .nb {
+  color: #0184bb;
+}
+
+/* Name.Builtin.Pseudo */
+.highlight .bp {
+  color: #0184bb;
+}
+
+/* Name.Class */
+.highlight .nc {
+  color: #0184bb;
+}
+
+/* Name.Constant */
+.highlight .no {
+  color: #0184bb;
+}
+
+/* Name.Decorator */
+.highlight .nd {
+  color: #0184bb;
+}
+
+/* Name.Entity */
+.highlight .ni {
+  color: #0184bb;
+}
+
+/* Name.Exception */
+.highlight .ne {
+  color: #0184bb;
+}
+
+/* Name.Function */
+.highlight .nf {
+  color: #4078f2;
+}
+
+/* Name.Property */
+.highlight .py {
+  color: #383a42;
+}
+
+/* Name.Label */
+.highlight .nl {
+  color: #383a42;
+}
+
+/* Name.Namespace */
+.highlight .nn {
+  color: #383a42;
+}
+
+/* Name.Other */
+.highlight .nx {
+  color: #383a42;
+}
+
+/* Name.Tag */
+.highlight .nt {
+  color: #4078f2;
+}
+
+/* Name.Variable */
+.highlight .nv {
+  color: #4078f2;
+}
+
+/* Name.Variable.Class */
+.highlight .vc {
+  color: #4078f2;
+}
+
+/* Name.Variable.Global */
+.highlight .vg {
+  color: #4078f2;
+}
+
+/* Name.Variable.Instance */
+.highlight .vi {
+  color: #4078f2;
+}
+
+
+/* Literal */
+.highlight .l {
+  color: #383a42;
+}
+
+/* Literal.Date */
+.highlight .ld {
+  color: #383a42;
+}
+
+
+/* String */
+.highlight .s {
+  color: #2d7d2d;
+}
+
+/* String.Backtick */
+.highlight .sb {
+  color: #4078f2;
+}
+
+/* String.Char */
+.highlight .sc {
+  color: #50a14f;
+  font-weight: bold;
+}
+
+/* String.Doc */
+.highlight .sd {
+  color: #2d7d2d;
+  font-weight: bold;
+}
+
+/* String.Double */
+.highlight .s2 {
+  color: #2d7d2d;
+}
+
+/* String.Escape */
+.highlight .se {
+  color: #e45649;
+}
+
+/* String.Heredoc */
+.highlight .sh {
+  color: #2d7d2d;
+}
+
+/* String.Interpol */
+.highlight .si {
+  color: #2d7d2d;
+}
+
+/* String.Other */
+.highlight .sx {
+  color: #2d7d2d;
+}
+
+/* String.Regex */
+.highlight .sr {
+  color: #2d7d2d;
+}
+
+/* String.Single */
+.highlight .s1 {
+  color: #2d7d2d;
+}
+
+/* String.Symbol */
+.highlight .ss {
+  color: #2d7d2d;
+}
+
+
+/* Number */
+.highlight .m {
+  color: #986801;
+}
+
+/* Number.Bin */
+.highlight .mb {
+  color: #986801;
+}
+
+/* Number.Float */
+.highlight .mf {
+  color: #986801;
+}
+
+/* Number.Hex */
+.highlight .mh {
+  color: #986801;
+}
+
+/* Number.Integer */
+.highlight .mi {
+  color: #986801;
+}
+
+/* Number.Integer.Long */
+.highlight .il {
+  color: #986801;
+}
+
+/* Number.Oct */
+.highlight .mo {
+  color: #986801;
+}
+
+
+/* Operator */
+.highlight .o {
+  color: #383a42;
+}
+
+/* Operator.Word */
+.highlight .ow {
+  color: #383a42;
+}
+
+
+/* Punctuation */
+.highlight .p {
+  color: #383a42;
+}
+
+
+/* Comment */
+.highlight .c {
+  color: #a0a1a7;
+  font-style: italic
+}
+
+/* Comment.Hashbang */
+.highlight .ch {
+  color: #e45649;
+  font-weight: bold;
+}
+
+/* Comment.Multiline */
+.highlight .cm {
+  color: #a0a1a7;
+  font-style: italic
+}
+
+/* Comment.Preproc */
+.highlight .cp {
+  color: #e45649;
+  font-weight: bold;
+}
+
+/* Comment.PreprocFile */
+.highlight .cpf {
+  color: #e45649;
+  font-weight: bold;
+}
+
+/* Comment.Single */
+.highlight .c1 {
+  color: #a0a1a7;
+  font-style: italic
+}
+
+/* Comment.Special */
+.highlight .cs {
+  color: #e45649;
+  font-weight: bold;
+}

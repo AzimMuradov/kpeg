@@ -1,0 +1,8 @@
+.kdoc_nav_item {
+  margin-top: 30px;
+}
+
+.kdoc_nav_item a {
+  border-top: 1px dotted black;
+  padding-top: .625em;
+}

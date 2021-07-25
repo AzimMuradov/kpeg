@@ -1,0 +1,52 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+$dokka.location:io.kpeg.pe////PointingToDeclaration/kpeg library/io.kpeg.pe/index.html
+$dokka.location:io.kpeg.pe/Operators///PointingToDeclaration/kpeg library/io.kpeg.pe/-operators/index.html
+$dokka.location:io.kpeg.pe/Operators/ANY/#/PointingToDeclaration/kpeg library/io.kpeg.pe/-operators/-a-n-y.html
+$dokka.location:io.kpeg.pe/Operators/DIGIT/#/PointingToDeclaration/kpeg library/io.kpeg.pe/-operators/-d-i-g-i-t.html
+$dokka.location:io.kpeg.pe/Operators/HEX_DIGIT/#/PointingToDeclaration/kpeg library/io.kpeg.pe/-operators/-h-e-x_-d-i-g-i-t.html
+$dokka.location:io.kpeg.pe/Operators/LETTER/#/PointingToDeclaration/kpeg library/io.kpeg.pe/-operators/-l-e-t-t-e-r.html
+$dokka.location:io.kpeg.pe/Operators/and/#arrow.core.Eval[io.kpeg.pe.ParsingExpression[*]]/PointingToDeclaration/kpeg library/io.kpeg.pe/-operators/and.html
+$dokka.location:io.kpeg.pe/Operators/char/#kotlin.Char/PointingToDeclaration/kpeg library/io.kpeg.pe/-operators/char.html
+$dokka.location:io.kpeg.pe/Operators/char/#kotlin.CharArray/PointingToDeclaration/kpeg library/io.kpeg.pe/-operators/char.html
+$dokka.location:io.kpeg.pe/Operators/char/#kotlin.Function2[io.kpeg.pe.CharacterBuilder,kotlin.Char,kotlin.Boolean]/PointingToDeclaration/kpeg library/io.kpeg.pe/-operators/char.html
+$dokka.location:io.kpeg.pe/Operators/char/#kotlin.ranges.CharRange/PointingToDeclaration/kpeg library/io.kpeg.pe/-operators/char.html
+$dokka.location:io.kpeg.pe/Operators/choice/#arrow.core.Eval[io.kpeg.pe.ParsingExpression[TypeParam(bounds=[kotlin.Any?])]]#arrow.core.Eval[io.kpeg.pe.ParsingExpression[TypeParam(bounds=[kotlin.Any?])]]#kotlin.Array[arrow.core.Eval[io.kpeg.pe.ParsingExpression[TypeParam(bounds=[kotlin.Any?])]]]/PointingToDeclaration/kpeg library/io.kpeg.pe/-operators/choice.html
+$dokka.location:io.kpeg.pe/Operators/joinToString/arrow.core.Eval[io.kpeg.pe.ParsingExpression[kotlin.collections.List[TypeParam(bounds=[kotlin.Any?])]]]#kotlin.CharSequence#kotlin.CharSequence#kotlin.CharSequence#kotlin.Int#kotlin.CharSequence#kotlin.Function1[TypeParam(bounds=[kotlin.Any?]),kotlin.CharSequence]?/PointingToDeclaration/kpeg library/io.kpeg.pe/-operators/join-to-string.html
+$dokka.location:io.kpeg.pe/Operators/list/arrow.core.Eval[io.kpeg.pe.ParsingExpression[TypeParam(bounds=[kotlin.Any?])]]#arrow.core.Eval[io.kpeg.pe.ParsingExpression[*]]?#arrow.core.Eval[io.kpeg.pe.ParsingExpression[*]]?#arrow.core.Eval[io.kpeg.pe.ParsingExpression[*]]?#kotlin.UInt#kotlin.UInt/PointingToDeclaration/kpeg library/io.kpeg.pe/-operators/list.html
+$dokka.location:io.kpeg.pe/Operators/literal/#kotlin.Int#kotlin.Function2[io.kpeg.pe.LiteralBuilder,kotlin.String,kotlin.Boolean]/PointingToDeclaration/kpeg library/io.kpeg.pe/-operators/literal.html
+$dokka.location:io.kpeg.pe/Operators/literal/#kotlin.String/PointingToDeclaration/kpeg library/io.kpeg.pe/-operators/literal.html
+$dokka.location:io.kpeg.pe/Operators/mapPe/arrow.core.Eval[io.kpeg.pe.ParsingExpression[TypeParam(bounds=[kotlin.Any?])]]#kotlin.Function2[io.kpeg.pe.MapBuilder,TypeParam(bounds=[kotlin.Any?]),TypeParam(bounds=[kotlin.Any?])]/PointingToDeclaration/kpeg library/io.kpeg.pe/-operators/map-pe.html
+$dokka.location:io.kpeg.pe/Operators/not/#arrow.core.Eval[io.kpeg.pe.ParsingExpression[*]]/PointingToDeclaration/kpeg library/io.kpeg.pe/-operators/not.html
+$dokka.location:io.kpeg.pe/Operators/oneOrMore/arrow.core.Eval[io.kpeg.pe.ParsingExpression[TypeParam(bounds=[kotlin.Any?])]]#/PointingToDeclaration/kpeg library/io.kpeg.pe/-operators/one-or-more.html
+$dokka.location:io.kpeg.pe/Operators/optional/arrow.core.Eval[io.kpeg.pe.ParsingExpression[TypeParam(bounds=[kotlin.Any?])]]#/PointingToDeclaration/kpeg library/io.kpeg.pe/-operators/optional.html
+$dokka.location:io.kpeg.pe/Operators/orDefault/arrow.core.Eval[io.kpeg.pe.ParsingExpression[TypeParam(bounds=[kotlin.Any?])]]#TypeParam(bounds=[kotlin.Any?])/PointingToDeclaration/kpeg library/io.kpeg.pe/-operators/or-default.html
+$dokka.location:io.kpeg.pe/Operators/repeated/arrow.core.Eval[io.kpeg.pe.ParsingExpression[TypeParam(bounds=[kotlin.Any?])]]#kotlin.UInt#kotlin.UInt/PointingToDeclaration/kpeg library/io.kpeg.pe/-operators/repeated.html
+$dokka.location:io.kpeg.pe/Operators/repeated/arrow.core.Eval[io.kpeg.pe.ParsingExpression[TypeParam(bounds=[kotlin.Any?])]]#kotlin.ranges.UIntRange/PointingToDeclaration/kpeg library/io.kpeg.pe/-operators/repeated.html
+$dokka.location:io.kpeg.pe/Operators/repeatedExactly/arrow.core.Eval[io.kpeg.pe.ParsingExpression[TypeParam(bounds=[kotlin.Any?])]]#kotlin.UInt/PointingToDeclaration/kpeg library/io.kpeg.pe/-operators/repeated-exactly.html
+$dokka.location:io.kpeg.pe/Operators/seq/#kotlin.Function1[io.kpeg.pe.SequenceBuilder[TypeParam(bounds=[kotlin.Any?])],kotlin.Unit]/PointingToDeclaration/kpeg library/io.kpeg.pe/-operators/seq.html
+$dokka.location:io.kpeg.pe/Operators/zeroOrMore/arrow.core.Eval[io.kpeg.pe.ParsingExpression[TypeParam(bounds=[kotlin.Any?])]]#/PointingToDeclaration/kpeg library/io.kpeg.pe/-operators/zero-or-more.html
+$dokka.location:io.kpeg.pe/ParsingExpression///PointingToDeclaration/kpeg library/io.kpeg.pe/-parsing-expression/index.html
+$dokka.location:io.kpeg.pe/SequenceBuilder.ValueBuilder///PointingToDeclaration/kpeg library/io.kpeg.pe/-sequence-builder/-value-builder/index.html
+$dokka.location:io.kpeg.pe/SequenceBuilder.ValueBuilder/get/io.kpeg.pe.StoredPE[TypeParam(bounds=[kotlin.Any?])]#/PointingToDeclaration/kpeg library/io.kpeg.pe/-sequence-builder/-value-builder/get.html
+$dokka.location:io.kpeg.pe/SequenceBuilder///PointingToDeclaration/kpeg library/io.kpeg.pe/-sequence-builder/index.html
+$dokka.location:io.kpeg.pe/SequenceBuilder/unaryPlus/arrow.core.Eval[io.kpeg.pe.ParsingExpression[TypeParam(bounds=[kotlin.Any?])]]#/PointingToDeclaration/kpeg library/io.kpeg.pe/-sequence-builder/unary-plus.html
+$dokka.location:io.kpeg.pe/SequenceBuilder/value/#kotlin.Function1[io.kpeg.pe.SequenceBuilder.ValueBuilder,TypeParam(bounds=[kotlin.Any?])]/PointingToDeclaration/kpeg library/io.kpeg.pe/-sequence-builder/value.html
+$dokka.location:io.kpeg.pe/StoredPE///PointingToDeclaration/kpeg library/io.kpeg.pe/-stored-p-e/index.html
+$dokka.location:io.kpeg.pe/Symbol.Rule///PointingToDeclaration/kpeg library/io.kpeg.pe/-symbol/-rule/index.html
+$dokka.location:io.kpeg.pe/Symbol.Rule/lazyRule/#kotlin.String#kotlin.Boolean#kotlin.Function1[io.kpeg.pe.Symbol.Rule,arrow.core.Eval[io.kpeg.pe.ParsingExpression[TypeParam(bounds=[kotlin.Any?])]]]/PointingToDeclaration/kpeg library/io.kpeg.pe/-symbol/-rule/lazy-rule.html
+$dokka.location:io.kpeg.pe/Symbol.Rule/rule/#kotlin.String#kotlin.Boolean#kotlin.Function1[io.kpeg.pe.Symbol.Rule,arrow.core.Eval[io.kpeg.pe.ParsingExpression[TypeParam(bounds=[kotlin.Any?])]]]/PointingToDeclaration/kpeg library/io.kpeg.pe/-symbol/-rule/rule.html
+$dokka.location:io.kpeg.pe/Symbol///PointingToDeclaration/kpeg library/io.kpeg.pe/-symbol/index.html
+$dokka.location:io.kpeg////PointingToDeclaration/kpeg library/io.kpeg/index.html
+$dokka.location:io.kpeg/ParseError///PointingToDeclaration/kpeg library/io.kpeg/-parse-error/index.html
+$dokka.location:io.kpeg/ParseError/ParseError/#kotlin.Int#kotlin.String/PointingToDeclaration/kpeg library/io.kpeg/-parse-error/-parse-error.html
+$dokka.location:io.kpeg/ParseError/index/#/PointingToDeclaration/kpeg library/io.kpeg/-parse-error/--index--.html
+$dokka.location:io.kpeg/ParseError/message/#/PointingToDeclaration/kpeg library/io.kpeg/-parse-error/message.html
+$dokka.location:io.kpeg/PegParser///PointingToDeclaration/kpeg library/io.kpeg/-peg-parser/index.html
+$dokka.location:io.kpeg/PegParser/parse/#io.kpeg.pe.Symbol[TypeParam(bounds=[kotlin.Any?])]#kotlin.String#kotlin.collections.List[kotlin.Char]/PointingToDeclaration/kpeg library/io.kpeg/-peg-parser/parse.html
+$dokka.location:io.kpeg/WhitespaceChars///PointingToDeclaration/kpeg library/io.kpeg/-whitespace-chars/index.html
+$dokka.location:io.kpeg/WhitespaceChars/DEFAULT_WS/#/PointingToDeclaration/kpeg library/io.kpeg/-whitespace-chars/-d-e-f-a-u-l-t_-w-s.html
+$dokka.location:io.kpeg/WhitespaceChars/NO_WS/#/PointingToDeclaration/kpeg library/io.kpeg/-whitespace-chars/-n-o_-w-s.html
+io.kpeg
+io.kpeg.pe
+

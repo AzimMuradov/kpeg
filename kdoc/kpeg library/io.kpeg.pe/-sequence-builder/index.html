@@ -1,0 +1,466 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>SequenceBuilder</title>
+<link href="../../../../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../";</script><script src="https://unpkg.com/kotlin-playground@1" data-selector="code.runnablesample"></script><script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script><link href="../../../styles/style.css" rel="Stylesheet"><link href="../../../styles/logo-styles.css" rel="Stylesheet"><link href="../../../styles/jetbrains-mono.css" rel="Stylesheet"><link href="../../../styles/main.css" rel="Stylesheet"><script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script><script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script><script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script><script type="text/javascript" src="../../../scripts/main.js" async="async"></script>  </head>
+  <body>
+    <div id="container">
+      <div id="leftColumn"><a href="../../../index.html">
+          <div id="logo"></div>
+        </a>
+        <div id="paneSearch"></div>
+        <div id="sideMenu"></div>
+      </div>
+      <div id="main">
+        <div id="leftToggler"><span class="icon-toggler"></span></div>
+<script type="text/javascript" src="../../../scripts/main.js"></script>        <div class="main-content" id="content" pageIds="kpeg library::io.kpeg.pe/SequenceBuilder///PointingToDeclaration//2083360698">
+          <div class="navigation-wrapper" id="navigation-wrapper">
+            <div class="breadcrumbs"><a href="../../../index.html">kpeg library</a>/<a href="../index.html">io.kpeg.pe</a>/<a href="index.html">SequenceBuilder</a></div>
+            <div class="pull-right d-flex">
+              <div id="searchBar"></div>
+            </div>
+          </div>
+          <div class="cover ">
+            <h1 class="cover"><span>Sequence</span><wbr></wbr><span>Builder</span></h1>
+            <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":lib:dokkaHtml/main"><div class="symbol monospace">class <a href="index.html">SequenceBuilder</a>&lt;<a href="index.html">T</a>&gt; : <a href="../-operators/index.html">Operators</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">Sequence builder, you will interact with it only by using the <a href="../-operators/seq.html">seq</a> operator. To register a <a href="../-parsing-expression/index.html">parsing expression</a> as an element of the sequence, use the <a href="unary-plus.html">unary plus</a> operator. You also must use the <a href="value.html">value</a> block, which yields the result of the sequence.</p></div></div>
+          </div>
+          <div class="tabbedcontent">
+            <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Types">Types</button><button class="section-tab" data-togglable="Functions">Functions</button><button class="section-tab" data-togglable="Properties">Properties</button><button class="section-tab" data-togglable="Sources">Sources</button><button class="section-tab" data-togglable="Samples">Samples</button></div>
+            <div class="tabs-section-body">
+              <h2 class="">Samples</h2>
+              <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Samples"><div class="content sourceset-depenent-content" data-active="" data-togglable=":lib:dokkaHtml/main"><div class="sample-container"><code class="runnablesample monospace" theme="idea"><pre>import io.kpeg.pe.Symbol.Rule
+fun main() { 
+   //sampleStart 
+   // John 42     - OK
+// John 402    - OK
+// John -4     - FAIL
+// John 0      - OK
+// John 034034 - OK
+// Jon 42      - FAIL
+
+data class Person(val name: String, val age: Int)
+
+seq&lt;Person&gt; {
+    val name = +literal(&quot;John&quot;)                  // EvalPE&lt;String&gt;
+    val age =
+        +DIGIT.oneOrMore()                       // EvalPE&lt;List&lt;Char&gt;&gt;
+            .joinToString().mapPe { it.toInt() } // EvalPE&lt;Int&gt;
+
+    value { Person(name.get, age.get) }
+}                                                // EvalPE&lt;Person&gt; 
+   //sampleEnd
+}</pre></code></div></div></div>
+              <h2 class="">Types</h2>
+              <div class="table" data-togglable="Types"><a data-name="-825010728%2FClasslikes%2F2083360698" anchor-label="ValueBuilder" id="-825010728%2FClasslikes%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a>
+                <div class="table-row" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="-value-builder/index.html">ValueBuilder</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-825010728%2FClasslikes%2F2083360698"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":lib:dokkaHtml/main"><div class="symbol monospace">object <a href="-value-builder/index.html">ValueBuilder</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="-825010728%2FClasslikes%2F2083360698" anchor-label="ValueBuilder" id="-825010728%2FClasslikes%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a><div class="brief "><a data-name="-825010728%2FClasslikes%2F2083360698" anchor-label="ValueBuilder" id="-825010728%2FClasslikes%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a>Value builder, you will interact with it only by using the <a href="value.html">value</a> function.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <h2 class="">Functions</h2>
+              <div class="table" data-togglable="Functions"><a data-name="-636494481%2FFunctions%2F2083360698" anchor-label="and" id="-636494481%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a>
+                <div class="table-row" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="../-operators/and.html">and</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-636494481%2FFunctions%2F2083360698"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":lib:dokkaHtml/main"><div class="symbol monospace">fun <a href="../-operators/and.html">and</a>(pe: <a href="../index.html#1945541957%2FClasslikes%2F2083360698">EvalPE</a>&lt;*&gt;): <a href="../index.html#1945541957%2FClasslikes%2F2083360698">EvalPE</a>&lt;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a>&gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="-636494481%2FFunctions%2F2083360698" anchor-label="and" id="-636494481%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a><div class="brief "><a data-name="-636494481%2FFunctions%2F2083360698" anchor-label="and" id="-636494481%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a>&quot;And&quot; predicate on the <a href="../-operators/and.html">pe</a> parsing expression.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="-1439795788%2FFunctions%2F2083360698" anchor-label="char" id="-1439795788%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a>
+                <div class="table-row" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="../-operators/char.html">char</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1439795788%2FFunctions%2F2083360698"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":lib:dokkaHtml/main"><div class="symbol monospace">fun <a href="../-operators/char.html">char</a>(c: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-char/index.html">Char</a>): <a href="../index.html#1945541957%2FClasslikes%2F2083360698">EvalPE</a>&lt;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-char/index.html">Char</a>&gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="537834931%2FFunctions%2F2083360698" anchor-label="char" id="537834931%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a><div class="brief "><a data-name="537834931%2FFunctions%2F2083360698" anchor-label="char" id="537834931%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a><a href="../-parsing-expression/index.html">Parsing expression</a> that represents the character <a href="../-operators/char.html">c</a>.</div></div>
+<div class="divergent-group" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":lib:dokkaHtml/main"><div class="symbol monospace">fun <a href="../-operators/char.html">char</a>(vararg cs: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-char/index.html">Char</a>): <a href="../index.html#1945541957%2FClasslikes%2F2083360698">EvalPE</a>&lt;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-char/index.html">Char</a>&gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="1370717526%2FFunctions%2F2083360698" anchor-label="char" id="1370717526%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a><div class="brief "><a data-name="1370717526%2FFunctions%2F2083360698" anchor-label="char" id="1370717526%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a><a href="../-parsing-expression/index.html">Parsing expression</a> that represents any character from the <a href="../-operators/char.html">cs</a> characters.</div></div>
+<div class="divergent-group" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":lib:dokkaHtml/main"><div class="symbol monospace">fun <a href="../-operators/char.html">char</a>(b: <span data-unresolved-link="io.kpeg.pe/CharacterBuilderBlock///PointingToDeclaration/">CharacterBuilderBlock</span>): <a href="../index.html#1945541957%2FClasslikes%2F2083360698">EvalPE</a>&lt;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-char/index.html">Char</a>&gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="1632527841%2FFunctions%2F2083360698" anchor-label="char" id="1632527841%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a><div class="brief "><a data-name="1632527841%2FFunctions%2F2083360698" anchor-label="char" id="1632527841%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a><a href="../-parsing-expression/index.html">Parsing expression</a> that represents any character that satisfies the <a href="../-operators/char.html">b</a> lambda.</div></div>
+<div class="divergent-group" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":lib:dokkaHtml/main"><div class="symbol monospace">fun <a href="../-operators/char.html">char</a>(r: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.ranges/-char-range/index.html">CharRange</a>): <a href="../index.html#1945541957%2FClasslikes%2F2083360698">EvalPE</a>&lt;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-char/index.html">Char</a>&gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="584575674%2FFunctions%2F2083360698" anchor-label="char" id="584575674%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a><div class="brief "><a data-name="584575674%2FFunctions%2F2083360698" anchor-label="char" id="584575674%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a><a href="../-parsing-expression/index.html">Parsing expression</a> that represents any character in the char range <a href="../-operators/char.html">r</a>.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="1309598207%2FFunctions%2F2083360698" anchor-label="choice" id="1309598207%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a>
+                <div class="table-row" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="../-operators/choice.html">choice</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1309598207%2FFunctions%2F2083360698"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":lib:dokkaHtml/main"><div class="symbol monospace">fun &lt;<a href="../-operators/choice.html">T</a>&gt; <a href="../-operators/choice.html">choice</a>(firstPe: <a href="../index.html#1945541957%2FClasslikes%2F2083360698">EvalPE</a>&lt;<a href="../-operators/choice.html">T</a>&gt;, secondPe: <a href="../index.html#1945541957%2FClasslikes%2F2083360698">EvalPE</a>&lt;<a href="../-operators/choice.html">T</a>&gt;, vararg otherPes: <a href="../index.html#1945541957%2FClasslikes%2F2083360698">EvalPE</a>&lt;<a href="../-operators/choice.html">T</a>&gt;): <a href="../index.html#1945541957%2FClasslikes%2F2083360698">EvalPE</a>&lt;<a href="../-operators/choice.html">T</a>&gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="1309598207%2FFunctions%2F2083360698" anchor-label="choice" id="1309598207%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a><div class="brief "><a data-name="1309598207%2FFunctions%2F2083360698" anchor-label="choice" id="1309598207%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a>Prioritized choice of <a href="../-parsing-expression/index.html">parsing expressions</a>.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="1820589976%2FFunctions%2F2083360698" anchor-label="joinToString" id="1820589976%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a>
+                <div class="table-row" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="../-operators/join-to-string.html">joinToString</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1820589976%2FFunctions%2F2083360698"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":lib:dokkaHtml/main"><div class="symbol monospace">fun &lt;<a href="../-operators/join-to-string.html">T</a>&gt; <a href="../index.html#1945541957%2FClasslikes%2F2083360698">EvalPE</a>&lt;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a>&lt;<a href="../-operators/join-to-string.html">T</a>&gt;&gt;.<a href="../-operators/join-to-string.html">joinToString</a>(separator: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-char-sequence/index.html">CharSequence</a> = &quot;&quot;, prefix: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-char-sequence/index.html">CharSequence</a> = &quot;&quot;, postfix: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-char-sequence/index.html">CharSequence</a> = &quot;&quot;, limit: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a> = -1, truncated: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-char-sequence/index.html">CharSequence</a> = &quot;...&quot;, transform: (<a href="../-operators/join-to-string.html">T</a>) -&gt; <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-char-sequence/index.html">CharSequence</a>? = null): <a href="../index.html#1945541957%2FClasslikes%2F2083360698">EvalPE</a>&lt;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a>&gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="1820589976%2FFunctions%2F2083360698" anchor-label="joinToString" id="1820589976%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a><div class="brief "><a data-name="1820589976%2FFunctions%2F2083360698" anchor-label="joinToString" id="1820589976%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a>This function works just like the <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/index.html">joinToString</a> from the standard library, but for the <a href="../-parsing-expression/index.html">parsing expressions</a>.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="758916937%2FFunctions%2F2083360698" anchor-label="list" id="758916937%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a>
+                <div class="table-row" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="../-operators/list.html">list</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="758916937%2FFunctions%2F2083360698"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":lib:dokkaHtml/main"><div class="symbol monospace">fun &lt;<a href="../-operators/list.html">T</a>&gt; <a href="../index.html#1945541957%2FClasslikes%2F2083360698">EvalPE</a>&lt;<a href="../-operators/list.html">T</a>&gt;.<a href="../-operators/list.html">list</a>(separator: <a href="../index.html#1945541957%2FClasslikes%2F2083360698">EvalPE</a>&lt;*&gt;? = null, prefix: <a href="../index.html#1945541957%2FClasslikes%2F2083360698">EvalPE</a>&lt;*&gt;? = null, postfix: <a href="../index.html#1945541957%2FClasslikes%2F2083360698">EvalPE</a>&lt;*&gt;? = null, min: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-u-int/index.html">UInt</a> = 0u, max: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-u-int/index.html">UInt</a> = UInt.MAX_VALUE): <a href="../index.html#1945541957%2FClasslikes%2F2083360698">EvalPE</a>&lt;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a>&lt;<a href="../-operators/list.html">T</a>&gt;&gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="758916937%2FFunctions%2F2083360698" anchor-label="list" id="758916937%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a><div class="brief "><a data-name="758916937%2FFunctions%2F2083360698" anchor-label="list" id="758916937%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a><a href="../-parsing-expression/index.html">Parsing expression</a> that represents a list of elements with the optionally defined <a href="../-operators/list.html">separator</a>, <a href="../-operators/list.html">prefix</a>, and <a href="../-operators/list.html">postfix</a>.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="1458044199%2FFunctions%2F2083360698" anchor-label="literal" id="1458044199%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a>
+                <div class="table-row" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="../-operators/literal.html">literal</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1458044199%2FFunctions%2F2083360698"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":lib:dokkaHtml/main"><div class="symbol monospace">fun <a href="../-operators/literal.html">literal</a>(l: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a>): <a href="../index.html#1945541957%2FClasslikes%2F2083360698">EvalPE</a>&lt;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a>&gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="-1574904165%2FFunctions%2F2083360698" anchor-label="literal" id="-1574904165%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a><div class="brief "><a data-name="-1574904165%2FFunctions%2F2083360698" anchor-label="literal" id="-1574904165%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a><a href="../-parsing-expression/index.html">Parsing expression</a> that represents the literal <a href="../-operators/literal.html">l</a>.</div></div>
+<div class="divergent-group" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":lib:dokkaHtml/main"><div class="symbol monospace">fun <a href="../-operators/literal.html">literal</a>(len: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a>, b: <span data-unresolved-link="io.kpeg.pe/LiteralBuilderBlock///PointingToDeclaration/">LiteralBuilderBlock</span>): <a href="../index.html#1945541957%2FClasslikes%2F2083360698">EvalPE</a>&lt;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a>&gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="198431256%2FFunctions%2F2083360698" anchor-label="literal" id="198431256%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a><div class="brief "><a data-name="198431256%2FFunctions%2F2083360698" anchor-label="literal" id="198431256%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a><a href="../-parsing-expression/index.html">Parsing expression</a> that represents any literal of length <a href="../-operators/literal.html">len</a> that satisfies the <a href="../-operators/literal.html">b</a> lambda.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="-412615603%2FFunctions%2F2083360698" anchor-label="mapPe" id="-412615603%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a>
+                <div class="table-row" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="../-operators/map-pe.html">mapPe</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-412615603%2FFunctions%2F2083360698"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":lib:dokkaHtml/main"><div class="symbol monospace">fun &lt;<a href="../-operators/map-pe.html">T</a>, <a href="../-operators/map-pe.html">R</a>&gt; <a href="../index.html#1945541957%2FClasslikes%2F2083360698">EvalPE</a>&lt;<a href="../-operators/map-pe.html">T</a>&gt;.<a href="../-operators/map-pe.html">mapPe</a>(transform: <span data-unresolved-link="io.kpeg.pe/MapBuilderBlock///PointingToDeclaration/">MapBuilderBlock</span>&lt;<a href="../-operators/map-pe.html">T</a>, <a href="../-operators/map-pe.html">R</a>&gt;): <a href="../index.html#1945541957%2FClasslikes%2F2083360698">EvalPE</a>&lt;<a href="../-operators/map-pe.html">R</a>&gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="-412615603%2FFunctions%2F2083360698" anchor-label="mapPe" id="-412615603%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a><div class="brief "><a data-name="-412615603%2FFunctions%2F2083360698" anchor-label="mapPe" id="-412615603%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a>Map <a href="../-parsing-expression/index.html">parsing expression</a> using the <a href="../-operators/map-pe.html">transform</a> lambda.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="268101619%2FFunctions%2F2083360698" anchor-label="not" id="268101619%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a>
+                <div class="table-row" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="../-operators/not.html">not</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="268101619%2FFunctions%2F2083360698"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":lib:dokkaHtml/main"><div class="symbol monospace">fun <a href="../-operators/not.html">not</a>(pe: <a href="../index.html#1945541957%2FClasslikes%2F2083360698">EvalPE</a>&lt;*&gt;): <a href="../index.html#1945541957%2FClasslikes%2F2083360698">EvalPE</a>&lt;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a>&gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="268101619%2FFunctions%2F2083360698" anchor-label="not" id="268101619%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a><div class="brief "><a data-name="268101619%2FFunctions%2F2083360698" anchor-label="not" id="268101619%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a>&quot;Not&quot; predicate on the <a href="../-operators/not.html">pe</a> parsing expression.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="-656402746%2FFunctions%2F2083360698" anchor-label="oneOrMore" id="-656402746%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a>
+                <div class="table-row" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="../-operators/one-or-more.html">oneOrMore</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-656402746%2FFunctions%2F2083360698"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":lib:dokkaHtml/main"><div class="symbol monospace">fun &lt;<a href="../-operators/one-or-more.html">T</a>&gt; <a href="../index.html#1945541957%2FClasslikes%2F2083360698">EvalPE</a>&lt;<a href="../-operators/one-or-more.html">T</a>&gt;.<a href="../-operators/one-or-more.html">oneOrMore</a>(): <a href="../index.html#1945541957%2FClasslikes%2F2083360698">EvalPE</a>&lt;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a>&lt;<a href="../-operators/one-or-more.html">T</a>&gt;&gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="-656402746%2FFunctions%2F2083360698" anchor-label="oneOrMore" id="-656402746%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a><div class="brief "><a data-name="-656402746%2FFunctions%2F2083360698" anchor-label="oneOrMore" id="-656402746%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a>Repeat <a href="../-parsing-expression/index.html">parsing expression</a> 1 or more times.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="388431214%2FFunctions%2F2083360698" anchor-label="optional" id="388431214%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a>
+                <div class="table-row" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="../-operators/optional.html">optional</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="388431214%2FFunctions%2F2083360698"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":lib:dokkaHtml/main"><div class="symbol monospace">fun &lt;<a href="../-operators/optional.html">T</a>&gt; <a href="../index.html#1945541957%2FClasslikes%2F2083360698">EvalPE</a>&lt;<a href="../-operators/optional.html">T</a>&gt;.<a href="../-operators/optional.html">optional</a>(): <a href="../index.html#1945541957%2FClasslikes%2F2083360698">EvalPE</a>&lt;<a href="https://arrow-kt.io/docs/apidocs/arrow-core/arrow.core/-option/index.html">Option</a>&lt;<a href="../-operators/optional.html">T</a>&gt;&gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="388431214%2FFunctions%2F2083360698" anchor-label="optional" id="388431214%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a><div class="brief "><a data-name="388431214%2FFunctions%2F2083360698" anchor-label="optional" id="388431214%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a>Optional <a href="../-parsing-expression/index.html">parsing expression</a> that yields <a href="https://arrow-kt.io/docs/apidocs/arrow-core/arrow.core/-some/index.html">Some</a> value of the type <a href="../-operators/optional.html">T</a> on successful parsing, or <a href="https://arrow-kt.io/docs/apidocs/arrow-core/arrow.core/-none/index.html">None</a> otherwise.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="756854648%2FFunctions%2F2083360698" anchor-label="orDefault" id="756854648%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a>
+                <div class="table-row" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="../-operators/or-default.html">orDefault</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="756854648%2FFunctions%2F2083360698"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":lib:dokkaHtml/main"><div class="symbol monospace">fun &lt;<a href="../-operators/or-default.html">T</a>&gt; <a href="../index.html#1945541957%2FClasslikes%2F2083360698">EvalPE</a>&lt;<a href="../-operators/or-default.html">T</a>&gt;.<a href="../-operators/or-default.html">orDefault</a>(value: <a href="../-operators/or-default.html">T</a>): <a href="../index.html#1945541957%2FClasslikes%2F2083360698">EvalPE</a>&lt;<a href="../-operators/or-default.html">T</a>&gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="756854648%2FFunctions%2F2083360698" anchor-label="orDefault" id="756854648%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a><div class="brief "><a data-name="756854648%2FFunctions%2F2083360698" anchor-label="orDefault" id="756854648%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a>Optional <a href="../-parsing-expression/index.html">parsing expression</a> with the <a href="../-operators/or-default.html">default value</a>.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="531943903%2FFunctions%2F2083360698" anchor-label="repeated" id="531943903%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a>
+                <div class="table-row" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="../-operators/repeated.html">repeated</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="531943903%2FFunctions%2F2083360698"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":lib:dokkaHtml/main"><div class="symbol monospace">fun &lt;<a href="../-operators/repeated.html">T</a>&gt; <a href="../index.html#1945541957%2FClasslikes%2F2083360698">EvalPE</a>&lt;<a href="../-operators/repeated.html">T</a>&gt;.<a href="../-operators/repeated.html">repeated</a>(range: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.ranges/-u-int-range/index.html">UIntRange</a>): <a href="../index.html#1945541957%2FClasslikes%2F2083360698">EvalPE</a>&lt;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a>&lt;<a href="../-operators/repeated.html">T</a>&gt;&gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="1048396662%2FFunctions%2F2083360698" anchor-label="repeated" id="1048396662%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a><div class="brief "><a data-name="1048396662%2FFunctions%2F2083360698" anchor-label="repeated" id="1048396662%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a>Repeat <a href="../-parsing-expression/index.html">parsing expression</a> an arbitrary number of times in the specified <a href="../-operators/repeated.html">range</a>.</div></div>
+<div class="divergent-group" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":lib:dokkaHtml/main"><div class="symbol monospace">fun &lt;<a href="../-operators/repeated.html">T</a>&gt; <a href="../index.html#1945541957%2FClasslikes%2F2083360698">EvalPE</a>&lt;<a href="../-operators/repeated.html">T</a>&gt;.<a href="../-operators/repeated.html">repeated</a>(min: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-u-int/index.html">UInt</a> = 0u, max: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-u-int/index.html">UInt</a> = UInt.MAX_VALUE): <a href="../index.html#1945541957%2FClasslikes%2F2083360698">EvalPE</a>&lt;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a>&lt;<a href="../-operators/repeated.html">T</a>&gt;&gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="-1241864573%2FFunctions%2F2083360698" anchor-label="repeated" id="-1241864573%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a><div class="brief "><a data-name="-1241864573%2FFunctions%2F2083360698" anchor-label="repeated" id="-1241864573%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a>Repeat <a href="../-parsing-expression/index.html">parsing expression</a> from the <a href="../-operators/repeated.html">min</a> to the <a href="../-operators/repeated.html">max</a> numbers of times.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="-1632178295%2FFunctions%2F2083360698" anchor-label="repeatedExactly" id="-1632178295%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a>
+                <div class="table-row" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="../-operators/repeated-exactly.html">repeatedExactly</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1632178295%2FFunctions%2F2083360698"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":lib:dokkaHtml/main"><div class="symbol monospace">fun &lt;<a href="../-operators/repeated-exactly.html">T</a>&gt; <a href="../index.html#1945541957%2FClasslikes%2F2083360698">EvalPE</a>&lt;<a href="../-operators/repeated-exactly.html">T</a>&gt;.<a href="../-operators/repeated-exactly.html">repeatedExactly</a>(times: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-u-int/index.html">UInt</a>): <a href="../index.html#1945541957%2FClasslikes%2F2083360698">EvalPE</a>&lt;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a>&lt;<a href="../-operators/repeated-exactly.html">T</a>&gt;&gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="-1632178295%2FFunctions%2F2083360698" anchor-label="repeatedExactly" id="-1632178295%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a><div class="brief "><a data-name="-1632178295%2FFunctions%2F2083360698" anchor-label="repeatedExactly" id="-1632178295%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a>Repeat <a href="../-parsing-expression/index.html">parsing expression</a> exactly the given <a href="../-operators/repeated-exactly.html">times</a>.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="-1134046442%2FFunctions%2F2083360698" anchor-label="seq" id="-1134046442%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a>
+                <div class="table-row" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="../-operators/seq.html">seq</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1134046442%2FFunctions%2F2083360698"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":lib:dokkaHtml/main"><div class="symbol monospace">fun &lt;<a href="../-operators/seq.html">T</a>&gt; <a href="../-operators/seq.html">seq</a>(b: <span data-unresolved-link="io.kpeg.pe/SequenceBuilderBlock///PointingToDeclaration/">SequenceBuilderBlock</span>&lt;<a href="../-operators/seq.html">T</a>&gt;): <a href="../index.html#1945541957%2FClasslikes%2F2083360698">EvalPE</a>&lt;<a href="../-operators/seq.html">T</a>&gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="-1134046442%2FFunctions%2F2083360698" anchor-label="seq" id="-1134046442%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a><div class="brief "><a data-name="-1134046442%2FFunctions%2F2083360698" anchor-label="seq" id="-1134046442%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a>Sequence of <a href="../-parsing-expression/index.html">parsing expressions</a>, defined inside the <a href="../-operators/seq.html">b</a> block.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="-651587152%2FFunctions%2F2083360698" anchor-label="unaryPlus" id="-651587152%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a>
+                <div class="table-row" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="unary-plus.html">unaryPlus</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-651587152%2FFunctions%2F2083360698"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":lib:dokkaHtml/main"><div class="symbol monospace">operator fun &lt;<a href="unary-plus.html">T</a>&gt; <a href="../index.html#1945541957%2FClasslikes%2F2083360698">EvalPE</a>&lt;<a href="unary-plus.html">T</a>&gt;.<a href="unary-plus.html">unaryPlus</a>(): <a href="../-stored-p-e/index.html">StoredPE</a>&lt;<a href="unary-plus.html">T</a>&gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="-651587152%2FFunctions%2F2083360698" anchor-label="unaryPlus" id="-651587152%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a><div class="brief "><a data-name="-651587152%2FFunctions%2F2083360698" anchor-label="unaryPlus" id="-651587152%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a>Registers the <a href="../-parsing-expression/index.html">parsing expression</a> as an element of the sequence.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="1426109706%2FFunctions%2F2083360698" anchor-label="value" id="1426109706%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a>
+                <div class="table-row" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="value.html">value</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1426109706%2FFunctions%2F2083360698"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":lib:dokkaHtml/main"><div class="symbol monospace">fun <a href="value.html">value</a>(block: <span data-unresolved-link="io.kpeg.pe/ValueBuilderBlock///PointingToDeclaration/">ValueBuilderBlock</span>&lt;<a href="index.html">T</a>&gt;)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="1426109706%2FFunctions%2F2083360698" anchor-label="value" id="1426109706%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a><div class="brief "><a data-name="1426109706%2FFunctions%2F2083360698" anchor-label="value" id="1426109706%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a>Used to define the resulting value of the sequence.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="1472312046%2FFunctions%2F2083360698" anchor-label="zeroOrMore" id="1472312046%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a>
+                <div class="table-row" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="../-operators/zero-or-more.html">zeroOrMore</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1472312046%2FFunctions%2F2083360698"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":lib:dokkaHtml/main"><div class="symbol monospace">fun &lt;<a href="../-operators/zero-or-more.html">T</a>&gt; <a href="../index.html#1945541957%2FClasslikes%2F2083360698">EvalPE</a>&lt;<a href="../-operators/zero-or-more.html">T</a>&gt;.<a href="../-operators/zero-or-more.html">zeroOrMore</a>(): <a href="../index.html#1945541957%2FClasslikes%2F2083360698">EvalPE</a>&lt;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a>&lt;<a href="../-operators/zero-or-more.html">T</a>&gt;&gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="1472312046%2FFunctions%2F2083360698" anchor-label="zeroOrMore" id="1472312046%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a><div class="brief "><a data-name="1472312046%2FFunctions%2F2083360698" anchor-label="zeroOrMore" id="1472312046%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a>Repeat <a href="../-parsing-expression/index.html">parsing expression</a> 0 or more times.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <h2 class="">Properties</h2>
+              <div class="table" data-togglable="Properties"><a data-name="1171536737%2FProperties%2F2083360698" anchor-label="ANY" id="1171536737%2FProperties%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a>
+                <div class="table-row" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#1171536737%2FProperties%2F2083360698">ANY</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1171536737%2FProperties%2F2083360698"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":lib:dokkaHtml/main"><a data-name="1171536737%2FProperties%2F2083360698" anchor-label="ANY" id="1171536737%2FProperties%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a><div class="symbol monospace">val <a href="index.html#1171536737%2FProperties%2F2083360698">ANY</a>: <a href="../index.html#1945541957%2FClasslikes%2F2083360698">EvalPE</a>&lt;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-char/index.html">Char</a>&gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="1171536737%2FProperties%2F2083360698" anchor-label="ANY" id="1171536737%2FProperties%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a><a href="../-parsing-expression/index.html">Parsing expression</a> that represents any possible character.</div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="1899886400%2FProperties%2F2083360698" anchor-label="DIGIT" id="1899886400%2FProperties%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a>
+                <div class="table-row" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#1899886400%2FProperties%2F2083360698">DIGIT</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1899886400%2FProperties%2F2083360698"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":lib:dokkaHtml/main"><a data-name="1899886400%2FProperties%2F2083360698" anchor-label="DIGIT" id="1899886400%2FProperties%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a><div class="symbol monospace">val <a href="index.html#1899886400%2FProperties%2F2083360698">DIGIT</a>: <a href="../index.html#1945541957%2FClasslikes%2F2083360698">EvalPE</a>&lt;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-char/index.html">Char</a>&gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="1899886400%2FProperties%2F2083360698" anchor-label="DIGIT" id="1899886400%2FProperties%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a><a href="../-parsing-expression/index.html">Parsing expression</a> that represents any decimal digit, that is, any character in '0'..'9'.</div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="902535428%2FProperties%2F2083360698" anchor-label="HEX_DIGIT" id="902535428%2FProperties%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a>
+                <div class="table-row" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#902535428%2FProperties%2F2083360698">HEX_DIGIT</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="902535428%2FProperties%2F2083360698"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":lib:dokkaHtml/main"><a data-name="902535428%2FProperties%2F2083360698" anchor-label="HEX_DIGIT" id="902535428%2FProperties%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a><div class="symbol monospace">val <a href="index.html#902535428%2FProperties%2F2083360698">HEX_DIGIT</a>: <a href="../index.html#1945541957%2FClasslikes%2F2083360698">EvalPE</a>&lt;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-char/index.html">Char</a>&gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="902535428%2FProperties%2F2083360698" anchor-label="HEX_DIGIT" id="902535428%2FProperties%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a><a href="../-parsing-expression/index.html">Parsing expression</a> that represents any hexadecimal digit, that is, any character in '0'..'9', 'a'..'f', or 'A'..'F'.</div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="-1850350489%2FProperties%2F2083360698" anchor-label="LETTER" id="-1850350489%2FProperties%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a>
+                <div class="table-row" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="index.html#-1850350489%2FProperties%2F2083360698">LETTER</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1850350489%2FProperties%2F2083360698"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":lib:dokkaHtml/main"><a data-name="-1850350489%2FProperties%2F2083360698" anchor-label="LETTER" id="-1850350489%2FProperties%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a><div class="symbol monospace">val <a href="index.html#-1850350489%2FProperties%2F2083360698">LETTER</a>: <a href="../index.html#1945541957%2FClasslikes%2F2083360698">EvalPE</a>&lt;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-char/index.html">Char</a>&gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="-1850350489%2FProperties%2F2083360698" anchor-label="LETTER" id="-1850350489%2FProperties%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a><a href="../-parsing-expression/index.html">Parsing expression</a> that represents any letter, that is, any character for which <code>it.isLetter()</code> equals <code>true</code>.</div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <h2 class="">Sources</h2>
+              <div class="table" data-togglable="Sources"><a data-name="1311662834%2FSource%2F2083360698" anchor-label="https://github.com/AzimMuradov/kpeg/blob/master/lib/src/main/kotlin/io/kpeg/pe/NonTerminal.kt#L173" id="1311662834%2FSource%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a>
+                <div class="table-row" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="https://github.com/AzimMuradov/kpeg/blob/master/lib/src/main/kotlin/io/kpeg/pe/NonTerminal.kt#L173">JVM source</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1311662834%2FSource%2F2083360698"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="footer"><span class="go-to-top-icon"><a href="#content"></a></span><span>© 2021 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span></div>
+      </div>
+    </div>
+  </body>
+</html>
+

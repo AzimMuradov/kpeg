@@ -1,0 +1,109 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>PegParser</title>
+<link href="../../../../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../";</script><script src="https://unpkg.com/kotlin-playground@1" data-selector="code.runnablesample"></script><script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script><link href="../../../styles/style.css" rel="Stylesheet"><link href="../../../styles/logo-styles.css" rel="Stylesheet"><link href="../../../styles/jetbrains-mono.css" rel="Stylesheet"><link href="../../../styles/main.css" rel="Stylesheet"><script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script><script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script><script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script><script type="text/javascript" src="../../../scripts/main.js" async="async"></script>  </head>
+  <body>
+    <div id="container">
+      <div id="leftColumn"><a href="../../../index.html">
+          <div id="logo"></div>
+        </a>
+        <div id="paneSearch"></div>
+        <div id="sideMenu"></div>
+      </div>
+      <div id="main">
+        <div id="leftToggler"><span class="icon-toggler"></span></div>
+<script type="text/javascript" src="../../../scripts/main.js"></script>        <div class="main-content" id="content" pageIds="kpeg library::io.kpeg/PegParser///PointingToDeclaration//2083360698">
+          <div class="navigation-wrapper" id="navigation-wrapper">
+            <div class="breadcrumbs"><a href="../../../index.html">kpeg library</a>/<a href="../index.html">io.kpeg</a>/<a href="index.html">PegParser</a></div>
+            <div class="pull-right d-flex">
+              <div id="searchBar"></div>
+            </div>
+          </div>
+          <div class="cover ">
+            <h1 class="cover"><span>Peg</span><wbr></wbr><span>Parser</span></h1>
+            <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":lib:dokkaHtml/main"><div class="symbol monospace">object <a href="index.html">PegParser</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">The starting point to run the <a href="parse.html">peg parser</a>.</p></div></div>
+          </div>
+          <div class="tabbedcontent">
+            <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Functions">Functions</button><button class="section-tab" data-togglable="Sources">Sources</button><button class="section-tab" data-togglable="Samples">Samples</button></div>
+            <div class="tabs-section-body">
+              <h2 class="">Samples</h2>
+              <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Samples"><div class="content sourceset-depenent-content" data-active="" data-togglable=":lib:dokkaHtml/main"><div class="sample-container"><code class="runnablesample monospace" theme="idea"><pre>import arrow.core.getOrElse
+import io.kpeg.PegParser
+import io.kpeg.pe.Symbol
+fun main() { 
+   //sampleStart 
+   val num = Symbol.rule&lt;Int&gt;(name = &quot;Num&quot;, ignoreWS = false) {
+    seq {
+        val sign = +char('+', '-').orDefault('+')
+        val digits = +DIGIT.oneOrMore().joinToString()
+
+        value { (sign.get + digits.get).toInt() }
+    }
+}
+
+val sum = Symbol.rule&lt;Int&gt;(name = &quot;Sum&quot;) {
+    num.list(separator = char('+'), min = 1u).mapPe { it.sum() }
+}
+
+
+fun evalExpr(expression: String) =
+    PegParser.parse(symbol = sum.value(), expression).getOrElse { null }
+
+val results = listOf(
+    evalExpr(&quot;1&quot;),                         // 1
+    evalExpr(&quot;+1&quot;),                        // 1
+    evalExpr(&quot;+ 1&quot;),                       // null
+    evalExpr(&quot;+1 +&quot;),                      // null
+    evalExpr(&quot;-17&quot;),                       // -17
+    evalExpr(&quot;-1 7&quot;),                      // null
+    evalExpr(&quot;1+2+3+4+5&quot;),                 // 15
+    evalExpr(&quot;1 + +2 + -3 + +4 + 5&quot;),      // 9
+    evalExpr(&quot;definitely not expression&quot;), // null
+    evalExpr(&quot;&quot;),                          // null
+)
+
+for (res in results) {
+    println(res)
+} 
+   //sampleEnd
+}</pre></code></div></div></div>
+              <h2 class="">Functions</h2>
+              <div class="table" data-togglable="Functions"><a data-name="-1739020989%2FFunctions%2F2083360698" anchor-label="parse" id="-1739020989%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a>
+                <div class="table-row" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="parse.html">parse</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1739020989%2FFunctions%2F2083360698"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title"><div class="divergent-group" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main"><div class="with-platform-tags"><span class="pull-right"></span></div>
+
+  <div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":lib:dokkaHtml/main"><div class="symbol monospace">fun &lt;<a href="parse.html">T</a>&gt; <a href="parse.html">parse</a>(symbol: <a href="../../io.kpeg.pe/-symbol/index.html">Symbol</a>&lt;<a href="parse.html">T</a>&gt;, text: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a>, whitespace: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a>&lt;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-char/index.html">Char</a>&gt; = DEFAULT_WS): <a href="../index.html#917290273%2FClasslikes%2F2083360698">ParseResult</a>&lt;<a href="parse.html">T</a>&gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+  </div>
+<a data-name="-1739020989%2FFunctions%2F2083360698" anchor-label="parse" id="-1739020989%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a><div class="brief "><a data-name="-1739020989%2FFunctions%2F2083360698" anchor-label="parse" id="-1739020989%2FFunctions%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a>Parse <a href="parse.html">text</a> with defined <a href="parse.html">whitespace</a> to get <a href="parse.html">symbol</a> using packrat parser.</div></div>
+</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <h2 class="">Sources</h2>
+              <div class="table" data-togglable="Sources"><a data-name="874165536%2FSource%2F2083360698" anchor-label="https://github.com/AzimMuradov/kpeg/blob/master/lib/src/main/kotlin/io/kpeg/PegParser.kt#L27" id="874165536%2FSource%2F2083360698" data-filterable-set=":lib:dokkaHtml/main"></a>
+                <div class="table-row" data-filterable-current=":lib:dokkaHtml/main" data-filterable-set=":lib:dokkaHtml/main">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex"><a href="https://github.com/AzimMuradov/kpeg/blob/master/lib/src/main/kotlin/io/kpeg/PegParser.kt#L27">JVM source</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="874165536%2FSource%2F2083360698"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="footer"><span class="go-to-top-icon"><a href="#content"></a></span><span>© 2021 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span></div>
+      </div>
+    </div>
+  </body>
+</html>
+
