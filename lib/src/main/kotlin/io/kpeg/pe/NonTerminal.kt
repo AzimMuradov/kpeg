@@ -129,7 +129,7 @@ internal sealed class NonTerminal<T> : ParsingExpression<T>(packrat = false) {
         firstPe: EvalPE<T>, secondPe: EvalPE<T>, vararg otherPes: EvalPE<T>,
     ) : NonTerminal<T>() {
 
-        private val pes: List<EvalPE<T>> = listOf(firstPe, secondPe) + otherPes
+        private val pes: List<EvalPE<T>> = listOf(firstPe, secondPe, *otherPes)
 
         override val logName: String by lazy {
             "PrioritizedChoice(${pes.joinToString(separator = " / ") { it.value().logName }})"

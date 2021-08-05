@@ -85,11 +85,12 @@ public sealed class Operators {
     public fun char(r: CharRange): EvalPE<Char> = char { it in r }
 
     /**
-     * [Parsing expression][ParsingExpression] that represents any character from the [cs] characters.
+     * [Parsing expression][ParsingExpression] that represents any character from the [firstC], [secondC], or [otherCs] characters.
      *
      * @sample io.kpeg.samples.chars
      */
-    public fun char(vararg cs: Char): EvalPE<Char> = char { it in cs }
+    public fun char(firstC: Char, secondC: Char, vararg otherCs: Char): EvalPE<Char> =
+        char { it in listOf(firstC, secondC, *otherCs.toTypedArray()) }
 
 
     // Literal
