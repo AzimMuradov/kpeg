@@ -18,13 +18,16 @@ jobs:
         with:
           java-version: "11"
           distribution: "adopt"
+      - name: "Set up Python 3.9"
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.9"
       - name: "Grant execute permission for gradlew"
         run: chmod +x gradlew
       - name: "Build project with Gradle"
         run: ./gradlew build
       - name: "Build project docs with Gradle"
         run: ./gradlew mkdocsBuild --info
-        working-directory: ./kpeg
       - name: "Upload test reports as an action artifact"
         uses: actions/upload-artifact@v2
         with:
