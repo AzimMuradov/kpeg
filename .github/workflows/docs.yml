@@ -3,15 +3,9 @@ name: "Publish library docs"
 on:
   push:
     branches: [ master ]
-    paths-ignore:
-      - .github/**
-      - .gitattributes
-      - .gitignore
-      - LICENSE
-      - README.md
 
 jobs:
-  build-docs:
+  publish-docs:
 
     runs-on: ubuntu-latest
 

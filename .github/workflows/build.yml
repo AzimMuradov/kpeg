@@ -3,20 +3,8 @@ name: "Build project"
 on:
   push:
     branches: [ master ]
-    paths-ignore:
-      - .github/**
-      - .gitattributes
-      - .gitignore
-      - LICENSE
-      - README.md
   pull_request:
     branches: [ master ]
-    paths-ignore:
-      - .github/**
-      - .gitattributes
-      - .gitignore
-      - LICENSE
-      - README.md
 
 jobs:
   build:
@@ -36,6 +24,7 @@ jobs:
         run: ./gradlew build
       - name: "Build project docs with Gradle"
         run: ./gradlew mkdocsBuild --info
+        working-directory: ./kpeg
       - name: "Upload test reports as an action artifact"
         uses: actions/upload-artifact@v2
         with:

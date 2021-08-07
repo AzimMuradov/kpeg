@@ -3,12 +3,6 @@ name: "Publish library snapshot"
 on:
   push:
     branches: [ master ]
-    paths-ignore:
-      - .github/**
-      - .gitattributes
-      - .gitignore
-      - LICENSE
-      - README.md
 
 jobs:
   publish-snapshot:
