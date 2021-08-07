@@ -27,7 +27,7 @@ jobs:
       - name: "Build project with Gradle"
         run: ./gradlew build --info
       - name: "Build project docs with Gradle"
-        run: ./gradlew mkdocsBuild --info
+        run: ../gradlew mkdocsBuild --info
         working-directory: ./docs
       - name: "Upload test reports as an action artifact"
         uses: actions/upload-artifact@v2
