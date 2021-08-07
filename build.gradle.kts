@@ -32,4 +32,6 @@ nexusPublishing {
             password.set(ossrhPassword)
         }
     }
+
+    useStaging.set(System.getenv("PUBLISH_SNAPSHOT") == null)
 }

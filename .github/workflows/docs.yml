@@ -27,5 +27,6 @@ jobs:
 
       - name: "Publish library docs to the Github Pages"
         run: ./gradlew mkdocsPublish
+        working-directory: ./kpeg
         env:
           GRGIT_USER: ${{ secrets.GRGIT_USER }}
