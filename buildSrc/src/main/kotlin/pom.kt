@@ -3,6 +3,7 @@ object Pom {
     const val GROUP_ID: String = "io.kpeg"
     const val ARTIFACT_ID: String = "kpeg"
     const val VERSION: String = "0.1.0"
+    const val SNAPSHOT_VERSION: String = "1.0.0-SNAPSHOT"
 
     const val NAME: String = "kpeg"
     const val DESCRIPTION: String = "Kotlin PEG parser with Kotlin DSL"

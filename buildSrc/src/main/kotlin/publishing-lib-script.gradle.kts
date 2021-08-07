@@ -14,6 +14,8 @@ val signingKeyId: String = localProps.findPropOrEnvVar(propName = "signing.keyId
 val signingKey: String = localProps.findPropOrEnvVar(propName = "signing.key") ?: ""
 val signingPassword: String = localProps.findPropOrEnvVar(propName = "signing.password") ?: ""
 
+val isSnapshot: Boolean = System.getenv("PUBLISH_SNAPSHOT") != null
+
 
 // Set up publications
 
@@ -23,7 +25,7 @@ publishing {
             create<MavenPublication>("mavenJvm") {
                 groupId = GROUP_ID
                 artifactId = ARTIFACT_ID
-                version = VERSION
+                version = if (isSnapshot) SNAPSHOT_VERSION else VERSION
 
                 afterEvaluate {
                     artifact(sourcesJar)
@@ -71,10 +73,9 @@ publishing {
 
         repositories {
             maven {
-                // change URLs to point to your repos, e.g. http://my.org/repo
                 val releasesRepoUrl = uri(layout.buildDirectory.dir("repos/releases"))
                 val snapshotsRepoUrl = uri(layout.buildDirectory.dir("repos/snapshots"))
-                url = if ("$version".endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl
+                url = if (isSnapshot) snapshotsRepoUrl else releasesRepoUrl
             }
         }
     }
