@@ -26,7 +26,6 @@ jobs:
         run: chmod +x gradlew
 
       - name: "Publish library docs to the Github Pages"
-        run: ./gradlew mkdocsPublish
-        working-directory: ./kpeg
+        run: ./gradlew mkdocsPublish --info
         env:
           GRGIT_USER: ${{ secrets.GRGIT_USER }}

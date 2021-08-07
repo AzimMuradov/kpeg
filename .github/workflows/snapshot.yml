@@ -25,8 +25,7 @@ jobs:
       - name: "Grant execute permission for gradlew"
         run: chmod +x gradlew
       - name: "Publish library snapshot to the Maven Central Repository"
-        run: ./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository
-        working-directory: ./kpeg
+        run: ./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository --info
         env:
           PUBLISH_SNAPSHOT: ""
           OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
