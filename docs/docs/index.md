@@ -1,6 +1,8 @@
-![logo.png](assets/images/logo-with-bg.png)
+[![logo.png](assets/images/logo-with-bg.png)](https://kpeg.io)
 
-[![Sonatype Nexus (Releases)](https://img.shields.io/nexus/r/io.kpeg/kpeg?color=green&label=latest%20release&server=https%3A%2F%2Fs01.oss.sonatype.org)](https://search.maven.org/artifact/io.kpeg/kpeg/{{ project.version }}/jar)
+[![Sonatype Nexus (Releases)](https://img.shields.io/nexus/r/io.kpeg/kpeg?color=3A3&label=latest%20release&server=https%3A%2F%2Fs01.oss.sonatype.org)](https://search.maven.org/artifact/io.kpeg/kpeg)
+[![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/io.kpeg/kpeg?color=993&label=latest%20snapshot&server=https%3A%2F%2Fs01.oss.sonatype.org)](https://s01.oss.sonatype.org/service/local/repositories/snapshots/content/io/kpeg/kpeg/maven-metadata.xml)
+[![GitHub Actions - Build project](https://github.com/AzimMuradov/kpeg/actions/workflows/build.yml/badge.svg)](https://github.com/AzimMuradov/kpeg/actions/workflows/build.yml)
 [![License](https://img.shields.io/github/license/AzimMuradov/kpeg?color=blue)](https://www.apache.org/licenses/LICENSE-2.0)
 
 
