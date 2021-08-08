@@ -16,13 +16,9 @@ jobs:
         with:
           java-version: "11"
           distribution: "adopt"
-      - name: "Set up Python 3.9"
-        uses: actions/setup-python@v2
-        with:
-          python-version: "3.9"
       - name: "Grant execute permission for gradlew"
         run: chmod +x gradlew
       - name: "Publish library docs to the Github Pages"
         run: ./gradlew mkdocsPublish --info
         env:
-          GRGIT_USER: ${{ secrets.GRGIT_USER }}
+          GRGIT_USER: ${{ secrets.GITHUB_TOKEN }}
