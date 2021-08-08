@@ -12,6 +12,7 @@ repositories {
 ```
 
 === "Kotlin DSL"
+
     ```kotlin
     dependencies {
         implementation("io.kpeg:kpeg:{{ project.version }}")
@@ -19,6 +20,7 @@ repositories {
     ```
 
 === "Groovy DSL"
+
     ```groovy
     dependencies {
         implementation 'io.kpeg:kpeg:{{ project.version }}'

@@ -47,6 +47,7 @@ for (res in results) {
 }
 ```
 
+
 ## Resources
 
 - [Documentation](https://kpeg.io)
@@ -60,16 +61,17 @@ for (res in results) {
 
 ## Things to improve before **stable**:
 
-- **add more docs**
-- **add more tests, improve the code coverage**
-- add more built-in characters
-- add ability to define `Comment` parsing expression
-- better error messages and error handling
-- support left recursion
-- provide more examples
-- multiplatform
+!!! todo "TODO"
+    - **add more docs**
+    - **add more tests, improve the code coverage**
+    - add more built-in characters
+    - add ability to define `Comment` parsing expression
+    - better error messages and error handling
+    - support left recursion
+    - provide more examples
+    - multiplatform
 
-Suggestions are welcome!
+[Suggestions](https://github.com/AzimMuradov/kpeg/issues) are welcome!
 
 
 

@@ -49,6 +49,9 @@ markdown_extensions:
       permalink: ⚓︎
   - pymdownx.betterem:
       smart_enable: all
+  - pymdownx.caret
+  - pymdownx.mark
+  - pymdownx.tilde
   - pymdownx.inlinehilite
   - pymdownx.highlight:
       linenums: true
