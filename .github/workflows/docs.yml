@@ -21,4 +21,4 @@ jobs:
       - name: "Publish library docs to the Github Pages"
         run: ./gradlew mkdocsPublish --info
         env:
-          GRGIT_USER: ${{ secrets.GITHUB_TOKEN }}
+          GRGIT_USER: ${{ secrets.GH_AUTH_TOKEN }}
