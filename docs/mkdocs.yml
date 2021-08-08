@@ -34,7 +34,7 @@ extra:
   project:
     # groupId: "io.kpeg"
     # artifactId: "kpeg"
-    version: "0.1.0"
+    version: "0.1.1"
   social:
     - icon: "fontawesome/brands/github"
       link: "https://github.com/AzimMuradov"

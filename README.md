@@ -67,14 +67,14 @@ for (res in results) {
 #### Kotlin DSL
 ```kotlin
 dependencies {
-    implementation("io.kpeg:kpeg:0.1.0")
+    implementation("io.kpeg:kpeg:0.1.1")
 }
 ```
 
 #### Groovy DSL
 ```groovy
 dependencies {
-    implementation 'io.kpeg:kpeg:0.1.0'
+    implementation 'io.kpeg:kpeg:0.1.1'
 }
 ```
 
@@ -84,7 +84,7 @@ dependencies {
 <dependency>
     <groupId>io.kpeg</groupId>
     <artifactId>kpeg</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
 </dependency>
 ```
 
