@@ -7,8 +7,8 @@ $dokka.location:io.kpeg.pe/Operators/DIGIT/#/PointingToDeclaration/kpeg library
 $dokka.location:io.kpeg.pe/Operators/HEX_DIGIT/#/PointingToDeclaration/kpeg library/io.kpeg.pe/-operators/-h-e-x_-d-i-g-i-t.html
 $dokka.location:io.kpeg.pe/Operators/LETTER/#/PointingToDeclaration/kpeg library/io.kpeg.pe/-operators/-l-e-t-t-e-r.html
 $dokka.location:io.kpeg.pe/Operators/and/#arrow.core.Eval[io.kpeg.pe.ParsingExpression[*]]/PointingToDeclaration/kpeg library/io.kpeg.pe/-operators/and.html
+$dokka.location:io.kpeg.pe/Operators/char/#kotlin.Char#kotlin.Char#kotlin.CharArray/PointingToDeclaration/kpeg library/io.kpeg.pe/-operators/char.html
 $dokka.location:io.kpeg.pe/Operators/char/#kotlin.Char/PointingToDeclaration/kpeg library/io.kpeg.pe/-operators/char.html
-$dokka.location:io.kpeg.pe/Operators/char/#kotlin.CharArray/PointingToDeclaration/kpeg library/io.kpeg.pe/-operators/char.html
 $dokka.location:io.kpeg.pe/Operators/char/#kotlin.Function2[io.kpeg.pe.CharacterBuilder,kotlin.Char,kotlin.Boolean]/PointingToDeclaration/kpeg library/io.kpeg.pe/-operators/char.html
 $dokka.location:io.kpeg.pe/Operators/char/#kotlin.ranges.CharRange/PointingToDeclaration/kpeg library/io.kpeg.pe/-operators/char.html
 $dokka.location:io.kpeg.pe/Operators/choice/#arrow.core.Eval[io.kpeg.pe.ParsingExpression[TypeParam(bounds=[kotlin.Any?])]]#arrow.core.Eval[io.kpeg.pe.ParsingExpression[TypeParam(bounds=[kotlin.Any?])]]#kotlin.Array[arrow.core.Eval[io.kpeg.pe.ParsingExpression[TypeParam(bounds=[kotlin.Any?])]]]/PointingToDeclaration/kpeg library/io.kpeg.pe/-operators/choice.html
