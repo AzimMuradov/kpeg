@@ -455,13 +455,13 @@ i.e. it describes a formal language in terms of a set of rules for recognizing s
 <span class="normal"> 9</span>
 <span class="normal">10</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="kd">object</span> <span class="nc">MyGrammar</span> <span class="p">{</span>
 
-    <span class="kd">val</span> <span class="nv">MySymbol</span><span class="p">:</span> <span class="n">EvalSymbol</span><span class="o">&lt;</span><span class="n">MyObj</span><span class="o">&gt;</span> <span class="o">=</span> <span class="n">Symbol</span><span class="p">.</span><span class="na">lazyRule</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;MySymbol&quot;</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* PE */</span> <span class="p">}</span>
+    <span class="kd">val</span> <span class="nv">MySymbol</span><span class="p">:</span> <span class="n">EvalSymbol</span><span class="o">&lt;</span><span class="n">MyObj</span><span class="o">&gt;</span> <span class="o">=</span> <span class="n">Symbol</span><span class="p">.</span><span class="na">rule</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;MySymbol&quot;</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* PE */</span> <span class="p">}</span>
 
-    <span class="kd">private</span> <span class="kd">val</span> <span class="nv">A</span><span class="p">:</span> <span class="n">EvalSymbol</span><span class="o">&lt;</span><span class="kt">Int</span><span class="o">&gt;</span> <span class="o">=</span> <span class="n">Symbol</span><span class="p">.</span><span class="na">lazyRule</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;A&quot;</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* PE */</span> <span class="p">}</span>
+    <span class="kd">private</span> <span class="kd">val</span> <span class="nv">A</span><span class="p">:</span> <span class="n">EvalSymbol</span><span class="o">&lt;</span><span class="kt">Int</span><span class="o">&gt;</span> <span class="o">=</span> <span class="n">Symbol</span><span class="p">.</span><span class="na">rule</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;A&quot;</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* PE */</span> <span class="p">}</span>
 
-    <span class="kd">private</span> <span class="kd">val</span> <span class="nv">B</span><span class="p">:</span> <span class="n">EvalSymbol</span><span class="o">&lt;</span><span class="n">BObj</span><span class="o">&gt;</span> <span class="o">=</span> <span class="n">Symbol</span><span class="p">.</span><span class="na">lazyRule</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;B&quot;</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* PE */</span> <span class="p">}</span>
+    <span class="kd">private</span> <span class="kd">val</span> <span class="nv">B</span><span class="p">:</span> <span class="n">EvalSymbol</span><span class="o">&lt;</span><span class="n">BObj</span><span class="o">&gt;</span> <span class="o">=</span> <span class="n">Symbol</span><span class="p">.</span><span class="na">rule</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;B&quot;</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* PE */</span> <span class="p">}</span>
 
-    <span class="kd">private</span> <span class="kd">val</span> <span class="nv">C</span><span class="p">:</span> <span class="n">EvalSymbol</span><span class="o">&lt;</span><span class="kt">String</span><span class="o">&gt;</span> <span class="o">=</span> <span class="n">Symbol</span><span class="p">.</span><span class="na">lazyRule</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;C&quot;</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* PE */</span> <span class="p">}</span>
+    <span class="kd">private</span> <span class="kd">val</span> <span class="nv">C</span><span class="p">:</span> <span class="n">EvalSymbol</span><span class="o">&lt;</span><span class="kt">String</span><span class="o">&gt;</span> <span class="o">=</span> <span class="n">Symbol</span><span class="p">.</span><span class="na">rule</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;C&quot;</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* PE */</span> <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
 </td></tr></table>
@@ -492,10 +492,9 @@ i.e. it describes a formal language in terms of a set of rules for recognizing s
 <span class="p">}</span>
 </code></pre></div>
 </td></tr></table>
-<h2 id="how-to-define-a-symbol">How to define a <code>Symbol</code>?<a class="headerlink" href="#how-to-define-a-symbol" title="Permanent link">⚓︎</a></h2>
-<p>The definition of a <code>Symbol</code> is a <code>Rule</code>. To write a rule you need to use one of the two available factory methods:</p>
-<div class="tabbed-set" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><label for="__tabbed_2_1"><code class="highlight"><span class="n">Symbol</span><span class="p">.</span><span class="na">lazyRule</span></code></label><div class="tabbed-content">
-<p>Creates symbols <em>lazily</em>, so the order in which they are declared does not matter.</p>
+<h2 id="how-to-define-a-symbol">How to define a <code class="highlight"><span class="n">Symbol</span></code>?<a class="headerlink" href="#how-to-define-a-symbol" title="Permanent link">⚓︎</a></h2>
+<p>The definition of a <code class="highlight"><span class="n">Symbol</span></code> is a <code class="highlight"><span class="n">Rule</span></code>. To write a rule, you need to use the <code class="highlight"><span class="n">Symbol</span><span class="p">.</span><span class="na">rule</span></code> factory method.</p>
+<p>It creates symbols <em>lazily</em>, so the order in which they are declared doesn't matter:</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>
 <span class="normal"> 3</span>
@@ -518,64 +517,6 @@ i.e. it describes a formal language in terms of a set of rules for recognizing s
 <span class="normal">20</span>
 <span class="normal">21</span>
 <span class="normal">22</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="kd">object</span> <span class="nc">MyGrammar</span> <span class="p">{</span>
-
-    <span class="kd">val</span> <span class="nv">MarkedPersonSym</span> <span class="o">=</span> <span class="n">Symbol</span><span class="p">.</span><span class="na">lazyRule</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;MarkedPersonSym&quot;</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// `Operators` scope</span>
-        <span class="c1">// Any available operator, e.g. a sequence:</span>
-        <span class="n">seq</span><span class="o">&lt;</span><span class="n">Pair</span><span class="o">&lt;</span><span class="kt">String</span><span class="p">,</span> <span class="kt">Char</span><span class="o">&gt;&gt;</span> <span class="p">{</span> <span class="c1">// `SequenceBuilder&lt;Pair&lt;String, Char&gt;&gt;` : `Operators` scope</span>
-            <span class="kd">val</span> <span class="nv">person</span> <span class="o">=</span> <span class="o">+</span><span class="n">PersonSym</span>
-            <span class="kd">val</span> <span class="nv">mark</span> <span class="o">=</span> <span class="o">+</span><span class="n">MarkSym</span>
-
-            <span class="n">value</span> <span class="p">{</span> <span class="n">person</span> <span class="n">to</span> <span class="n">mark</span> <span class="p">}</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-
-    <span class="kd">val</span> <span class="nv">PersonSym</span> <span class="o">=</span> <span class="n">Symbol</span><span class="p">.</span><span class="na">lazyRule</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;PersonSym&quot;</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// `Operators` scope</span>
-        <span class="c1">// Any available operator, e.g. a literal:</span>
-        <span class="n">literal</span><span class="p">(</span><span class="s">&quot;Alice&quot;</span><span class="p">)</span>
-    <span class="p">}</span>
-
-    <span class="kd">val</span> <span class="nv">MarkSym</span> <span class="o">=</span> <span class="n">Symbol</span><span class="p">.</span><span class="na">lazyRule</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;MarkSym&quot;</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// `Operators` scope</span>
-        <span class="c1">// Any available operator, e.g. a character:</span>
-        <span class="n">char</span><span class="p">(</span><span class="sc">&#39;A&#39;</span><span class="p">)</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div>
-</td></tr></table>
-</div>
-<input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><label for="__tabbed_2_2"><code class="highlight"><span class="n">Symbol</span><span class="p">.</span><span class="na">rule</span></code></label><div class="tabbed-content">
-<p>Unlike its lazy counterpart, <code class="highlight"><span class="n">Symbol</span><span class="p">.</span><span class="na">rule</span></code> creates symbols <em>in eager fashion</em>, so the order in which they are declared is of particular importance.</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
-<span class="normal"> 2</span>
-<span class="normal"> 3</span>
-<span class="normal"> 4</span>
-<span class="normal"> 5</span>
-<span class="normal"> 6</span>
-<span class="normal"> 7</span>
-<span class="normal"> 8</span>
-<span class="normal"> 9</span>
-<span class="normal">10</span>
-<span class="normal">11</span>
-<span class="normal">12</span>
-<span class="normal">13</span>
-<span class="normal">14</span>
-<span class="normal">15</span>
-<span class="normal">16</span>
-<span class="normal">17</span>
-<span class="normal">18</span>
-<span class="normal">19</span>
-<span class="normal">20</span>
-<span class="normal">21</span>
-<span class="normal">22</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="kd">object</span> <span class="nc">MyGrammar</span> <span class="p">{</span>
-
-    <span class="kd">val</span> <span class="nv">PersonSym</span> <span class="o">=</span> <span class="n">Symbol</span><span class="p">.</span><span class="na">rule</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;PersonSym&quot;</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// `Operators` scope</span>
-        <span class="c1">// Any available operator, e.g. a literal:</span>
-        <span class="n">literal</span><span class="p">(</span><span class="s">&quot;Alice&quot;</span><span class="p">)</span>
-    <span class="p">}</span>
-
-    <span class="kd">val</span> <span class="nv">MarkSym</span> <span class="o">=</span> <span class="n">Symbol</span><span class="p">.</span><span class="na">rule</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;MarkSym&quot;</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// `Operators` scope</span>
-        <span class="c1">// Any available operator, e.g. a character:</span>
-        <span class="n">char</span><span class="p">(</span><span class="sc">&#39;A&#39;</span><span class="p">)</span>
-    <span class="p">}</span>
 
     <span class="kd">val</span> <span class="nv">MarkedPersonSym</span> <span class="o">=</span> <span class="n">Symbol</span><span class="p">.</span><span class="na">rule</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;MarkedPersonSym&quot;</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// `Operators` scope</span>
         <span class="c1">// Any available operator, e.g. a sequence:</span>
@@ -586,14 +527,25 @@ i.e. it describes a formal language in terms of a set of rules for recognizing s
             <span class="n">value</span> <span class="p">{</span> <span class="n">person</span> <span class="n">to</span> <span class="n">mark</span> <span class="p">}</span>
         <span class="p">}</span>
     <span class="p">}</span>
+
+    <span class="kd">val</span> <span class="nv">PersonSym</span> <span class="o">=</span> <span class="n">Symbol</span><span class="p">.</span><span class="na">rule</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;PersonSym&quot;</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// `Operators` scope</span>
+        <span class="c1">// Any available operator, e.g. a literal:</span>
+        <span class="n">literal</span><span class="p">(</span><span class="s">&quot;Alice&quot;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="kd">val</span> <span class="nv">MarkSym</span> <span class="o">=</span> <span class="n">Symbol</span><span class="p">.</span><span class="na">rule</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;MarkSym&quot;</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// `Operators` scope</span>
+        <span class="c1">// Any available operator, e.g. a character:</span>
+        <span class="n">char</span><span class="p">(</span><span class="sc">&#39;A&#39;</span><span class="p">)</span>
+    <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
 </td></tr></table>
-</div>
-</div>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>It's recommended to use <code class="highlight"><span class="n">Symbol</span><span class="p">.</span><span class="na">lazyRule</span></code> because of its high versatility and low probability of unexpected errors.</p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>Before, there was two factory methods available, <code class="highlight"><span class="n">Symbol</span><span class="p">.</span><span class="na">rule</span></code> and <code class="highlight"><span class="n">Symbol</span><span class="p">.</span><span class="na">lazyRule</span></code>.
+The first one was <em>eager</em>, and the second one was <em>lazy</em>.
+But after a while, it became clear that the <em>eager</em> one had no major advantages, so it was removed and the <code class="highlight"><span class="n">Symbol</span><span class="p">.</span><span class="na">lazyRule</span></code> was renamed to <code class="highlight"><span class="n">Symbol</span><span class="p">.</span><span class="na">rule</span></code>.
+So, currently there is only one way to create a <code class="highlight"><span class="n">Symbol</span></code> - using the <em>lazy</em> <code class="highlight"><span class="n">Symbol</span><span class="p">.</span><span class="na">rule</span></code>. Hope this makes sense <img alt="😉" class="gemoji" src="https://github.githubassets.com/images/icons/emoji/unicode/1f609.png" title=":wink:" /></p>
 </div>
 <h2 id="library-operators-and-their-comparison-with-the-classic-peg-syntax">Library operators and their comparison with the classic <abbr title="Parsing Expression Grammar">PEG</abbr> syntax<a class="headerlink" href="#library-operators-and-their-comparison-with-the-classic-peg-syntax" title="Permanent link">⚓︎</a></h2>
 <div class="admonition info">

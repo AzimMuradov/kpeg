@@ -34,7 +34,6 @@ $dokka.location:io.kpeg.pe/SequenceBuilder/unaryPlus/arrow.core.Eval[io.kpeg.pe.
 $dokka.location:io.kpeg.pe/SequenceBuilder/value/#kotlin.Function1[io.kpeg.pe.SequenceBuilder.ValueBuilder,TypeParam(bounds=[kotlin.Any?])]/PointingToDeclaration/kpeg library/io.kpeg.pe/-sequence-builder/value.html
 $dokka.location:io.kpeg.pe/StoredPE///PointingToDeclaration/kpeg library/io.kpeg.pe/-stored-p-e/index.html
 $dokka.location:io.kpeg.pe/Symbol.Rule///PointingToDeclaration/kpeg library/io.kpeg.pe/-symbol/-rule/index.html
-$dokka.location:io.kpeg.pe/Symbol.Rule/lazyRule/#kotlin.String#kotlin.Boolean#kotlin.Function1[io.kpeg.pe.Symbol.Rule,arrow.core.Eval[io.kpeg.pe.ParsingExpression[TypeParam(bounds=[kotlin.Any?])]]]/PointingToDeclaration/kpeg library/io.kpeg.pe/-symbol/-rule/lazy-rule.html
 $dokka.location:io.kpeg.pe/Symbol.Rule/rule/#kotlin.String#kotlin.Boolean#kotlin.Function1[io.kpeg.pe.Symbol.Rule,arrow.core.Eval[io.kpeg.pe.ParsingExpression[TypeParam(bounds=[kotlin.Any?])]]]/PointingToDeclaration/kpeg library/io.kpeg.pe/-symbol/-rule/rule.html
 $dokka.location:io.kpeg.pe/Symbol///PointingToDeclaration/kpeg library/io.kpeg.pe/-symbol/index.html
 $dokka.location:io.kpeg////PointingToDeclaration/kpeg library/io.kpeg/index.html
