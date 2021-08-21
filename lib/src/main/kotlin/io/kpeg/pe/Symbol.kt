@@ -18,7 +18,6 @@ package io.kpeg.pe
 
 import arrow.core.Eval
 import arrow.core.Eval.Later
-import arrow.core.Eval.Now
 import arrow.core.None
 import arrow.core.Option
 import io.kpeg.ParseErrorMessages.wrong
@@ -60,8 +59,13 @@ public class Symbol<T> internal constructor(
             name: String,
             ignoreWS: Boolean = true,
             b: RuleBlock<T>,
-        ): EvalSymbol<T> = Now(Symbol(name, pe = Rule.b(), ignoreWS))
+        ): EvalSymbol<T> = Later { Symbol(name, pe = Rule.b(), ignoreWS) }
 
+        @Deprecated(
+            message = "Renamed to `rule`.",
+            replaceWith = ReplaceWith(expression = "Symbol.rule(name, ignoreWS, b)"),
+            level = DeprecationLevel.WARNING,
+        )
         public fun <T> lazyRule(
             name: String,
             ignoreWS: Boolean = true,

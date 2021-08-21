@@ -34,7 +34,7 @@ extra:
   project:
     # groupId: "io.kpeg"
     # artifactId: "kpeg"
-    version: "0.1.1"
+    version: "0.1.2"
   social:
     - icon: "fontawesome/brands/github"
       link: "https://github.com/AzimMuradov"
@@ -55,6 +55,8 @@ markdown_extensions:
   - pymdownx.inlinehilite
   - pymdownx.highlight:
       linenums: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:pymdownx.emoji.gemoji
   - pymdownx.snippets
   - pymdownx.superfences
   - pymdownx.tabbed

@@ -12,24 +12,24 @@ import io.kpeg.pe.Symbol
 
 object JsonGrammar {
 
-    val JsonSym = Symbol.lazyRule(name = "Json") {
+    val JsonSym = Symbol.rule("Json", true) {
         choice(ObjectSym, ArraySym).mapPe { Json(it) }
     }
 
-    private val ValueSym: Eval<Symbol<JsonValue>> = Symbol.lazyRule(name = "JsonValue") {
+    private val ValueSym: Eval<Symbol<JsonValue>> = Symbol.rule(name = "JsonValue") {
         choice(ObjectSym, ArraySym, NumberSym, StringSym, BooleanSym, NullSym)
     }
 
 
     // Json values
 
-    private val ObjectSym = Symbol.lazyRule(name = "Object") {
+    private val ObjectSym = Symbol.rule(name = "Object") {
         ObjectPairSym
             .list(separator = Comma, prefix = LeftCurBr, postfix = RightCurBr)
             .mapPe { JsonObject(it) }
     }
 
-    private val ObjectPairSym = Symbol.lazyRule<Pair<String, JsonValue>>(name = "ObjectPair") {
+    private val ObjectPairSym = Symbol.rule<Pair<String, JsonValue>>(name = "ObjectPair") {
         seq {
             val name = +StringSym
             +Colon
@@ -40,12 +40,12 @@ object JsonGrammar {
     }
 
 
-    private val ArraySym = Symbol.lazyRule(name = "Array") {
+    private val ArraySym = Symbol.rule(name = "Array") {
         ValueSym.list(separator = Comma, prefix = LeftSqBr, postfix = RightSqBr).mapPe { JsonArray(it) }
     }
 
 
-    private val NumberSym = Symbol.lazyRule<JsonNumber>(name = "Number", ignoreWS = false) {
+    private val NumberSym = Symbol.rule<JsonNumber>(name = "Number", ignoreWS = false) {
         seq {
             val minus = +literal("-").orDefault("")
 
@@ -76,14 +76,14 @@ object JsonGrammar {
     }
 
 
-    private val StringSym = Symbol.lazyRule(name = "String", ignoreWS = false) {
+    private val StringSym = Symbol.rule(name = "String", ignoreWS = false) {
         CharSym
             .list(prefix = char('"'), postfix = char('"'))
             .joinToString()
             .mapPe { JsonString(it) }
     }
 
-    private val CharSym = Symbol.lazyRule(name = "Char", ignoreWS = false) {
+    private val CharSym = Symbol.rule(name = "Char", ignoreWS = false) {
         choice(
             seq {
                 +not(char('"', '\\'))
@@ -104,12 +104,12 @@ object JsonGrammar {
     }
 
 
-    private val BooleanSym = Symbol.lazyRule(name = "Boolean") {
+    private val BooleanSym = Symbol.rule(name = "Boolean") {
         choice(TrueLiteral, FalseLiteral).mapPe { JsonBoolean(it.toBooleanStrict()) }
     }
 
 
-    private val NullSym = Symbol.lazyRule(name = "Null") {
+    private val NullSym = Symbol.rule(name = "Null") {
         NullLiteral.mapPe { JsonNull }
     }
 

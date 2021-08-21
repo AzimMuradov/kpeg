@@ -2,12 +2,12 @@ object Pom {
 
     const val GROUP_ID: String = "io.kpeg"
     const val ARTIFACT_ID: String = "kpeg"
-    const val VERSION: String = "0.1.1"
+    const val VERSION: String = "0.1.2"
     const val SNAPSHOT_VERSION: String = "1.0.0-SNAPSHOT"
 
     const val NAME: String = "kpeg"
     const val DESCRIPTION: String = "Kotlin PEG parser with Kotlin DSL"
-    const val URL: String = "https://github.com/AzimMuradov/kpeg" /* "https://kpeg.io" */
+    const val URL: String = "https://kpeg.io"
     const val INCEPTION_YEAR: String = "2021"
 
     const val LICENSE_NAME: String = "The Apache License, Version 2.0"

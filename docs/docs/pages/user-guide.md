@@ -24,13 +24,13 @@ To use it you need to follow these simple steps:
     ```kotlin
     object MyGrammar {
     
-        val MySymbol: EvalSymbol<MyObj> = Symbol.lazyRule(name = "MySymbol") { /* PE */ }
+        val MySymbol: EvalSymbol<MyObj> = Symbol.rule(name = "MySymbol") { /* PE */ }
     
-        private val A: EvalSymbol<Int> = Symbol.lazyRule(name = "A") { /* PE */ }
+        private val A: EvalSymbol<Int> = Symbol.rule(name = "A") { /* PE */ }
     
-        private val B: EvalSymbol<BObj> = Symbol.lazyRule(name = "B") { /* PE */ }
+        private val B: EvalSymbol<BObj> = Symbol.rule(name = "B") { /* PE */ }
     
-        private val C: EvalSymbol<String> = Symbol.lazyRule(name = "C") { /* PE */ }
+        private val C: EvalSymbol<String> = Symbol.rule(name = "C") { /* PE */ }
     }
     ```
 
@@ -59,70 +59,42 @@ fun main() {
 ```
 
 
-## How to define a `Symbol`?
+## How to define a `#!kotlin Symbol`?
 
-The definition of a `Symbol` is a `Rule`. To write a rule you need to use one of the two available factory methods:
+The definition of a `#!kotlin Symbol` is a `#!kotlin Rule`. To write a rule, you need to use the `#!kotlin Symbol.rule` factory method.
 
-=== "`#!kotlin Symbol.lazyRule`"
+It creates symbols _lazily_, so the order in which they are declared doesn't matter:
 
-    Creates symbols _lazily_, so the order in which they are declared does not matter.
+```kotlin
+object MyGrammar {
 
-    ```kotlin
-    object MyGrammar {
+    val MarkedPersonSym = Symbol.rule(name = "MarkedPersonSym") { // `Operators` scope
+        // Any available operator, e.g. a sequence:
+        seq<Pair<String, Char>> { // `SequenceBuilder<Pair<String, Char>>` : `Operators` scope
+            val person = +PersonSym
+            val mark = +MarkSym
 
-        val MarkedPersonSym = Symbol.lazyRule(name = "MarkedPersonSym") { // `Operators` scope
-            // Any available operator, e.g. a sequence:
-            seq<Pair<String, Char>> { // `SequenceBuilder<Pair<String, Char>>` : `Operators` scope
-                val person = +PersonSym
-                val mark = +MarkSym
-
-                value { person to mark }
-            }
-        }
-
-        val PersonSym = Symbol.lazyRule(name = "PersonSym") { // `Operators` scope
-            // Any available operator, e.g. a literal:
-            literal("Alice")
-        }
-
-        val MarkSym = Symbol.lazyRule(name = "MarkSym") { // `Operators` scope
-            // Any available operator, e.g. a character:
-            char('A')
+            value { person to mark }
         }
     }
-    ```
 
-=== "`#!kotlin Symbol.rule`"
-
-    Unlike its lazy counterpart, `#!kotlin Symbol.rule` creates symbols _in eager fashion_, so the order in which they are declared is of particular importance.
-
-    ```kotlin
-    object MyGrammar {
-
-        val PersonSym = Symbol.rule(name = "PersonSym") { // `Operators` scope
-            // Any available operator, e.g. a literal:
-            literal("Alice")
-        }
-
-        val MarkSym = Symbol.rule(name = "MarkSym") { // `Operators` scope
-            // Any available operator, e.g. a character:
-            char('A')
-        }
-
-        val MarkedPersonSym = Symbol.rule(name = "MarkedPersonSym") { // `Operators` scope
-            // Any available operator, e.g. a sequence:
-            seq<Pair<String, Char>> { // `SequenceBuilder<Pair<String, Char>>` : `Operators` scope
-                val person = +PersonSym
-                val mark = +MarkSym
-
-                value { person to mark }
-            }
-        }
+    val PersonSym = Symbol.rule(name = "PersonSym") { // `Operators` scope
+        // Any available operator, e.g. a literal:
+        literal("Alice")
     }
-    ```
 
-!!! tip
-    It's recommended to use `#!kotlin Symbol.lazyRule` because of its high versatility and low probability of unexpected errors.
+    val MarkSym = Symbol.rule(name = "MarkSym") { // `Operators` scope
+        // Any available operator, e.g. a character:
+        char('A')
+    }
+}
+```
+
+!!! attention
+    Before, there was two factory methods available, `#!kotlin Symbol.rule` and `#!kotlin Symbol.lazyRule`.
+    The first one was _eager_, and the second one was _lazy_.
+    But after a while, it became clear that the _eager_ one had no major advantages, so it was removed and the `#!kotlin Symbol.lazyRule` was renamed to `#!kotlin Symbol.rule`.
+    So, currently there is only one way to create a `#!kotlin Symbol` - using the _lazy_ `#!kotlin Symbol.rule`. Hope this makes sense :wink:
 
 
 ## Library operators and their comparison with the classic PEG syntax
