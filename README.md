@@ -100,7 +100,7 @@ dependencies {
 - provide more examples
 - multiplatform
 
-Suggestions are welcome!
+[Suggestions](https://github.com/AzimMuradov/kpeg/issues) are welcome!
 
 
 ## License
